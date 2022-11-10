@@ -1,12 +1,14 @@
 package com.example.calculator_compose.domain.model
 
-data class Values(
-    val calculation: String, val action: String
+data class PresentationValues(val calculation: String, val action: String)
+
+data class DomainAllValues(val calculation: String, val action: String, val history: String)
+
+data class DomainValues(val numbers: MutableList<String>, val action: MutableList<String>)
+
+data class DomainCalculationValues(
+    var numbers: MutableList<Double>, var action: MutableList<String>
 )
 
-data class AllValues(
-    val calculation: String,
-    val action: String,
-    val history: String,
-)
+
 

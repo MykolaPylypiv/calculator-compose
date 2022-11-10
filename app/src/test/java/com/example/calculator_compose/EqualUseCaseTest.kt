@@ -1,0 +1,290 @@
+package com.example.calculator_compose
+
+import com.example.calculator_compose.domain.calculation.additional.EqualCheck
+import com.example.calculator_compose.domain.calculation.additional.EqualReturn
+import com.example.calculator_compose.domain.calculation.calculation.ActionsEqualTo
+import com.example.calculator_compose.domain.calculation.calculation.Calculation
+import com.example.calculator_compose.domain.calculation.calculation.PrimitiveCalculation
+import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainCalculationValues
+import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
+import com.example.calculator_compose.domain.calculation.priority.LowestPriorityAction
+import com.example.calculator_compose.domain.calculation.priority.OrderCalculation
+import com.example.calculator_compose.domain.usecases.EqualUseCase
+import org.junit.Test
+import kotlin.math.*
+import kotlin.test.assertEquals
+
+class EqualUseCaseTest {
+
+    private val primitiveCalculation = PrimitiveCalculation.Base()
+
+    private val actionsEqualTo = ActionsEqualTo.Base(primitiveCalculation = primitiveCalculation)
+
+    private val lowestPriority =
+        LowestPriorityAction.Base(primitiveCalculation = primitiveCalculation)
+
+    private val calculation = Calculation.Base(actionsEqualTo = actionsEqualTo)
+
+    private val additional = EqualReturn.Base()
+
+    private val orderCalculation =
+        OrderCalculation.Base(calculation = calculation, lowestPriority = lowestPriority)
+
+    private val check =
+        EqualCheck.Base(additional = additional, primitiveCalculation = primitiveCalculation)
+
+    private val mapper = MapperToDomainValues()
+
+    private val mapperToCalculation = MapperToDomainCalculationValues()
+
+    private val equal = EqualUseCase.Base(
+        additional = additional,
+        orderCalculation = orderCalculation,
+        check = check,
+        mapper = mapper,
+        mapperToCalculation = mapperToCalculation
+    )
+
+    @Test
+    fun `equal 1 action`() {
+        val example = "3+3"
+        val operation = "+"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("6", result.calculation)
+    }
+
+    @Test
+    fun `equal 2 action`() {
+        val example = "3+3-3"
+        val operation = "+-"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("3", result.calculation)
+    }
+
+    @Test
+    fun `equal 2 action with other priority`() {
+        val example = "3+3*3"
+        val operation = "+*"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("12", result.calculation)
+    }
+
+    @Test
+    fun `equal 1 action with brackets`() {
+        val example = "(3+3)"
+        val operation = "(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("6", result.calculation)
+    }
+
+    @Test
+    fun `equal 2 action with brackets`() {
+        val example = "(3+3-2)"
+        val operation = "(+-)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("4", result.calculation)
+    }
+
+    @Test
+    fun `equal 2 action with brackets and factorial`() {
+        val example = "(3+3-2)"
+        val operation = "(+-)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("4", result.calculation)
+    }
+
+    @Test
+    fun `equal sin`() {
+        val example = "sin(90)"
+        val operation = "sin(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(sin(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal sin with 2 action`() {
+        val example = "sin(45+45)"
+        val operation = "sin(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(sin(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal cos`() {
+        val example = "cos(90)"
+        val operation = "cos(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(cos(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal cos with 2 action`() {
+        val example = "cos(45+45)"
+        val operation = "cos(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(cos(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal lg`() {
+        val example = "lg(90)"
+        val operation = "lg(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(log10(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal lg with 2 action`() {
+        val example = "lg(45+45)"
+        val operation = "lg(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(log10(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal ln`() {
+        val example = "ln(90)"
+        val operation = "ln(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(ln(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal tan`() {
+        val example = "tan(90)"
+        val operation = "tan(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(tan(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal tan with 2 action`() {
+        val example = "tan(45+45)"
+        val operation = "tan(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(tan(90.0).toString(), result.calculation)
+    }
+
+    @Test
+    fun `equal zero factorial`() {
+        val example = "0!"
+        val operation = "!"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("1", result.calculation)
+    }
+
+    @Test
+    fun `equal zero factorial with one action`() {
+        val example = "0!+1"
+        val operation = "!+"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("2", result.calculation)
+    }
+
+    @Test
+    fun `equal square root`() {
+        val example = "√25"
+        val operation = "√"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("5", result.calculation)
+    }
+
+    @Test
+    fun `equal square root with one action`() {
+        val example = "√25+1"
+        val operation = "√+"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("6", result.calculation)
+    }
+
+    @Test
+    fun `equal one minus number`() {
+        val example = "-5"
+        val operation = "-"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("-5", result.calculation)
+    }
+
+    @Test
+    fun `equal minus number with one action`() {
+        val example = "-5+1"
+        val operation = "-+"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("-4", result.calculation)
+    }
+
+    @Test
+    fun `equal minus pow with one action`() {
+        val example = "5^(0-1)"
+        val operation = "^(-)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("0.2", result.calculation)
+    }
+
+}

@@ -1,13 +1,13 @@
 package com.example.calculator_compose.domain.interactor
 
 import com.example.calculator_compose.core.Store
-import com.example.calculator_compose.domain.CalculationRow
-import com.example.calculator_compose.domain.model.AllValues
-import com.example.calculator_compose.domain.model.Values
+import com.example.calculator_compose.domain.ConstCalculationRow
+import com.example.calculator_compose.domain.model.DomainAllValues
+import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.domain.usecases.*
 
 interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCase, EqualUseCase,
-    BackUseCase, CalculationRow {
+    BackUseCase, ConstCalculationRow {
 
     fun storeHistory(): Store
 
@@ -19,7 +19,7 @@ interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCas
         val equal: EqualUseCase,
         val back: BackUseCase,
         val storeHistoryCalculation: Store,
-        val calculationRow: CalculationRow
+        val constCalculationRow: ConstCalculationRow
     ) : MainInteractor {
 
         override fun number(
@@ -31,18 +31,18 @@ interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCas
         override fun coma(example: String, action: String): String =
             coma.coma(example = example, action = action)
 
-        override fun action(text: String, example: String, action: String): Values =
+        override fun action(text: String, example: String, action: String): PresentationValues =
             this.action.action(text = text, example = example, action = action)
 
-        override fun equal(example: String, action: String, history: String): AllValues =
-            equal.equal(example = example, action = action, history = history)
+        override fun equal(example: String, operation: String, history: String): DomainAllValues =
+            equal.equal(example = example, operation = operation, history = history)
 
-        override fun back(example: String, action: String): Values =
+        override fun back(example: String, action: String): PresentationValues =
             back.back(example = example, action = action)
 
-        override fun getCalculation() = calculationRow.getCalculation()
+        override fun getCalculation() = constCalculationRow.getCalculation()
 
-        override fun setCalculation(value: Values) = calculationRow.setCalculation(value)
+        override fun setCalculation(value: PresentationValues) = constCalculationRow.setCalculation(value)
 
         override fun storeHistory(): Store = storeHistoryCalculation
 

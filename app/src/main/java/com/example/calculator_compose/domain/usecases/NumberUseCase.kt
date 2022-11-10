@@ -13,24 +13,26 @@ interface NumberUseCase {
             example: String,
             action: String
         ): String {
-            if (example == "null") {
-                ComaUseCase.Base.comaEnabled = true
+            if (example.last().toString() == "π")
+                return example
+
+            if (example == "null")
                 return text
+
+            if (example.last().toString() == "!") {
+                return example
             }
 
-            if (example.last().toString() != "0") {
-                ComaUseCase.Base.comaEnabled = true
+            if (example.last().toString() != "0")
                 return example + text
-            }
 
             if (example.dropLast(1) != "" &&
                 example[example.length - 2] != action.lastOrNull()
-            ) {
-                ComaUseCase.Base.comaEnabled = true
+            )
                 return example + text
-            }
 
             return example
         }
+
     }
 }

@@ -1,50 +1,54 @@
 package com.example.calculator_compose.domain.usecases
 
-import com.example.calculator_compose.domain.model.AllValues
+import com.example.calculator_compose.domain.calculation.additional.EqualCheck
+import com.example.calculator_compose.domain.calculation.additional.EqualReturn
+import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainCalculationValues
+import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
+import com.example.calculator_compose.domain.calculation.priority.OrderCalculation
+import com.example.calculator_compose.domain.model.DomainAllValues
+import com.example.calculator_compose.domain.model.PresentationValues
 import javax.inject.Inject
-import kotlin.math.pow
 
 interface EqualUseCase {
 
-    fun equal(example: String, action: String, history: String): AllValues
+    fun equal(example: String, operation: String, history: String): DomainAllValues
 
-    class Base @Inject constructor() : EqualUseCase {
+    class Base @Inject constructor(
+        private val additional: EqualReturn.Base,
+        private val orderCalculation: OrderCalculation.Base,
+        private val check: EqualCheck.Base,
+        private val mapper: MapperToDomainValues,
+        private val mapperToCalculation: MapperToDomainCalculationValues
+    ) : EqualUseCase {
 
-        override fun equal(example: String, action: String, history: String): AllValues {
-            var count = 0
-            var result = 0.0
-            var xAction = action
+        override fun equal(example: String, operation: String, history: String): DomainAllValues {
+            var values = mapper.map(PresentationValues(calculation = example, action = operation))
+            values = check.initialCheck(values = values, example = example)
 
-            if (xAction != "" && example.last() != xAction.last() && example != "null") {
-                val numbers = example.split("+", "-", "*", "/", "%", "^").toMutableList()
+            val numbers = values.numbers
+            val action = values.action
 
-                while (xAction.isNotEmpty()) {
-                    when (xAction.substring(0, 1)) {
-                        "+" -> result = numbers[count].toDouble() + numbers[count + 1].toDouble()
-                        "-" -> result = numbers[count].toDouble() - numbers[count + 1].toDouble()
-                        "*" -> result = numbers[count].toDouble() * numbers[count + 1].toDouble()
-                        "/" -> result = numbers[count].toDouble() / numbers[count + 1].toDouble()
-                        "%" -> result = numbers[count].toDouble() % numbers[count + 1].toDouble()
-                        "^" -> result = numbers[count].toDouble().pow(numbers[count + 1].toDouble())
-                    }
-                    xAction = xAction.substring(1)
-                    numbers[count + 1] = result.toString()
-                    count += 1
+            if (example == "π" || example == "e" || example == "0!") return check.firstCheck(
+                example
+            )
+
+            if (operation.isNotEmpty() && example.last().toString() != operation.split("!", ")")
+                    .last() && example != "null"
+            ) {
+
+                if (numbers.count() == 1) return check.secondCheck(action, example, numbers)
+
+                if (numbers.count() > 1) {
+                    val value = mapperToCalculation.map(values)
+                    val result = orderCalculation.orderCalculation(value)
+
+                    return additional.equalReturn(result = result.numbers[0], example = example)
                 }
-                return if (result.toString()
-                        .substring(result.toString().length - 2, result.toString().length) == ".0"
-                ) AllValues(
-                    calculation = result.toString().substring(0, result.toString().length - 2),
-                    action = "",
-                    history = "\n\n$example\n = $result"
-                )
-                else AllValues(
-                    calculation = result.toString(),
-                    action = "",
-                    history = "\n\n$example\n = $result"
-                )
             }
-            return AllValues(calculation = example, action = action, history = history)
+
+            return DomainAllValues(calculation = example, action = operation, history = history)
         }
     }
 }
+
+

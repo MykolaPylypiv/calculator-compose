@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.calculator_compose.domain.interactor.MainInteractor
-import com.example.calculator_compose.domain.model.Values
+import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.navigation.NavigationTree
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -48,7 +48,7 @@ class MainViewModel @Inject constructor(
 
     fun equalPress() {
         val allValues = interactor.equal(
-            example = example.value.toString(), action = action, history = ""
+            example = example.value.toString(), operation = action, history = ""
         )
 
         example.value = allValues.calculation
@@ -74,7 +74,7 @@ class MainViewModel @Inject constructor(
     fun navigationToAdditional(navController: NavController) {
         navController.navigate(NavigationTree.Additional.name)
         interactor.setCalculation(
-            Values(
+            PresentationValues(
                 calculation = example.value.toString(), action = action
             )
         )

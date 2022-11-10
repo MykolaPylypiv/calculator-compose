@@ -1,25 +1,25 @@
 package com.example.calculator_compose.domain.usecases
 
-import com.example.calculator_compose.domain.model.Values
+import com.example.calculator_compose.domain.model.PresentationValues
 import javax.inject.Inject
 
 interface BackUseCase {
 
-    fun back(example: String, action: String): Values
+    fun back(example: String, action: String): PresentationValues
 
     class Base @Inject constructor() : BackUseCase {
 
-        override fun back(example: String, action: String): Values =
+        override fun back(example: String, action: String): PresentationValues =
             if (example.length == 1 || example == "null")
-                Values("null", "")
+                PresentationValues("null", "")
             else if (action != "" && example.last() == action.last())
-                Values(
-                    example.substring(0, example.length - 1),
-                    action.substring(0, action.length - 1)
+                PresentationValues(
+                    example.dropLast(1),
+                    action.dropLast(1)
                 )
             else
-                Values(
-                    example.substring(0, example.length - 1),
+                PresentationValues(
+                    example.dropLast(1),
                     action
                 )
     }

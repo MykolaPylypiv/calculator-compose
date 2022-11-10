@@ -9,22 +9,19 @@ interface ComaUseCase {
     class Base @Inject constructor() : ComaUseCase {
 
         override fun coma(example: String, action: String): String {
+            val numbers = example.split("+", "-", "*", "/", "%", "^").toMutableList()
+
+            if (numbers.last().contains(".")) {
+                return example
+            }
 
             if (example != "null" && example.last().toString() != ".") {
-                if (action.isNotEmpty() && example.last() != action.last()) {
-                    comaEnabled = false
+                if (action.isNotEmpty() && example.last() != action.last())
                     return "$example."
-                } else if (action.isEmpty()) {
-                    comaEnabled = false
+                else if (action.isEmpty())
                     return "$example."
-                }
             }
             return example
-        }
-
-        companion object {
-
-            var comaEnabled: Boolean = false
         }
     }
 }

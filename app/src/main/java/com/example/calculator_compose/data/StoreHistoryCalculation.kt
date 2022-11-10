@@ -16,11 +16,6 @@ class StoreHistoryCalculation @Inject constructor(
     @ApplicationContext private val context: Context
 ) : Store {
 
-    companion object {
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("historyCalculation")
-        val HISTORY_CALCULATION = stringPreferencesKey("history_calculation")
-    }
-
     override fun get(): Flow<String?> = context.dataStore.data.map { preferences ->
         preferences[HISTORY_CALCULATION] ?: ""
     }
@@ -31,4 +26,8 @@ class StoreHistoryCalculation @Inject constructor(
         }
     }
 
+    private companion object {
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("historyCalculation")
+        val HISTORY_CALCULATION = stringPreferencesKey("history_calculation")
+    }
 }

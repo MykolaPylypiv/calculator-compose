@@ -1,7 +1,7 @@
 package com.example.calculator_compose.di
 
 import com.example.calculator_compose.data.StoreHistoryCalculation
-import com.example.calculator_compose.domain.CalculationRow
+import com.example.calculator_compose.domain.ConstCalculationRow
 import com.example.calculator_compose.domain.interactor.AdditionalInteractor
 import com.example.calculator_compose.domain.interactor.MainInteractor
 import com.example.calculator_compose.domain.usecases.*
@@ -23,7 +23,7 @@ class DomainModule {
         equal: EqualUseCase.Base,
         back: BackUseCase.Base,
         store: StoreHistoryCalculation,
-        calculation: CalculationRow.Base
+        calculation: ConstCalculationRow.Base
     ): MainInteractor = MainInteractor.Base(
         number = number,
         zero = zero,
@@ -32,7 +32,7 @@ class DomainModule {
         equal = equal,
         back = back,
         storeHistoryCalculation = store,
-        calculationRow = calculation
+        constCalculationRow = calculation
     )
 
     @Provides
@@ -43,8 +43,13 @@ class DomainModule {
         action: ActionUseCase.Base,
         equal: EqualUseCase.Base,
         back: BackUseCase.Base,
+        sqrt: SquareRootUseCase.Base,
+        factorial: FactorialUseCase.Base,
+        trigonometric: TrigonometricUseCase.Base,
+        bracket: BracketUseCase.Base,
+        pi: AdditionalNumberUseCase.AdditionalNumber,
         store: StoreHistoryCalculation,
-        calculation: CalculationRow.Base
+        calculation: ConstCalculationRow.Base
     ): AdditionalInteractor = AdditionalInteractor.Base(
         number = number,
         zero = zero,
@@ -52,7 +57,12 @@ class DomainModule {
         action = action,
         equal = equal,
         back = back,
+        sqrt = sqrt,
+        factorial = factorial,
+        trigonometric = trigonometric,
+        bracket = bracket,
+        additionalNumber = pi,
         storeHistoryCalculation = store,
-        calculationRow = calculation
+        constCalculationRow = calculation
     )
 }

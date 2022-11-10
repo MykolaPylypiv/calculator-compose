@@ -94,25 +94,32 @@ fun AdditionalScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = "√"
-                ) { viewModel.squareRoot() }
+                ) { viewModel.squareRootPress() }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = "X!"
-                ) {}
+                ) { viewModel.factorialPress() }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "1/x!"
-                ) {}
+                        .weight(1F), text = "1/x"
+                ) {
+                    viewModel.actionPress("^")
+                    viewModel.leftBracket()
+                    viewModel.numberPress("0")
+                    viewModel.actionPress("-")
+                    viewModel.numberPress("1")
+                    viewModel.rightBracket()
+                }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = "π"
-                ) { viewModel.pi() }
+                ) { viewModel.letterNumPress("π") }
 
                 Button(
                     onClick = { viewModel.navigationToAdditional(navController = navController) },
@@ -145,7 +152,7 @@ fun AdditionalScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = "lg"
-                ) { viewModel.lg() }
+                ) { viewModel.trigonometricPress("lg") }
 
                 SecondaryButton(
                     modifier = Modifier
@@ -175,7 +182,7 @@ fun AdditionalScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = "e"
-                ) { viewModel.e() }
+                ) { viewModel.letterNumPress("e") }
             }
 
             Column(
@@ -187,13 +194,13 @@ fun AdditionalScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = "sin"
-                ) { viewModel.sin() }
+                ) { viewModel.trigonometricPress("sin") }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "In"
-                ) { viewModel.functionIn() }
+                        .weight(1F), text = "ln"
+                ) { viewModel.trigonometricPress("ln") }
 
                 Button(
                     onClick = { viewModel.exampleBack() },
@@ -244,7 +251,7 @@ fun AdditionalScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = "cos"
-                ) { viewModel.cos() }
+                ) { viewModel.trigonometricPress("cos") }
 
                 AdditionalButton(
                     modifier = Modifier
@@ -292,7 +299,7 @@ fun AdditionalScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = "tan"
-                ) { viewModel.tan() }
+                ) { viewModel.trigonometricPress("tan") }
 
                 AdditionalButton(
                     modifier = Modifier

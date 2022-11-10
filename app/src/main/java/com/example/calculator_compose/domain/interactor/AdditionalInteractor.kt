@@ -1,13 +1,14 @@
 package com.example.calculator_compose.domain.interactor
 
 import com.example.calculator_compose.core.Store
-import com.example.calculator_compose.domain.CalculationRow
-import com.example.calculator_compose.domain.model.AllValues
-import com.example.calculator_compose.domain.model.Values
+import com.example.calculator_compose.domain.ConstCalculationRow
+import com.example.calculator_compose.domain.model.DomainAllValues
+import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.domain.usecases.*
 
 interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCase,
-    EqualUseCase, BackUseCase, CalculationRow {
+    EqualUseCase, BackUseCase, SquareRootUseCase, FactorialUseCase, TrigonometricUseCase,
+    AdditionalNumberUseCase, ConstCalculationRow, BracketUseCase {
 
     fun storeHistory(): Store
 
@@ -18,8 +19,13 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
         val action: ActionUseCase,
         val equal: EqualUseCase,
         val back: BackUseCase,
+        val sqrt: SquareRootUseCase,
+        val factorial: FactorialUseCase,
+        val trigonometric: TrigonometricUseCase,
+        val bracket: BracketUseCase,
+        val additionalNumber: AdditionalNumberUseCase,
         val storeHistoryCalculation: Store,
-        val calculationRow: CalculationRow
+        val constCalculationRow: ConstCalculationRow
     ) : AdditionalInteractor {
 
         override fun number(
@@ -31,20 +37,40 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
         override fun coma(example: String, action: String): String =
             coma.coma(example = example, action = action)
 
-        override fun action(text: String, example: String, action: String): Values =
+        override fun action(text: String, example: String, action: String): PresentationValues =
             this.action.action(text = text, example = example, action = action)
 
-        override fun equal(example: String, action: String, history: String): AllValues =
-            equal.equal(example = example, action = action, history = history)
+        override fun equal(example: String, operation: String, history: String): DomainAllValues =
+            equal.equal(example = example, operation = operation, history = history)
 
-        override fun back(example: String, action: String): Values =
+        override fun back(example: String, action: String): PresentationValues =
             back.back(example = example, action = action)
 
-        override fun getCalculation() = calculationRow.getCalculation()
+        override fun sqrt(example: String, action: String): PresentationValues =
+            sqrt.sqrt(example = example, action = action)
 
-        override fun setCalculation(value: Values) = calculationRow.setCalculation(value)
+        override fun factorial(example: String, action: String): PresentationValues =
+            factorial.factorial(example = example, action = action)
+
+        override fun trigonometric(text: String, example: String, action: String) =
+            trigonometric.trigonometric(text = text, example = example, action = action)
+
+        override fun letterNum(text: String, example: String, action: String): String =
+            additionalNumber.letterNum(text = text, example = example, action = action)
+
+        override fun getCalculation() = constCalculationRow.getCalculation()
+
+        override fun setCalculation(value: PresentationValues) =
+            constCalculationRow.setCalculation(value = value)
+
+        override fun leftBracket(example: String, action: String) =
+            bracket.leftBracket(example = example, action = action)
+
+        override fun rightBracket(example: String, action: String) =
+            bracket.rightBracket(example = example, action = action)
+
+        override fun setBracket(boolean: Boolean) = bracket.setBracket(boolean)
 
         override fun storeHistory(): Store = storeHistoryCalculation
-
     }
 }

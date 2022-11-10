@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.calculator_compose.domain.interactor.AdditionalInteractor
-import com.example.calculator_compose.domain.model.Values
+import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.navigation.NavigationTree
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +29,12 @@ class AdditionalViewModel @Inject constructor(
         )
     }
 
+    fun letterNumPress(text: String) {
+        example.value = interactor.letterNum(
+            text = text, action = action, example = example.value.toString()
+        )
+    }
+
     fun zeroPress() {
         example.value = interactor.zero(example = example.value.toString())
     }
@@ -45,14 +51,54 @@ class AdditionalViewModel @Inject constructor(
         action = values.action
     }
 
+    fun squareRootPress() {
+        val values = interactor.sqrt(example = example.value.toString(), action = action)
+
+        example.value = values.calculation
+        action = values.action
+    }
+
+    fun factorialPress() {
+        val values = interactor.factorial(example = example.value.toString(), action = action)
+
+        example.value = values.calculation
+        action = values.action
+    }
+
+    fun trigonometricPress(text: String) {
+        val values = interactor.trigonometric(
+            text = text,
+            example = example.value.toString(),
+            action = action
+        )
+
+        example.value = values.calculation
+        action = values.action
+    }
+
+    fun rightBracket() {
+        val values = interactor.rightBracket(example = example.value.toString(), action = action)
+
+        interactor.setBracket(true)
+        example.value = values.calculation
+        action = values.action
+    }
+
+    fun leftBracket() {
+        val values = interactor.leftBracket(example = example.value.toString(), action = action)
+
+        interactor.setBracket(false)
+        example.value = values.calculation
+        action = values.action
+    }
+
     fun equalPress() {
         var newHistory = ""
 
         val allValues = interactor.equal(
-            example = example.value.toString(), action = action, history = newHistory
+            example = example.value.toString(), operation = action, history = newHistory
         )
 
-        newHistory = "\n" + "\n" + example.value
         example.value = allValues.calculation
         action = allValues.action
         newHistory += allValues.history
@@ -77,33 +123,13 @@ class AdditionalViewModel @Inject constructor(
     fun navigationToAdditional(navController: NavController) {
         navController.navigate(NavigationTree.Main.name)
         interactor.setCalculation(
-            Values(
+            PresentationValues(
                 calculation = example.value.toString(), action = action
             )
         )
     }
 
-    fun rightBracket() {} //)
-
-    fun leftBracket() {} //(
-
-    fun sin() {} //sin
-
-    fun cos() {} //cos
-
-    fun tan() {} //tan
-
-    fun functionIn() {} //in
-
-    fun e() {} //e
-
-    fun lg() {} //lg
-
     fun deg() {} //deg rad
-
-    fun pi() {} //π
-
-    fun squareRoot() {} //√
 
     fun twoND() {} //2nd
 
