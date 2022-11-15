@@ -1,5 +1,6 @@
 package com.example.calculator_compose.domain.usecases
 
+import com.example.calculator_compose.app.Strings
 import javax.inject.Inject
 
 interface NumberUseCase {
@@ -8,28 +9,26 @@ interface NumberUseCase {
 
     class Base @Inject constructor() : NumberUseCase {
 
+        private val zero = Strings.NUMBER_ZERO
+        private val startExample = Strings.START_EXAMPLE
+        private val plus = Strings.ACTION_PLUS
+        private val minus = Strings.ACTION_MINUS
+        private val factorial = Strings.ACTION_FACTORIAL
+        private val empty = Strings.EMPTY
+        private val pi = Strings.NUMBER_P
+
         override fun number(
-            text: String,
-            example: String,
-            action: String
+            text: String, example: String, action: String
         ): String {
-            if (example.last().toString() == "π")
-                return example
+            if (example.last().toString() == pi) return example
 
-            if (example == "null")
-                return text
+            if (example == startExample) return text
 
-            if (example.last().toString() == "!") {
-                return example
-            }
+            if (example.last().toString() == factorial) return example
 
-            if (example.last().toString() != "0")
-                return example + text
+            if (example.last().toString() != zero) return example + text
 
-            if (example.dropLast(1) != "" &&
-                example[example.length - 2] != action.lastOrNull()
-            )
-                return example + text
+            if (example.dropLast(n = 1) != empty && example[example.length - 2] != action.lastOrNull()) return example + text
 
             return example
         }

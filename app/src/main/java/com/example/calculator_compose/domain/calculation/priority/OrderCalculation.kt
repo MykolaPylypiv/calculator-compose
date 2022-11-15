@@ -1,5 +1,6 @@
 package com.example.calculator_compose.domain.calculation.priority
 
+import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.calculation.calculation.Calculation
 import com.example.calculator_compose.domain.model.DomainCalculationValues
 import javax.inject.Inject
@@ -21,56 +22,86 @@ interface OrderCalculation {
         private val calculation: Calculation.Base,
     ) : OrderCalculation {
 
+        private val asin = Strings.ACTION_ARCSIN.dropLast(1)
+        private val acos = Strings.ACTION_ARCCOS.dropLast(1)
+        private val atan = Strings.ACTION_ARCTAN.dropLast(1)
+        private val sin = Strings.ACTION_SIN.dropLast(1)
+        private val cos = Strings.ACTION_COS.dropLast(1)
+        private val tan = Strings.ACTION_TAN.dropLast(1)
+        private val lg = Strings.ACTION_LG.dropLast(1)
+        private val ln = Strings.ACTION_LN.dropLast(1)
+        private val plus = Strings.ACTION_PLUS
+        private val minus = Strings.ACTION_MINUS
+        private val multiply = Strings.ACTION_MULTIPLY
+        private val division = Strings.ACTION_DIVISION
+        private val percent = Strings.ACTION_PERCENT
+        private val pow = Strings.ACTION_POW
+        private val squareRoot = Strings.ACTION_SQUARE_ROOT
+        private val factorial = Strings.ACTION_FACTORIAL
+        private val leftBr = Strings.LEFT_BRACKET
+        private val rightBr = Strings.RIGHT_BRACKET
+
         override fun orderCalculation(value: DomainCalculationValues): DomainCalculationValues {
-            var result = priorityAction(value)
-            result = highPriorityAction(result)
-            result = secondPriorityAction(result)
-            result = lowestPriorityAction(result)
+            var result = priorityAction(value = value)
+            result = highPriorityAction(value = result)
+            result = secondPriorityAction(value = result)
+            result = lowestPriorityAction(value = result)
 
             return result
         }
 
         override fun priorityAction(value: DomainCalculationValues): DomainCalculationValues {
-            val priorityAction = mutableListOf("!", "√")
+            val priorityAction = mutableListOf(factorial, squareRoot)
 
-            return calculation.calculation(priorityAction, value)
+            return calculation.calculation(text = priorityAction, value = value)
         }
 
         override fun highPriorityAction(value: DomainCalculationValues): DomainCalculationValues {
-            val brackets = listOf("(", ")")
+            val brackets = listOf(leftBr, rightBr)
+            val trigonometric = listOf(
+                asin, acos, atan, sin, cos, tan, lg, ln
+            )
+
             var action: MutableList<String> = value.action
 
-            while (action.containsAll(brackets)) {
-                val startIndex = value.action.indexOf("(")
-                val endIndex = value.action.indexOf(")")
+            while (action.contains("(")) {
+                val startIndex = value.action.indexOf(element = leftBr)
+                val endIndex = value.action.indexOf(element = rightBr)
 
-                val numbers =
-                    if (!action.contains("sin") &&
-                        !action.contains("cos") &&
-                        !action.contains("tan") &&
-                        !action.contains("lg") &&
-                        !action.contains("ln")
-                    ) {
-                        value.numbers.subList(startIndex, endIndex)
-                    } else value.numbers.subList(startIndex - 1, endIndex - 1)
+                action = value.action.subList(fromIndex = startIndex + 1, toIndex = endIndex)
 
-                action = value.action.subList(startIndex + 1, endIndex)
+                val numbers = if (value.action.contains(
+                        element = trigonometric[0]
+                    ) || value.action.contains(
+                        element = trigonometric[1]
+                    ) || value.action.contains(
+                        element = trigonometric[2]
+                    ) || value.action.contains(
+                        element = trigonometric[3]
+                    ) || value.action.contains(
+                        element = trigonometric[4]
+                    ) || value.action.contains(
+                        element = trigonometric[5]
+                    ) || value.action.contains(
+                        element = trigonometric[6]
+                    ) || value.action.contains(
+                        element = trigonometric[7]
+                    )
+                ) {
+                    value.numbers.subList(fromIndex = startIndex - 1, toIndex = endIndex - 1)
+                } else value.numbers.subList(fromIndex = startIndex, toIndex = endIndex)
 
                 val result = orderCalculation(
-                    DomainCalculationValues(action = action, numbers = numbers)
+                    value = DomainCalculationValues(action = action, numbers = numbers)
                 )
 
-                if (value.action.contains("sin") ||
-                    value.action.contains("cos") ||
-                    value.action.contains("tan") ||
-                    value.action.contains("lg") ||
-                    value.action.contains("ln")
+                if (auditContainsAction(
+                        action = value.action, containsAction = trigonometric
+                    )
+                ) value.numbers[startIndex - 1] = result.numbers[0]
+                else value.numbers[startIndex] = result.numbers[0]
 
-                ) {
-                    value.numbers[startIndex - 1] = result.numbers[0]
-                } else value.numbers[startIndex] = result.numbers[0]
-
-                value.action.removeAll(result.action + brackets)
+                value.action.removeAll(elements = result.action + brackets)
 
                 return value
             }
@@ -78,10 +109,22 @@ interface OrderCalculation {
             return value
         }
 
-        override fun secondPriorityAction(value: DomainCalculationValues): DomainCalculationValues {
-            val secondPriorityAction = mutableListOf("sin", "cos", "tan", "lg", "ln", "^", "%", "*", "/")
+        private fun auditContainsAction(
+            action: MutableList<String>, containsAction: List<String>
+        ): Boolean {
+            for (contains in containsAction) {
+                if (action.contains(contains)) return true
+            }
 
-            return calculation.calculation(secondPriorityAction, value)
+            return false
+        }
+
+        override fun secondPriorityAction(value: DomainCalculationValues): DomainCalculationValues {
+            val secondPriorityAction = mutableListOf(
+                asin, acos, atan, sin, cos, tan, lg, ln, pow, percent, multiply, division
+            )
+
+            return calculation.calculation(text = secondPriorityAction, value = value)
         }
 
         override fun lowestPriorityAction(value: DomainCalculationValues): DomainCalculationValues {

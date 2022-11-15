@@ -11,7 +11,7 @@ class PrimitiveCalculationTest {
 
     private val num1 = 2.0
 
-    private val delta = 0.00
+    private val delta = 0.01
 
     private val action = PrimitiveCalculation.Base()
 
@@ -83,6 +83,14 @@ class PrimitiveCalculationTest {
         val result = action.tan(num)
 
         assertEquals(tan(num), result, delta)
+    }
+
+    @Test
+    fun actionArcSin() {
+        val _num = 0.5
+        val result = action.arcSin(_num)
+
+        assertEquals(30.0, result, delta)
     }
 
     @Test

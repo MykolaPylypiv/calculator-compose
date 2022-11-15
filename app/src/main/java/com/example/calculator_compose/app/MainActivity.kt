@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Calculator_composeTheme() {
+            Calculator_composeTheme {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

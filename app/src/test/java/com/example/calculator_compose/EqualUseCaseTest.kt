@@ -2,6 +2,7 @@ package com.example.calculator_compose
 
 import com.example.calculator_compose.domain.calculation.additional.EqualCheck
 import com.example.calculator_compose.domain.calculation.additional.EqualReturn
+import com.example.calculator_compose.domain.calculation.additional.NumbersCountEqualOne
 import com.example.calculator_compose.domain.calculation.calculation.ActionsEqualTo
 import com.example.calculator_compose.domain.calculation.calculation.Calculation
 import com.example.calculator_compose.domain.calculation.calculation.PrimitiveCalculation
@@ -18,29 +19,33 @@ class EqualUseCaseTest {
 
     private val primitiveCalculation = PrimitiveCalculation.Base()
 
+    private val additional = EqualReturn.Base()
+
     private val actionsEqualTo = ActionsEqualTo.Base(primitiveCalculation = primitiveCalculation)
 
     private val lowestPriority =
-        LowestPriorityAction.Base(primitiveCalculation = primitiveCalculation)
+        LowestPriorityAction.Base(calc = primitiveCalculation)
 
     private val calculation = Calculation.Base(actionsEqualTo = actionsEqualTo)
-
-    private val additional = EqualReturn.Base()
 
     private val orderCalculation =
         OrderCalculation.Base(calculation = calculation, lowestPriority = lowestPriority)
 
     private val check =
-        EqualCheck.Base(additional = additional, primitiveCalculation = primitiveCalculation)
+        EqualCheck.Base(additional = additional, calc = primitiveCalculation)
 
     private val mapper = MapperToDomainValues()
 
     private val mapperToCalculation = MapperToDomainCalculationValues()
 
+    private val countEqualOne =
+        NumbersCountEqualOne.Base(calc = primitiveCalculation, additional = additional)
+
     private val equal = EqualUseCase.Base(
         additional = additional,
         orderCalculation = orderCalculation,
         check = check,
+        checkCountOne = countEqualOne,
         mapper = mapper,
         mapperToCalculation = mapperToCalculation
     )
@@ -119,7 +124,7 @@ class EqualUseCaseTest {
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(sin(90.0).toString(), result.calculation)
+        assertEquals(sin(90.0*Math.PI/180).toInt().toString(), result.calculation)
     }
 
     @Test
@@ -136,12 +141,12 @@ class EqualUseCaseTest {
     @Test
     fun `equal cos`() {
         val example = "cos(90)"
-        val operation = "cos(+)"
+        val operation = "cos()"
         val history = ""
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(cos(90.0).toString(), result.calculation)
+        assertEquals(cos(90.0*Math.PI/180).toString(), result.calculation)
     }
 
     @Test
@@ -158,7 +163,7 @@ class EqualUseCaseTest {
     @Test
     fun `equal lg`() {
         val example = "lg(90)"
-        val operation = "lg(+)"
+        val operation = "lg()"
         val history = ""
 
         val result = equal.equal(example, operation, history)
@@ -180,7 +185,7 @@ class EqualUseCaseTest {
     @Test
     fun `equal ln`() {
         val example = "ln(90)"
-        val operation = "ln(+)"
+        val operation = "ln()"
         val history = ""
 
         val result = equal.equal(example, operation, history)
@@ -191,12 +196,12 @@ class EqualUseCaseTest {
     @Test
     fun `equal tan`() {
         val example = "tan(90)"
-        val operation = "tan(+)"
+        val operation = "tan()"
         val history = ""
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(tan(90.0).toString(), result.calculation)
+        assertEquals(tan(90.0*Math.PI/180).toString(), result.calculation)
     }
 
     @Test
@@ -285,6 +290,28 @@ class EqualUseCaseTest {
         val result = equal.equal(example, operation, history)
 
         assertEquals("0.2", result.calculation)
+    }
+
+    @Test
+    fun `equal arcsin`() {
+        val example = "asin(0.5)"
+        val operation = "asin()"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(Math.toDegrees(asin(0.5)), result.calculation.toDouble())
+    }
+
+    @Test
+    fun `equal arcsin with 1 action`() {
+        val example = "asin(0.3 + 0.2)"
+        val operation = "asin(+)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(Math.toDegrees(asin(0.5)), result.calculation.toDouble())
     }
 
 }

@@ -10,7 +10,7 @@ class LowestPriorityActionTest {
 
     private val primitiveCalculation = PrimitiveCalculation.Base()
 
-    private val calculation = LowestPriorityAction.Base(primitiveCalculation = primitiveCalculation)
+    private val calculation = LowestPriorityAction.Base(calc = primitiveCalculation)
 
     private val delta = 0.00
 

@@ -2,13 +2,12 @@ package com.example.calculator_compose.domain.interactor
 
 import com.example.calculator_compose.core.Store
 import com.example.calculator_compose.domain.ConstCalculationRow
-import com.example.calculator_compose.domain.model.DomainAllValues
 import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.domain.usecases.*
 
 interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCase,
     EqualUseCase, BackUseCase, SquareRootUseCase, FactorialUseCase, TrigonometricUseCase,
-    AdditionalNumberUseCase, ConstCalculationRow, BracketUseCase {
+    AdditionalNumberUseCase, DegreesToRadians, TwoNDUseCase, ConstCalculationRow, BracketUseCase {
 
     fun storeHistory(): Store
 
@@ -24,39 +23,48 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
         val trigonometric: TrigonometricUseCase,
         val bracket: BracketUseCase,
         val additionalNumber: AdditionalNumberUseCase,
+        val degreesToRadians: DegreesToRadians,
+        val twoND: TwoNDUseCase,
         val storeHistoryCalculation: Store,
         val constCalculationRow: ConstCalculationRow
     ) : AdditionalInteractor {
 
         override fun number(
             text: String, example: String, action: String
-        ): String = number.number(text = text, example, action)
+        ) = number.number(text = text, example = example, action = action)
 
-        override fun zero(example: String): String = zero.zero(example = example)
+        override fun zero(example: String) = zero.zero(example = example)
 
-        override fun coma(example: String, action: String): String =
+        override fun coma(example: String, action: String) =
             coma.coma(example = example, action = action)
 
-        override fun action(text: String, example: String, action: String): PresentationValues =
+        override fun action(text: String, example: String, action: String) =
             this.action.action(text = text, example = example, action = action)
 
-        override fun equal(example: String, operation: String, history: String): DomainAllValues =
-            equal.equal(example = example, operation = operation, history = history)
+        override fun equal(
+            example: String, operation: String, history: String, isRadians: String
+        ) = equal.equal(
+            example = example, operation = operation, history = history, isRadians = isRadians
+        )
 
-        override fun back(example: String, action: String): PresentationValues =
+        override fun back(example: String, action: String) =
             back.back(example = example, action = action)
 
-        override fun sqrt(example: String, action: String): PresentationValues =
+        override fun sqrt(example: String, action: String) =
             sqrt.sqrt(example = example, action = action)
 
-        override fun factorial(example: String, action: String): PresentationValues =
+        override fun factorial(example: String, action: String) =
             factorial.factorial(example = example, action = action)
 
         override fun trigonometric(text: String, example: String, action: String) =
             trigonometric.trigonometric(text = text, example = example, action = action)
 
-        override fun letterNum(text: String, example: String, action: String): String =
+        override fun letterNum(text: String, example: String, action: String) =
             additionalNumber.letterNum(text = text, example = example, action = action)
+
+        override fun converting() = degreesToRadians.converting()
+
+        override fun change(boolean: Boolean) = twoND.change(boolean)
 
         override fun getCalculation() = constCalculationRow.getCalculation()
 
@@ -68,8 +76,6 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
 
         override fun rightBracket(example: String, action: String) =
             bracket.rightBracket(example = example, action = action)
-
-        override fun setBracket(boolean: Boolean) = bracket.setBracket(boolean)
 
         override fun storeHistory(): Store = storeHistoryCalculation
     }

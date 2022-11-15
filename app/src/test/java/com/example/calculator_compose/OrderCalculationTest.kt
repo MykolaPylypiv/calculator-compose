@@ -7,6 +7,8 @@ import com.example.calculator_compose.domain.calculation.priority.LowestPriority
 import com.example.calculator_compose.domain.calculation.priority.OrderCalculation
 import com.example.calculator_compose.domain.model.DomainCalculationValues
 import org.junit.Test
+import kotlin.math.cos
+import kotlin.math.cosh
 import kotlin.test.assertEquals
 
 class OrderCalculationTest {
@@ -14,7 +16,7 @@ class OrderCalculationTest {
     private val primitiveCalculation = PrimitiveCalculation.Base()
 
     private val lowestPriorityAction =
-        LowestPriorityAction.Base(primitiveCalculation = primitiveCalculation)
+        LowestPriorityAction.Base(calc = primitiveCalculation)
 
     private val calculation =
         Calculation.Base(actionsEqualTo = ActionsEqualTo.Base(primitiveCalculation))
@@ -142,7 +144,7 @@ class OrderCalculationTest {
 
         val result = orderCalculation.orderCalculation(value)
 
-        assertEquals(-0.44807, result.numbers[0], delta)
+        assertEquals(cos(90.0), result.numbers[0], delta)
     }
 
     @Test
@@ -167,20 +169,6 @@ class OrderCalculationTest {
         val result = orderCalculation.orderCalculation(value)
 
         assertEquals(0.89399, result.numbers[0], delta)
-    }
-
-    @Test
-    fun `high priority action example with one action and sin`() {
-
-        val numbers = mutableListOf(45.0, 45.0)
-        val action = mutableListOf("sin", "(", "+", ")")
-        val value = DomainCalculationValues(numbers = numbers, action = action)
-
-        val result = orderCalculation.highPriorityAction(value)
-
-        assertEquals(90.0, result.numbers[0], delta)
-        assertEquals("sin", action[0])
-        assertEquals(1, action.count())
     }
 
     @Test

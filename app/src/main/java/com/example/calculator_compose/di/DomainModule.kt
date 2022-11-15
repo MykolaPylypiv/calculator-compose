@@ -48,6 +48,8 @@ class DomainModule {
         trigonometric: TrigonometricUseCase.Base,
         bracket: BracketUseCase.Base,
         pi: AdditionalNumberUseCase.AdditionalNumber,
+        converting: DegreesToRadians.Base,
+        change: TwoNDUseCase.Base,
         store: StoreHistoryCalculation,
         calculation: ConstCalculationRow.Base
     ): AdditionalInteractor = AdditionalInteractor.Base(
@@ -62,7 +64,9 @@ class DomainModule {
         trigonometric = trigonometric,
         bracket = bracket,
         additionalNumber = pi,
+        degreesToRadians = converting,
+        twoND = change,
         storeHistoryCalculation = store,
-        constCalculationRow = calculation
+        constCalculationRow = calculation,
     )
 }

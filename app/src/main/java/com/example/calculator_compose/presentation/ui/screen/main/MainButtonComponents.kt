@@ -11,12 +11,18 @@ import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors
 
 @Composable
 fun DefaultCalcButton(
-    modifier: Modifier, text: String, onClick: () -> Unit, background: Color, textColor: Color
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit,
+    background: Color,
+    textColor: Color,
+    enabled: Boolean,
 ) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor = background),
         modifier = modifier,
+        enabled = enabled
     ) {
         Text(
             text = text,
@@ -27,45 +33,49 @@ fun DefaultCalcButton(
 }
 
 @Composable
-fun PrimaryButton(modifier: Modifier, text: String, onClick: () -> Unit) {
+fun PrimaryButton(modifier: Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
     DefaultCalcButton(
         modifier = modifier,
         text = text,
         onClick = onClick,
         background = colors.primaryButton,
-        textColor = colors.primaryText
+        textColor = colors.primaryText,
+        enabled = enabled
     )
 }
 
 @Composable
-fun SecondaryButton(modifier: Modifier, text: String, onClick: () -> Unit) {
+fun SecondaryButton(modifier: Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
     DefaultCalcButton(
         modifier = modifier,
         text = text,
         onClick = onClick,
         background = colors.primaryButton,
         textColor = colors.secondaryText,
+        enabled = enabled,
     )
 }
 
 @Composable
-fun TertiaryButton(modifier: Modifier, text: String, onClick: () -> Unit) {
+fun TertiaryButton(modifier: Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
     DefaultCalcButton(
         modifier = modifier,
         text = text,
         onClick = onClick,
         background = colors.primaryButton,
         textColor = colors.tertiaryText,
+        enabled = enabled,
     )
 }
 
 @Composable
-fun AdditionalButton(modifier: Modifier, text: String, onClick: () -> Unit) {
+fun AdditionalButton(modifier: Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
     DefaultCalcButton(
         modifier = modifier,
         text = text,
         onClick = onClick,
         background = colors.primaryButton,
-        textColor = colors.additionalText
+        textColor = colors.additionalText,
+        enabled = enabled,
     )
 }

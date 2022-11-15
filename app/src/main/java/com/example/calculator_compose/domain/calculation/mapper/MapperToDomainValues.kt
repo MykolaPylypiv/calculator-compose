@@ -1,5 +1,6 @@
 package com.example.calculator_compose.domain.calculation.mapper
 
+import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.core.Mapper
 import com.example.calculator_compose.domain.model.DomainValues
 import com.example.calculator_compose.domain.model.PresentationValues
@@ -7,52 +8,81 @@ import javax.inject.Inject
 
 class MapperToDomainValues @Inject constructor() : Mapper<PresentationValues, DomainValues> {
 
+    private val asin = Strings.ACTION_ARCSIN.dropLast(1)
+    private val acos = Strings.ACTION_ARCCOS.dropLast(1)
+    private val atan = Strings.ACTION_ARCTAN.dropLast(1)
+    private val sin = Strings.ACTION_SIN.dropLast(1)
+    private val cos = Strings.ACTION_COS.dropLast(1)
+    private val tan = Strings.ACTION_TAN.dropLast(1)
+    private val lg = Strings.ACTION_LG.dropLast(1)
+    private val ln = Strings.ACTION_LN.dropLast(1)
+    private val plus = Strings.ACTION_PLUS
+    private val minus = Strings.ACTION_MINUS
+    private val multiply = Strings.ACTION_MULTIPLY
+    private val division = Strings.ACTION_DIVISION
+    private val percent = Strings.ACTION_PERCENT
+    private val pow = Strings.ACTION_POW
+    private val squareRoot = Strings.ACTION_SQUARE_ROOT
+    private val factorial = Strings.ACTION_FACTORIAL
+    private val leftBr = Strings.LEFT_BRACKET
+    private val rightBr = Strings.RIGHT_BRACKET
+
     override fun map(data: PresentationValues): DomainValues {
+
         val action: MutableList<String> = mutableListOf()
 
-        val newAction = data.action
-            .replace("sin", "s")
-            .replace("cos", "c")
-            .replace("tan", "t")
-            .replace("lg", "l")
-            .replace("ln", "n")
+        val newAction = data.action.replace(oldValue = asin, newValue = "i")
+            .replace(oldValue = acos, newValue = "o").replace(oldValue = atan, newValue = "x")
+            .replace(oldValue = sin, newValue = "s").replace(oldValue = cos, newValue = "c")
+            .replace(oldValue = tan, newValue = "t").replace(oldValue = lg, newValue = "l")
+            .replace(oldValue = ln, newValue = "n")
 
         val numbers = data.calculation.split(
-            "+", "-", "*", "/", "%", "^", "√", "!", "(", ")", "sin", "cos", "tan", "lg", "ln"
+            plus,
+            minus,
+            multiply,
+            division,
+            percent,
+            pow,
+            squareRoot,
+            factorial,
+            leftBr,
+            rightBr,
+            asin,
+            acos,
+            atan,
+            sin,
+            cos,
+            tan,
+            lg,
+            ln
         ).toMutableList()
 
-        val removeAction = mutableListOf("i", "n", "o", "s", "a", "n", "l", "g", "")
-        val removeNumber = mutableListOf("")
+        val removeNumber = mutableListOf(Strings.EMPTY)
 
         for (_action in newAction) {
-            val value = _action.toString()
-            if (value != "s" && value != "c" && value != "t") {
-                action.add(value)
-            }
 
-            if (value == "s") {
-                action.add("sin")
-            }
+            when (val value = _action.toString()) {
+                "i" -> action.add(element = asin)
 
-            if (value == "c") {
-                action.add("cos")
-            }
+                "o" -> action.add(element = acos)
+                "x" -> action.add(element = atan)
 
-            if (value == "t") {
-                action.add("tan")
-            }
+                "s" -> action.add(element = sin)
 
-            if (value == "l") {
-                action.add("lg")
-            }
+                "c" -> action.add(element = cos)
 
-            if (value == "n") {
-                action.add("ln")
+                "t" -> action.add(element = tan)
+
+                "l" -> action.add(element = lg)
+
+                "n" -> action.add(element = ln)
+
+                else -> action.add(element = value)
             }
         }
 
-        action.removeAll(removeAction)
-        numbers.removeAll(removeNumber)
+        numbers.removeAll(elements = removeNumber)
 
         return DomainValues(numbers = numbers, action = action)
     }

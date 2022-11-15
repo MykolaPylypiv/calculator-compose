@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.presentation.ui.screen.main.AdditionalButton
 import com.example.calculator_compose.presentation.ui.screen.main.PrimaryButton
 import com.example.calculator_compose.presentation.ui.screen.main.SecondaryButton
@@ -31,8 +32,15 @@ fun AdditionalScreen(
     navController: NavController, viewModel: AdditionalViewModel
 ) {
     val example = viewModel.example.observeAsState()
+    val degrees = viewModel.degrees.observeAsState()
     val history = viewModel.history.collectAsState(initial = "")
     val scroll = rememberScrollState()
+
+    val degreesEnabled = viewModel.degreesEnabled.observeAsState()
+
+    val sinText = viewModel.sinText.observeAsState()
+    val cosText = viewModel.cosText.observeAsState()
+    val tanText = viewModel.tanText.observeAsState()
 
     Column(
         modifier = Modifier
@@ -81,8 +89,12 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "2nd"
-                ) { viewModel.twoND() }
+                        .weight(1F),
+                    text = "2nd",
+                    enabled = viewModel.enabledTwoND()
+                ) {
+                    viewModel.twoND()
+                }
 
                 AdditionalButton(
                     modifier = Modifier
@@ -145,14 +157,16 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "deg"
-                ) { viewModel.deg() }
+                        .weight(1F),
+                    text = degrees.value.toString(),
+                    enabled = degreesEnabled.value!!
+                ) { viewModel.converting() }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "lg"
-                ) { viewModel.trigonometricPress("lg") }
+                        .weight(1F), text = Strings.ACTION_LG.dropLast(1)
+                ) { viewModel.trigonometricPress(Strings.ACTION_LG) }
 
                 SecondaryButton(
                     modifier = Modifier
@@ -193,14 +207,15 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "sin"
-                ) { viewModel.trigonometricPress("sin") }
+                        .weight(1F),
+                    text = viewModel.sinText.value.toString().dropLast(1)
+                ) { viewModel.trigonometricPress(sinText.value.toString()) }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "ln"
-                ) { viewModel.trigonometricPress("ln") }
+                        .weight(1F), text = Strings.ACTION_LN.dropLast(1)
+                ) { viewModel.trigonometricPress(Strings.ACTION_LN) }
 
                 Button(
                     onClick = { viewModel.exampleBack() },
@@ -250,8 +265,9 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "cos"
-                ) { viewModel.trigonometricPress("cos") }
+                        .weight(1F),
+                    text = viewModel.cosText.value.toString().dropLast(1)
+                ) { viewModel.trigonometricPress(viewModel.cosText.value.toString()) }
 
                 AdditionalButton(
                     modifier = Modifier
@@ -298,8 +314,9 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "tan"
-                ) { viewModel.trigonometricPress("tan") }
+                        .weight(1F),
+                    text = viewModel.tanText.value.toString().dropLast(1)
+                ) { viewModel.trigonometricPress(viewModel.tanText.value.toString()) }
 
                 AdditionalButton(
                     modifier = Modifier

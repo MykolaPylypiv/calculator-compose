@@ -13,8 +13,8 @@ data class Colors(
 )
 
 val darkPalette = Colors(
-    primaryBackground = Color(0xFF101010),
-    primaryButton = Color(0xFF101010),
+    primaryBackground = Color.Black,
+    primaryButton = Color.Black,
     secondaryButton = Color(0xFF1c1c1c),
     primaryText = Color.White,
     secondaryText = Color(0xFFfe5e00),

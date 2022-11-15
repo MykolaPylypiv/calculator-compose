@@ -1,5 +1,6 @@
 package com.example.calculator_compose.domain.usecases
 
+import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.model.PresentationValues
 import javax.inject.Inject
 
@@ -9,41 +10,42 @@ interface BracketUseCase {
 
     fun rightBracket(example: String, action: String): PresentationValues
 
-    fun setBracket(boolean: Boolean)
-
     class Base @Inject constructor() : BracketUseCase {
-        private val textLeftBracket = "("
-        private val textRightBracket = ")"
+        private val zero = Strings.NUMBER_ZERO
+        private val one = Strings.NUMBER_ONE
+        private val two = Strings.NUMBER_TWO
+        private val three = Strings.NUMBER_THREE
+        private val four = Strings.NUMBER_FOUR
+        private val five = Strings.NUMBER_FIVE
+        private val six = Strings.NUMBER_SIX
+        private val seven = Strings.NUMBER_SEVEN
+        private val eight = Strings.NUMBER_EIGHT
+        private val nine = Strings.NUMBER_NINE
+        private val leftBr = Strings.LEFT_BRACKET
+        private val rightBr = Strings.RIGHT_BRACKET
+        private val startExample = Strings.START_EXAMPLE
+        private val plus = Strings.ACTION_PLUS
+        private val minus = Strings.ACTION_MINUS
+        private val factorial = Strings.ACTION_FACTORIAL
+        private val multiply = Strings.ACTION_MULTIPLY
+        private val division = Strings.ACTION_DIVISION
+        private val percent = Strings.ACTION_PERCENT
+        private val point = Strings.POINT
+        private val pow = Strings.ACTION_POW
+        private val squareRoot = Strings.ACTION_SQUARE_ROOT
 
         override fun leftBracket(example: String, action: String): PresentationValues {
             val lastString = example.last().toString()
-            var fourLastString = ""
 
-            if (example.length >= 4) {
-                fourLastString = example.drop(example.length - 4)
-            }
-
-            if (example == "null") {
-                return PresentationValues(calculation = textLeftBracket, action = textLeftBracket)
-            }
-
-            if (bracket &&
-                lastString != "1" &&
-                lastString != "2" &&
-                lastString != "3" &&
-                lastString != "4" &&
-                lastString != "5" &&
-                lastString != "6" &&
-                lastString != "7" &&
-                lastString != "8" &&
-                lastString != "9" &&
-                lastString != "0") {
-
+            if (example == startExample) {
                 return PresentationValues(
-                    calculation = example + textLeftBracket,
-                    action = action + textLeftBracket
+                    calculation = leftBr, action = rightBr
                 )
             }
+
+            if (lastString != zero && lastString != one && lastString != two && lastString != three && lastString != four && lastString != five && lastString != six && lastString != seven && lastString != eight && lastString != nine) return PresentationValues(
+                calculation = example + leftBr, action = action + rightBr
+            )
 
             return PresentationValues(calculation = example, action = action)
         }
@@ -51,36 +53,15 @@ interface BracketUseCase {
         override fun rightBracket(example: String, action: String): PresentationValues {
             val lastString = example.last().toString()
 
-            if (example == "null") {
-                return PresentationValues(example, action)
-            }
+            if (example == startExample) return PresentationValues(
+                calculation = example, action = action
+            )
 
-            if (!bracket &&
-                lastString != "√" &&
-                lastString != "!" &&
-                lastString != "." &&
-                lastString != "+" &&
-                lastString != "-" &&
-                lastString != "*" &&
-                lastString != "/" &&
-                lastString != "%" &&
-                lastString != "^" &&
-                lastString != ")" &&
-                lastString != "("
-            ) {
-                return PresentationValues(example + textRightBracket, action + textRightBracket)
-            }
+            if (lastString != squareRoot && lastString != factorial && lastString != point && lastString != plus && lastString != minus && lastString != multiply && lastString != division && lastString != percent && lastString != pow && lastString != leftBr && lastString != rightBr) return PresentationValues(
+                calculation = example + rightBr, action = action + rightBr
+            )
 
-            return PresentationValues(example, action)
-        }
-
-        override fun setBracket(boolean: Boolean) {
-            bracket = boolean
-        }
-
-        private companion object {
-
-            var bracket = true
+            return PresentationValues(calculation = example, action = action)
         }
     }
 }

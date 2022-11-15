@@ -2,7 +2,6 @@ package com.example.calculator_compose.domain.interactor
 
 import com.example.calculator_compose.core.Store
 import com.example.calculator_compose.domain.ConstCalculationRow
-import com.example.calculator_compose.domain.model.DomainAllValues
 import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.domain.usecases.*
 
@@ -22,27 +21,27 @@ interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCas
         val constCalculationRow: ConstCalculationRow
     ) : MainInteractor {
 
-        override fun number(
-            text: String, example: String, action: String
-        ): String = number.number(text = text, example, action)
+        override fun number(text: String, example: String, action: String) =
+            number.number(text = text, example = example, action = action)
 
         override fun zero(example: String): String = zero.zero(example = example)
 
-        override fun coma(example: String, action: String): String =
+        override fun coma(example: String, action: String) =
             coma.coma(example = example, action = action)
 
-        override fun action(text: String, example: String, action: String): PresentationValues =
+        override fun action(text: String, example: String, action: String) =
             this.action.action(text = text, example = example, action = action)
 
-        override fun equal(example: String, operation: String, history: String): DomainAllValues =
+        override fun equal(example: String, operation: String, history: String, isRadians: String) =
             equal.equal(example = example, operation = operation, history = history)
 
-        override fun back(example: String, action: String): PresentationValues =
+        override fun back(example: String, action: String) =
             back.back(example = example, action = action)
 
         override fun getCalculation() = constCalculationRow.getCalculation()
 
-        override fun setCalculation(value: PresentationValues) = constCalculationRow.setCalculation(value)
+        override fun setCalculation(value: PresentationValues) =
+            constCalculationRow.setCalculation(value = value)
 
         override fun storeHistory(): Store = storeHistoryCalculation
 
