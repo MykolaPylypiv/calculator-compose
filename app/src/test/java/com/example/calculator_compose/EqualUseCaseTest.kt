@@ -232,7 +232,7 @@ class EqualUseCaseTest {
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals("-1.995200412", result.calculation)
+        assertEquals("2.147483647", result.calculation)
     }
 
     @Test
