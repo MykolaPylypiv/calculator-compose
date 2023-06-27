@@ -20,10 +20,12 @@ interface LowestPriorityAction {
         ): Double {
 
             if (action.length != 1) throw IllegalArgumentException(Strings.EXCEPTION_ACTION_LENGTH_NOT_EQUAL_ONE)
+            if (action != plus && action != minus) throw IllegalArgumentException(Strings.EXCEPTION_ACTION_NOT_EQUALS)
 
             when (action) {
                 plus -> return calc.plus(num = num, num1 = num1)
                 minus -> return calc.minus(num = num, num1 = num1)
+
             }
 
             return num

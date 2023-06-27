@@ -1,5 +1,6 @@
 package com.example.calculator_compose
 
+import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.calculation.calculation.PrimitiveCalculation
 import com.example.calculator_compose.domain.calculation.priority.LowestPriorityAction
 import org.junit.Assert.assertEquals
@@ -72,7 +73,7 @@ class LowestPriorityActionTest {
             calculation.lowestPriorityAction(num = num, num1 = num1, action = action)
         }
 
-        assertEquals("Action not equal + or -", exception.message)
+        assertEquals(Strings.EXCEPTION_ACTION_NOT_EQUALS, exception.message)
     }
 
     @Test
@@ -85,7 +86,7 @@ class LowestPriorityActionTest {
             calculation.lowestPriorityAction(num = num, num1 = num1, action = action)
         }
 
-        assertEquals("Action length not equal 1", exception.message)
+        assertEquals(Strings.EXCEPTION_ACTION_LENGTH_NOT_EQUAL_ONE, exception.message)
     }
 
 }

@@ -1,9 +1,9 @@
 package com.example.calculator_compose.presentation.ui.screen.main
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,13 +14,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.calculator_compose.data.StoreHistoryCalculation
 import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -37,13 +38,10 @@ fun MainScreen(
 fun MainBody(
     navController: NavController, viewModel: MainViewModel
 ) {
-    val context = LocalContext.current
-    val dataStore = StoreHistoryCalculation(context = context)
-
     val history = viewModel.history.collectAsState(initial = "")
     val example = viewModel.example.observeAsState()
 
-    val scroll = rememberScrollState()
+    val scroll = ScrollState(Int.MAX_VALUE)
 
     Column(
         modifier = Modifier
@@ -245,7 +243,12 @@ fun MainBody(
                     Modifier
                         .fillMaxWidth()
                         .weight(1F), "="
-                ) { viewModel.equalPress() }
+                ) {
+                    viewModel.equalPress()
+                    CoroutineScope(Dispatchers.Default).launch {
+                        scroll.scrollTo(Int.MAX_VALUE)
+                    }
+                }
             }
 
         }

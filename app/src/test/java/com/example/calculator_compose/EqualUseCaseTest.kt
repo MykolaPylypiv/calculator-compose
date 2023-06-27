@@ -23,16 +23,14 @@ class EqualUseCaseTest {
 
     private val actionsEqualTo = ActionsEqualTo.Base(primitiveCalculation = primitiveCalculation)
 
-    private val lowestPriority =
-        LowestPriorityAction.Base(calc = primitiveCalculation)
+    private val lowestPriority = LowestPriorityAction.Base(calc = primitiveCalculation)
 
     private val calculation = Calculation.Base(actionsEqualTo = actionsEqualTo)
 
     private val orderCalculation =
         OrderCalculation.Base(calculation = calculation, lowestPriority = lowestPriority)
 
-    private val check =
-        EqualCheck.Base(additional = additional, calc = primitiveCalculation)
+    private val check = EqualCheck.Base(additional = additional, calc = primitiveCalculation)
 
     private val mapper = MapperToDomainValues()
 
@@ -49,6 +47,17 @@ class EqualUseCaseTest {
         mapper = mapper,
         mapperToCalculation = mapperToCalculation
     )
+
+    @Test
+    fun zero() {
+        val example = "0"
+        val operation = ""
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("0", result.calculation)
+    }
 
     @Test
     fun `equal 1 action`() {
@@ -106,6 +115,17 @@ class EqualUseCaseTest {
     }
 
     @Test
+    fun `equal 2 action with other priority brackets`() {
+        val example = "(3+3*2)"
+        val operation = "(+*)"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals("9", result.calculation)
+    }
+
+    @Test
     fun `equal 2 action with brackets and factorial`() {
         val example = "(3+3-2)"
         val operation = "(+-)"
@@ -124,7 +144,7 @@ class EqualUseCaseTest {
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(sin(90.0*Math.PI/180).toInt().toString(), result.calculation)
+        assertEquals(sin(90.0 * Math.PI / 180).toInt().toString(), result.calculation)
     }
 
     @Test
@@ -135,7 +155,7 @@ class EqualUseCaseTest {
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(sin(90.0).toString(), result.calculation)
+        assertEquals("1", result.calculation)
     }
 
     @Test
@@ -146,7 +166,7 @@ class EqualUseCaseTest {
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(cos(90.0*Math.PI/180).toString(), result.calculation)
+        assertEquals("0", result.calculation)
     }
 
     @Test
@@ -157,7 +177,7 @@ class EqualUseCaseTest {
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(cos(90.0).toString(), result.calculation)
+        assertEquals("-0.448073616", result.calculation)
     }
 
     @Test
@@ -201,7 +221,7 @@ class EqualUseCaseTest {
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(tan(90.0*Math.PI/180).toString(), result.calculation)
+        assertEquals("2.147483647", result.calculation)
     }
 
     @Test
@@ -212,7 +232,7 @@ class EqualUseCaseTest {
 
         val result = equal.equal(example, operation, history)
 
-        assertEquals(tan(90.0).toString(), result.calculation)
+        assertEquals("-1.995200412", result.calculation)
     }
 
     @Test
@@ -312,6 +332,61 @@ class EqualUseCaseTest {
         val result = equal.equal(example, operation, history)
 
         assertEquals(Math.toDegrees(asin(0.5)), result.calculation.toDouble())
+    }
+
+    @Test
+    fun `equal zero division exception`() {
+        val example = "2/0"
+        val operation = "/"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(Double.POSITIVE_INFINITY, result.calculation.toDouble(),)
+    }
+
+    @Test
+    fun `pi + number`() {
+        val example = "π+3"
+        val operation = "+"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(6.14159265, result.calculation.toDouble(),)
+    }
+
+    @Test
+    fun `e + number`() {
+        val example = "e+3"
+        val operation = "+"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(5.7182818300000005, result.calculation.toDouble())
+    }
+
+    @Test
+    fun `sin(30)`() {
+        val example = "sin(30)"
+        val operation = "sin()"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(0.5, result.calculation.toDouble())
+    }
+
+    @Test
+    fun `sin + number`() {
+        val example = "sin(30)+3"
+        val operation = "sin()+"
+        val history = ""
+
+        val result = equal.equal(example, operation, history)
+
+        assertEquals(3.5, result.calculation.toDouble())
     }
 
 }

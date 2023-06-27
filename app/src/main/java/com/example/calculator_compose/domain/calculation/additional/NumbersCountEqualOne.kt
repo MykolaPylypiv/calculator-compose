@@ -4,6 +4,7 @@ import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.calculation.calculation.PrimitiveCalculation
 import com.example.calculator_compose.domain.model.DomainAllValues
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 interface NumbersCountEqualOne {
 
@@ -91,3 +92,5 @@ interface NumbersCountEqualOne {
         }
     }
 }
+
+//                sin -> result = ((calc.sin(num) * 100).roundToInt()).toDouble() / 100

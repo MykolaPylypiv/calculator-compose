@@ -10,7 +10,7 @@ class MapperToDomainCalculationValues @Inject constructor() :
 
     override fun map(data: DomainValues) = DomainCalculationValues(
         numbers = data.numbers.map {
-            return@map it.toDouble()
+             return@map it.toDouble()
         }.toMutableList(), action = data.action
     )
 }

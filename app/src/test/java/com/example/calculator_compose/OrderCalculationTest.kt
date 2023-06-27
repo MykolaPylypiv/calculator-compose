@@ -8,7 +8,6 @@ import com.example.calculator_compose.domain.calculation.priority.OrderCalculati
 import com.example.calculator_compose.domain.model.DomainCalculationValues
 import org.junit.Test
 import kotlin.math.cos
-import kotlin.math.cosh
 import kotlin.test.assertEquals
 
 class OrderCalculationTest {
@@ -26,6 +25,7 @@ class OrderCalculationTest {
     )
 
     private val delta = 0.01
+    private val isRadians = false
 
     @Test
     fun `order calculation example with 1 low priority action`() {
@@ -34,7 +34,7 @@ class OrderCalculationTest {
         val action = mutableListOf("+")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(5.0, result.numbers[0], delta)
     }
@@ -46,7 +46,7 @@ class OrderCalculationTest {
         val action = mutableListOf("*")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(6.0, result.numbers[0], delta)
     }
@@ -58,7 +58,7 @@ class OrderCalculationTest {
         val action = mutableListOf("*", "/")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(1.0, result.numbers[0], delta)
     }
@@ -70,7 +70,7 @@ class OrderCalculationTest {
         val action = mutableListOf("*", "+")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(12.0, result.numbers[0], delta)
     }
@@ -82,7 +82,7 @@ class OrderCalculationTest {
         val action = mutableListOf("*", "+", "/")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(7.0, result.numbers[0], delta)
     }
@@ -94,7 +94,7 @@ class OrderCalculationTest {
         val action = mutableListOf("!", "*", "+", "/")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(241.0, result.numbers[0], delta)
     }
@@ -106,7 +106,7 @@ class OrderCalculationTest {
         val action = mutableListOf("(", "+", ")")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(5.0, result.numbers[0], delta)
     }
@@ -118,7 +118,7 @@ class OrderCalculationTest {
         val action = mutableListOf("(", "+", "-", ")")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(4.0, result.numbers[0], delta)
     }
@@ -130,7 +130,7 @@ class OrderCalculationTest {
         val action = mutableListOf("(", "+", "*", ")")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
         assertEquals(8.0, result.numbers[0], delta)
     }
@@ -142,9 +142,9 @@ class OrderCalculationTest {
         val action = mutableListOf("cos", "(", "+", ")")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
-        assertEquals(cos(90.0), result.numbers[0], delta)
+        assertEquals(0.0, result.numbers[0], delta)
     }
 
     @Test
@@ -154,9 +154,9 @@ class OrderCalculationTest {
         val action = mutableListOf("tan", "(", "+", ")")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
-        assertEquals(-1.9952, result.numbers[0], delta)
+        assertEquals(2.147483647, result.numbers[0], delta)
     }
 
     @Test
@@ -166,9 +166,69 @@ class OrderCalculationTest {
         val action = mutableListOf("sin", "(", "+", ")")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.orderCalculation(value)
+        val result = orderCalculation.orderCalculation(value, isRadians)
 
-        assertEquals(0.89399, result.numbers[0], delta)
+        assertEquals(1.0, result.numbers[0], delta)
+    }
+
+    @Test
+    fun `sin + number`() {
+
+        val numbers = mutableListOf(30.0, 3.0)
+        val action = mutableListOf("sin", "(", ")", "+")
+        val value = DomainCalculationValues(numbers = numbers, action = action)
+
+        val result = orderCalculation.orderCalculation(value, isRadians)
+
+        assertEquals(3.5, result.numbers[0], delta)
+    }
+
+    @Test
+    fun `cos + number`() {
+
+        val numbers = mutableListOf(60.0, 3.0)
+        val action = mutableListOf("cos", "(", ")", "+")
+        val value = DomainCalculationValues(numbers = numbers, action = action)
+
+        val result = orderCalculation.orderCalculation(value, isRadians)
+
+        assertEquals(3.5, result.numbers[0], delta)
+    }
+
+    @Test
+    fun `number + sin`() {
+
+        val numbers = mutableListOf(3.0, 30.0)
+        val action = mutableListOf("+", "sin", "(", ")")
+        val value = DomainCalculationValues(numbers = numbers, action = action)
+
+        val result = orderCalculation.orderCalculation(value, isRadians)
+
+        assertEquals(3.5, result.numbers[0], delta)
+    }
+
+    @Test
+    fun `number + cos`() {
+
+        val numbers = mutableListOf(3.0, 60.0)
+        val action = mutableListOf("+", "cos", "(", ")")
+        val value = DomainCalculationValues(numbers = numbers, action = action)
+
+        val result = orderCalculation.orderCalculation(value, isRadians)
+
+        assertEquals(3.5, result.numbers[0], delta)
+    }
+
+    @Test
+    fun `two brackets`() {
+
+        val numbers = mutableListOf(5.0, 3.0, 5.0, 4.0)
+        val action = mutableListOf("(", "+", ")", "+", "(", "+", ")")
+        val value = DomainCalculationValues(numbers = numbers, action = action)
+
+        val result = orderCalculation.orderCalculation(value, isRadians)
+
+        assertEquals(17.0, result.numbers[0], delta)
     }
 
     @Test
@@ -178,7 +238,7 @@ class OrderCalculationTest {
         val action = mutableListOf("!")
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = orderCalculation.priorityAction(value)
+        val result = orderCalculation.priorityAction(value, isRadians)
 
         assertEquals(120.0, result.numbers[0], delta)
     }

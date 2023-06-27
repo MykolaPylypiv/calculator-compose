@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.interactor.MainInteractor
 import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.navigation.NavigationTree
@@ -67,7 +68,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun exampleClear() {
-        example.value = "null"
+        example.value = Strings.START_EXAMPLE
         action = ""
     }
 

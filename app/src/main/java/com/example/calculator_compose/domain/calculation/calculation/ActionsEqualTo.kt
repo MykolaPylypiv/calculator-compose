@@ -7,7 +7,7 @@ import javax.inject.Inject
 interface ActionsEqualTo {
 
     fun actionWithOneNumbers(
-        value: DomainCalculationValues, text: String
+        value: DomainCalculationValues, text: String, isRadians: Boolean
     ): DomainCalculationValues
 
     fun actionWithTwoNumbers(
@@ -34,7 +34,7 @@ interface ActionsEqualTo {
         private val division = Strings.ACTION_DIVISION
 
         override fun actionWithOneNumbers(
-            value: DomainCalculationValues, text: String
+            value: DomainCalculationValues, text: String, isRadians: Boolean
         ): DomainCalculationValues {
             val action = value.action
             val numbers = value.numbers
@@ -54,11 +54,20 @@ interface ActionsEqualTo {
 
                 atan -> numbers[index] = primitiveCalculation.arcTan(num = num)
 
-                sin -> numbers[index] = primitiveCalculation.sin(num = num)
+                sin -> {
+                    numbers[index] = if (isRadians) primitiveCalculation.sin(num = num)
+                    else  primitiveCalculation.sin(num = Math.toRadians(num))
+                }
 
-                cos -> numbers[index] = primitiveCalculation.cos(num = num)
+                cos -> {
+                    numbers[index] = if (isRadians) primitiveCalculation.cos(num = num)
+                    else primitiveCalculation.cos(num = Math.toRadians(num))
+                }
 
-                tan -> numbers[index] = primitiveCalculation.tan(num = num)
+                tan -> {
+                    numbers[index] = if (isRadians) primitiveCalculation.tan(num = num)
+                    else primitiveCalculation.tan(num = Math.toRadians(num))
+                }
 
                 lg -> numbers[index] = primitiveCalculation.lg(num = num)
 

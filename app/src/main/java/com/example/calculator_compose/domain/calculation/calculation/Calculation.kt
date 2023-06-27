@@ -7,7 +7,7 @@ import javax.inject.Inject
 interface Calculation {
 
     fun calculation(
-        text: MutableList<String>, value: DomainCalculationValues
+        text: MutableList<String>, value: DomainCalculationValues, isRadians: Boolean
     ): DomainCalculationValues
 
     class Base @Inject constructor(
@@ -30,7 +30,7 @@ interface Calculation {
         private val factorial = Strings.ACTION_FACTORIAL
 
         override fun calculation(
-            text: MutableList<String>, value: DomainCalculationValues
+            text: MutableList<String>, value: DomainCalculationValues, isRadians: Boolean
         ): DomainCalculationValues {
 
             val action = value.action
@@ -43,7 +43,7 @@ interface Calculation {
                             actionsEqualTo.actionWithTwoNumbers(value = value, text = _text)
 
                         asin, acos, atan, sin, cos, tan, lg, ln, squareRoot, factorial -> result =
-                            actionsEqualTo.actionWithOneNumbers(value = value, text = _text)
+                            actionsEqualTo.actionWithOneNumbers(value = value, text = _text, isRadians = isRadians)
                     }
                 }
             }

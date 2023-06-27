@@ -39,12 +39,12 @@ interface BracketUseCase {
 
             if (example == startExample) {
                 return PresentationValues(
-                    calculation = leftBr, action = rightBr
+                    calculation = leftBr, action = leftBr
                 )
             }
 
             if (lastString != zero && lastString != one && lastString != two && lastString != three && lastString != four && lastString != five && lastString != six && lastString != seven && lastString != eight && lastString != nine) return PresentationValues(
-                calculation = example + leftBr, action = action + rightBr
+                calculation = example + leftBr, action = action + leftBr
             )
 
             return PresentationValues(calculation = example, action = action)
@@ -57,7 +57,7 @@ interface BracketUseCase {
                 calculation = example, action = action
             )
 
-            if (lastString != squareRoot && lastString != factorial && lastString != point && lastString != plus && lastString != minus && lastString != multiply && lastString != division && lastString != percent && lastString != pow && lastString != leftBr && lastString != rightBr) return PresentationValues(
+            if (lastString != squareRoot && lastString != factorial && lastString != point && lastString != plus && lastString != minus && lastString != multiply && lastString != division && lastString != percent && lastString != pow && lastString != leftBr) return PresentationValues(
                 calculation = example + rightBr, action = action + rightBr
             )
 

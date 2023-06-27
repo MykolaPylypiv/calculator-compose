@@ -34,38 +34,46 @@ interface EqualUseCase {
         private val factorial = Strings.ACTION_FACTORIAL
         private val pi = Strings.NUMBER_P
         private val e = Strings.NUMBER_E
+        private val deg = Strings.DEGREES
 
         override fun equal(
-            example: String, operation: String, history: String, isRadians: String
+            example: String, operation: String, history: String, radians: String
         ): DomainAllValues {
-            val data = PresentationValues(calculation = example, action = operation)
+            val isRadians = radians != deg
+            if (example != zero) {
+                val finalExample = example.replace("π", "3.14159265").replace("e", "2.71828183")
 
-            var values = mapper.map(data = data)
-            values = check.initialCheck(values = values, example = example)
-
-            val numbers = values.numbers
-            val action = values.action
-
-            if (example == pi || example == e || example == zero + factorial) return check.firstCheck(
-                example = example
-            )
-
-            if (operation.isNotEmpty() && example.last().toString() != operation.split(
-                    factorial, rightBr
-                ).last() && example != startExample
-            ) {
-                if (numbers.count() == 1) return checkCountOne.check(
-                    action = action, example = example, numbers = numbers, isRadians = isRadians
+                val data = PresentationValues(
+                    calculation = finalExample, action = operation
                 )
 
-                if (numbers.count() > 1) {
-                    val value = mapperToCalculation.map(data = values)
-                    val result = orderCalculation.orderCalculation(value = value)
+                var values = mapper.map(data = data)
+                values = check.initialCheck(values = values, example = example)
 
-                    return additional.equalReturn(result = result.numbers[0], example = example)
+                val numbers = values.numbers
+                val action = values.action
+
+                if (example == pi || example == e || example == zero + factorial) return check.firstCheck(
+                    example = example
+                )
+
+                if (operation.isNotEmpty() && example.last().toString() != operation.split(
+                        factorial, rightBr
+                    ).last() && example != startExample
+                ) {
+                    if (numbers.count() == 1) return checkCountOne.check(
+                        action = action, example = example, numbers = numbers, isRadians = radians
+                    )
+
+                    if (numbers.count() > 1) {
+                        val value = mapperToCalculation.map(data = values)
+                        val result = orderCalculation.orderCalculation(value = value, isRadians = isRadians)
+
+                        return additional.equalReturn(result = result.numbers[0], example = example)
+                    }
                 }
-            }
 
+            }
             return DomainAllValues(calculation = example, action = operation, history = history)
         }
     }

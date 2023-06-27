@@ -87,8 +87,8 @@ class PrimitiveCalculationTest {
 
     @Test
     fun actionArcSin() {
-        val _num = 0.5
-        val result = action.arcSin(_num)
+        val num = 0.5
+        val result = action.arcSin(num)
 
         assertEquals(30.0, result, delta)
     }

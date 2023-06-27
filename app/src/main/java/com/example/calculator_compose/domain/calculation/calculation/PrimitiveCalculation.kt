@@ -1,10 +1,7 @@
 package com.example.calculator_compose.domain.calculation.calculation
 
 import javax.inject.Inject
-import kotlin.math.acos
-import kotlin.math.asin
-import kotlin.math.atan
-import kotlin.math.pow
+import kotlin.math.*
 
 interface PrimitiveCalculation {
 
@@ -60,11 +57,11 @@ interface PrimitiveCalculation {
 
         override fun sqrt(num: Double) = kotlin.math.sqrt(num)
 
-        override fun sin(num: Double) = kotlin.math.sin(num)
+        override fun sin(num: Double) = (kotlin.math.sin(num) * 1000000000).roundToInt().toDouble() / 1000000000
 
-        override fun cos(num: Double) = kotlin.math.cos(num)
+        override fun cos(num: Double) = ((kotlin.math.cos(num) * 1000000000).roundToInt()).toDouble() / 1000000000
 
-        override fun tan(num: Double) = kotlin.math.tan(num)
+        override fun tan(num: Double) = ((kotlin.math.tan(num) * 1000000000).roundToInt()).toDouble() / 1000000000
 
         override fun arcSin(num: Double) = Math.toDegrees(asin(num))
 
@@ -72,7 +69,7 @@ interface PrimitiveCalculation {
 
         override fun arcTan(num: Double) = Math.toDegrees(atan(num))
 
-        override fun lg(num: Double) = kotlin.math.log10(num)
+        override fun lg(num: Double) = log10(num)
 
         override fun ln(num: Double) = kotlin.math.ln(num)
 

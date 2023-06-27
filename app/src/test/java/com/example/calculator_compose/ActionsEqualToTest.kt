@@ -1,5 +1,6 @@
 package com.example.calculator_compose
 
+import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.calculation.calculation.ActionsEqualTo
 import com.example.calculator_compose.domain.calculation.calculation.PrimitiveCalculation
 import com.example.calculator_compose.domain.model.DomainCalculationValues
@@ -15,6 +16,7 @@ class ActionsEqualToTest {
     private val actionsEqualTo = ActionsEqualTo.Base(primitiveCalculation = primitiveCalculation)
 
     private val delta = 0.01
+    private val isRadians = false
 
     @Test
     fun `calculation multiply with two positive numbers`() {
@@ -54,7 +56,7 @@ class ActionsEqualToTest {
         val index = action.indexOf(text)
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = actionsEqualTo.actionWithOneNumbers(value = value, text = text)
+        val result = actionsEqualTo.actionWithOneNumbers(value = value, text = text, isRadians = isRadians)
 
         assertEquals(0.893996684, result.numbers[index], delta)
         assertTrue(action.isEmpty())
@@ -69,7 +71,7 @@ class ActionsEqualToTest {
         val index = action.indexOf(text)
         val value = DomainCalculationValues(numbers = numbers, action = action)
 
-        val result = actionsEqualTo.actionWithOneNumbers(value = value, text = text)
+        val result = actionsEqualTo.actionWithOneNumbers(value = value, text = text, isRadians = isRadians)
 
         assertEquals(0.893996684, result.numbers[index], delta)
     }
@@ -86,6 +88,6 @@ class ActionsEqualToTest {
             actionsEqualTo.actionWithTwoNumbers(value = value, text = text)
         }
 
-        assertEquals("numbers count == 1 in action with two numbers", exception.message)
+        assertEquals(Strings.EXCEPTION_NUMBERS_COUNT_EQUAL_ONE, exception.message)
     }
 }
