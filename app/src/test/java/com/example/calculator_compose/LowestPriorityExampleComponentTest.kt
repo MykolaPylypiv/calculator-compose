@@ -7,7 +7,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
-class LowestPriorityActionTest {
+class LowestPriorityExampleComponentTest {
 
     private val primitiveCalculation = PrimitiveCalculation.Base()
 

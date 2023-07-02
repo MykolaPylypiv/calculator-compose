@@ -32,6 +32,7 @@ fun AdditionalScreen(
     navController: NavController, viewModel: AdditionalViewModel
 ) {
     val example = viewModel.example.observeAsState()
+    val result = viewModel.result.observeAsState()
     val degrees = viewModel.degrees.observeAsState()
     val history = viewModel.history.collectAsState(initial = "")
     val scroll = rememberScrollState()
@@ -39,8 +40,6 @@ fun AdditionalScreen(
     val degreesEnabled = viewModel.degreesEnabled.observeAsState()
 
     val sinText = viewModel.sinText.observeAsState()
-    val cosText = viewModel.cosText.observeAsState()
-    val tanText = viewModel.tanText.observeAsState()
 
     Column(
         modifier = Modifier
@@ -73,6 +72,17 @@ fun AdditionalScreen(
                 color = AppTheme.colors.primaryText,
                 fontSize = 36.sp,
                 modifier = Modifier.padding(bottom = 10.dp, end = 5.dp)
+            )
+        }
+
+        Row {
+            Spacer(modifier = Modifier.weight(1F))
+
+            Text(
+                text = result.value.toString(),
+                color = AppTheme.colors.additionalText,
+                fontSize = 28.sp,
+                modifier = Modifier.padding(bottom = 20.dp, end = 10.dp)
             )
         }
 

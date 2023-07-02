@@ -2,11 +2,12 @@ package com.example.calculator_compose.domain.interactor
 
 import com.example.calculator_compose.core.Store
 import com.example.calculator_compose.domain.ConstCalculationRow
+import com.example.calculator_compose.domain.calculation.additional.Result
 import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.domain.usecases.*
 
 interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCase, EqualUseCase,
-    BackUseCase, ConstCalculationRow {
+    BackUseCase, ConstCalculationRow, Result {
 
     fun storeHistory(): Store
 
@@ -18,7 +19,8 @@ interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCas
         val equal: EqualUseCase,
         val back: BackUseCase,
         val storeHistoryCalculation: Store,
-        val constCalculationRow: ConstCalculationRow
+        val constCalculationRow: ConstCalculationRow,
+        val result: Result
     ) : MainInteractor {
 
         override fun number(text: String, example: String, action: String) =
@@ -42,6 +44,11 @@ interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCas
 
         override fun setCalculation(value: PresentationValues) =
             constCalculationRow.setCalculation(value = value)
+
+        override fun result() = result.result()
+
+        override fun renewal(example: String, operation: String, radians: String) =
+            result.renewal(example, operation, radians)
 
         override fun storeHistory(): Store = storeHistoryCalculation
 

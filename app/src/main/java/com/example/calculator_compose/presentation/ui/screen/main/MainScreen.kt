@@ -40,6 +40,7 @@ fun MainBody(
 ) {
     val history = viewModel.history.collectAsState(initial = "")
     val example = viewModel.example.observeAsState()
+    val result = viewModel.result.observeAsState()
 
     val scroll = ScrollState(Int.MAX_VALUE)
 
@@ -74,6 +75,17 @@ fun MainBody(
                 color = colors.primaryText,
                 fontSize = 36.sp,
                 modifier = Modifier.padding(bottom = 10.dp, end = 5.dp)
+            )
+        }
+
+        Row {
+            Spacer(modifier = Modifier.weight(1F))
+
+            Text(
+                text = result.value.toString(),
+                color = colors.additionalText,
+                fontSize = 28.sp,
+                modifier = Modifier.padding(bottom = 10.dp, end = 10.dp)
             )
         }
 

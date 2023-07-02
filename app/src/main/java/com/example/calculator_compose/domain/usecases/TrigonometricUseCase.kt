@@ -37,7 +37,7 @@ interface TrigonometricUseCase {
             )
 
             if (lastString != one && lastString != two && lastString != three && lastString != four && lastString != five && lastString != six && lastString != seven && lastString != eight && lastString != nine && lastString != zero && lastString != factorial && lastString != point && lastString != rightBr) return PresentationValues(
-                calculation = example + text, action = action
+                calculation = example + text, action = action + text
             )
 
             return PresentationValues(calculation = example, action = action)

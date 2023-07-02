@@ -4,6 +4,7 @@ import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.calculation.additional.EqualCheck
 import com.example.calculator_compose.domain.calculation.additional.EqualReturn
 import com.example.calculator_compose.domain.calculation.additional.NumbersCountEqualOne
+import com.example.calculator_compose.domain.calculation.additional.Result
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainCalculationValues
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
 import com.example.calculator_compose.domain.calculation.priority.OrderCalculation
@@ -23,7 +24,8 @@ interface EqualUseCase {
         private val check: EqualCheck.Base,
         private val checkCountOne: NumbersCountEqualOne.Base,
         private val mapper: MapperToDomainValues,
-        private val mapperToCalculation: MapperToDomainCalculationValues
+        private val mapperToCalculation: MapperToDomainCalculationValues,
+        private val result: Result.Base
     ) : EqualUseCase {
 
         private val zero = Strings.NUMBER_ZERO

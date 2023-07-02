@@ -2,6 +2,7 @@ package com.example.calculator_compose.di
 
 import com.example.calculator_compose.data.StoreHistoryCalculation
 import com.example.calculator_compose.domain.ConstCalculationRow
+import com.example.calculator_compose.domain.calculation.additional.Result
 import com.example.calculator_compose.domain.interactor.AdditionalInteractor
 import com.example.calculator_compose.domain.interactor.MainInteractor
 import com.example.calculator_compose.domain.usecases.*
@@ -23,7 +24,8 @@ class DomainModule {
         equal: EqualUseCase.Base,
         back: BackUseCase.Base,
         store: StoreHistoryCalculation,
-        calculation: ConstCalculationRow.Base
+        calculation: ConstCalculationRow.Base,
+        result: Result.Base,
     ): MainInteractor = MainInteractor.Base(
         number = number,
         zero = zero,
@@ -32,7 +34,8 @@ class DomainModule {
         equal = equal,
         back = back,
         storeHistoryCalculation = store,
-        constCalculationRow = calculation
+        constCalculationRow = calculation,
+        result = result
     )
 
     @Provides
@@ -51,7 +54,8 @@ class DomainModule {
         converting: DegreesToRadians.Base,
         change: TwoNDUseCase.Base,
         store: StoreHistoryCalculation,
-        calculation: ConstCalculationRow.Base
+        calculation: ConstCalculationRow.Base,
+        result: Result.Base,
     ): AdditionalInteractor = AdditionalInteractor.Base(
         number = number,
         zero = zero,
@@ -68,5 +72,6 @@ class DomainModule {
         twoND = change,
         storeHistoryCalculation = store,
         constCalculationRow = calculation,
+        result = result
     )
 }

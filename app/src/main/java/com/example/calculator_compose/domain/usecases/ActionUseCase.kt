@@ -24,6 +24,7 @@ interface ActionUseCase {
         private val cos = Strings.ACTION_COS
         private val tan = Strings.ACTION_TAN
         private val zero = Strings.NUMBER_ZERO
+        private val leftBr = Strings.LEFT_BRACKET
 
         override fun action(text: String, example: String, action: String): PresentationValues {
             val lastString = example.last().toString()
@@ -35,7 +36,7 @@ interface ActionUseCase {
                 calculation = zero + text, action = action + text
             )
 
-            if (lastString != plus && lastString != minus && lastString != multiply && lastString != division && lastString != percent && lastString != point && lastString != pow && lastString != squareRoot && threeLastString != sin && threeLastString != cos && threeLastString != tan) {
+            if (lastString != leftBr && lastString != plus && lastString != minus && lastString != multiply && lastString != division && lastString != percent && lastString != point && lastString != pow && lastString != squareRoot && threeLastString != sin && threeLastString != cos && threeLastString != tan) {
                 return PresentationValues(
                     calculation = example + text, action = action + text
                 )

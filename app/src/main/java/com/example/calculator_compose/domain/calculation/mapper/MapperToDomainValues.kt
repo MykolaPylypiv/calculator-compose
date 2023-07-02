@@ -66,6 +66,7 @@ class MapperToDomainValues @Inject constructor() : Mapper<PresentationValues, Do
                 "i" -> action.add(element = asin)
 
                 "o" -> action.add(element = acos)
+
                 "x" -> action.add(element = atan)
 
                 "s" -> action.add(element = sin)

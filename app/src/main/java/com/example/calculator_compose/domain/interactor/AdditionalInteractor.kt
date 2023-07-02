@@ -2,12 +2,14 @@ package com.example.calculator_compose.domain.interactor
 
 import com.example.calculator_compose.core.Store
 import com.example.calculator_compose.domain.ConstCalculationRow
+import com.example.calculator_compose.domain.calculation.additional.Result
 import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.domain.usecases.*
 
 interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCase,
     EqualUseCase, BackUseCase, SquareRootUseCase, FactorialUseCase, TrigonometricUseCase,
-    AdditionalNumberUseCase, DegreesToRadians, TwoNDUseCase, ConstCalculationRow, BracketUseCase {
+    AdditionalNumberUseCase, DegreesToRadians, TwoNDUseCase, ConstCalculationRow, BracketUseCase,
+    Result {
 
     fun storeHistory(): Store
 
@@ -26,7 +28,8 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
         val degreesToRadians: DegreesToRadians,
         val twoND: TwoNDUseCase,
         val storeHistoryCalculation: Store,
-        val constCalculationRow: ConstCalculationRow
+        val constCalculationRow: ConstCalculationRow,
+        val result: Result
     ) : AdditionalInteractor {
 
         override fun number(
@@ -76,6 +79,11 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
 
         override fun rightBracket(example: String, action: String) =
             bracket.rightBracket(example = example, action = action)
+
+        override fun result() = result.result()
+
+        override fun renewal(example: String, operation: String, radians: String) =
+            result.renewal(example, operation, radians)
 
         override fun storeHistory(): Store = storeHistoryCalculation
     }

@@ -63,11 +63,11 @@ interface PrimitiveCalculation {
 
         override fun tan(num: Double) = ((kotlin.math.tan(num) * 1000000000).roundToInt()).toDouble() / 1000000000
 
-        override fun arcSin(num: Double) = Math.toDegrees(asin(num))
+        override fun arcSin(num: Double) = (Math.toDegrees(asin(num)) * 1000000).roundToInt().toDouble() / 1000000
 
-        override fun arcCos(num: Double) = Math.toDegrees(acos(num))
+        override fun arcCos(num: Double) = (Math.toDegrees(acos(num)) * 1000000).roundToInt().toDouble() / 1000000
 
-        override fun arcTan(num: Double) = Math.toDegrees(atan(num))
+        override fun arcTan(num: Double) = (Math.toDegrees(atan(num)) * 1000000).roundToInt().toDouble() / 1000000
 
         override fun lg(num: Double) = log10(num)
 

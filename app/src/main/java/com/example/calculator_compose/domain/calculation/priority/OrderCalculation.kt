@@ -8,20 +8,17 @@ import javax.inject.Inject
 interface OrderCalculation {
 
     fun orderCalculation(
-        value: DomainCalculationValues,
-        isRadians: Boolean
+        value: DomainCalculationValues, isRadians: Boolean
     ): DomainCalculationValues
 
     fun priorityAction(value: DomainCalculationValues, isRadians: Boolean): DomainCalculationValues
 
     fun highPriorityAction(
-        value: DomainCalculationValues,
-        isRadians: Boolean
+        value: DomainCalculationValues, isRadians: Boolean
     ): DomainCalculationValues
 
     fun secondPriorityAction(
-        value: DomainCalculationValues,
-        isRadians: Boolean
+        value: DomainCalculationValues, isRadians: Boolean
     ): DomainCalculationValues
 
     fun lowestPriorityAction(value: DomainCalculationValues): DomainCalculationValues
@@ -51,8 +48,7 @@ interface OrderCalculation {
         private val rightBr = Strings.RIGHT_BRACKET
 
         override fun orderCalculation(
-            value: DomainCalculationValues,
-            isRadians: Boolean
+            value: DomainCalculationValues, isRadians: Boolean
         ): DomainCalculationValues {
             var result = priorityAction(value = value, isRadians = isRadians)
             result = highPriorityAction(value = result, isRadians = isRadians)
@@ -63,21 +59,17 @@ interface OrderCalculation {
         }
 
         override fun priorityAction(
-            value: DomainCalculationValues,
-            isRadians: Boolean
+            value: DomainCalculationValues, isRadians: Boolean
         ): DomainCalculationValues {
             val priorityAction = mutableListOf(factorial, squareRoot)
 
             return calculation.calculation(
-                text = priorityAction,
-                value = value,
-                isRadians = isRadians
+                text = priorityAction, value = value, isRadians = isRadians
             )
         }
 
         override fun highPriorityAction(
-            value: DomainCalculationValues,
-            isRadians: Boolean
+            value: DomainCalculationValues, isRadians: Boolean
         ): DomainCalculationValues {
             val trigonometric = listOf(asin, acos, atan, sin, cos, tan, lg, ln)
 
@@ -92,9 +84,7 @@ interface OrderCalculation {
                         fromIndex = startIndex - 1, toIndex = endIndex - 1
                     )
                 } else if (startIndex != 0 && trigonometric.contains(value.action[startIndex - 1])) {
-                    value.numbers.subList(
-                        fromIndex = startIndex - 1, toIndex = endIndex - 1
-                    )
+                    value.numbers.subList(fromIndex = startIndex - 1, toIndex = endIndex - 1)
                 } else value.numbers.subList(fromIndex = startIndex, toIndex = endIndex)
 
                 val result = orderCalculation(
@@ -131,17 +121,14 @@ interface OrderCalculation {
         }
 
         override fun secondPriorityAction(
-            value: DomainCalculationValues,
-            isRadians: Boolean
+            value: DomainCalculationValues, isRadians: Boolean
         ): DomainCalculationValues {
             val secondPriorityAction = mutableListOf(
                 asin, acos, atan, sin, cos, tan, lg, ln, pow, percent, multiply, division
             )
 
             return calculation.calculation(
-                text = secondPriorityAction,
-                value = value,
-                isRadians = isRadians
+                text = secondPriorityAction, value = value, isRadians = isRadians
             )
         }
 

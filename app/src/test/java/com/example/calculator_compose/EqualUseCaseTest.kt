@@ -3,6 +3,7 @@ package com.example.calculator_compose
 import com.example.calculator_compose.domain.calculation.additional.EqualCheck
 import com.example.calculator_compose.domain.calculation.additional.EqualReturn
 import com.example.calculator_compose.domain.calculation.additional.NumbersCountEqualOne
+import com.example.calculator_compose.domain.calculation.additional.Result
 import com.example.calculator_compose.domain.calculation.calculation.ActionsEqualTo
 import com.example.calculator_compose.domain.calculation.calculation.Calculation
 import com.example.calculator_compose.domain.calculation.calculation.PrimitiveCalculation
@@ -39,13 +40,16 @@ class EqualUseCaseTest {
     private val countEqualOne =
         NumbersCountEqualOne.Base(calc = primitiveCalculation, additional = additional)
 
+    private val result = Result.Base(mapper = mapper, primitiveCalculation = primitiveCalculation)
+
     private val equal = EqualUseCase.Base(
         additional = additional,
         orderCalculation = orderCalculation,
         check = check,
         checkCountOne = countEqualOne,
         mapper = mapper,
-        mapperToCalculation = mapperToCalculation
+        mapperToCalculation = mapperToCalculation,
+        result = result
     )
 
     @Test

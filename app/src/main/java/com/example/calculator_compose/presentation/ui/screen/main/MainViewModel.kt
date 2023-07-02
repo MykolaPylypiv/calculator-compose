@@ -21,21 +21,27 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     var example: MutableLiveData<String> = MutableLiveData(interactor.getCalculation().calculation)
+    var result: MutableLiveData<String> = MutableLiveData(interactor.result())
+
     var history: Flow<String?> = loadHistory()
+
     private var action: String = interactor.getCalculation().action
 
     fun numberPress(text: String) {
         example.value = interactor.number(
             text = text, action = action, example = example.value.toString()
         )
+        result.value = interactor.renewal(example.value.toString(), action)
     }
 
     fun zeroPress() {
         example.value = interactor.zero(example = example.value.toString())
+        result.value = interactor.renewal(example.value.toString(), action)
     }
 
     fun comaPress() {
         example.value = interactor.coma(example = example.value.toString(), action = action)
+        result.value = interactor.renewal(example.value.toString(), action)
     }
 
     fun actionPress(text: String) {
@@ -45,6 +51,7 @@ class MainViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
+        result.value = interactor.renewal(example.value.toString(), action)
     }
 
     fun equalPress() {
@@ -58,6 +65,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             saveHistory(history.first() + allValues.history)
         }
+        result.value = interactor.renewal(example.value.toString(), action)
     }
 
     fun exampleBack() {
