@@ -47,7 +47,9 @@ object Strings {
     const val DEGREES = "deg"
     const val RADIANS = "rad"
 
-    const val EXCEPTION_ACTION_NOT_EQUALS = "action not equals action in function"
     const val EXCEPTION_NUMBERS_COUNT_EQUAL_ONE = "numbers count == 1 in action with two numbers"
-    const val EXCEPTION_ACTION_LENGTH_NOT_EQUAL_ONE = "Action length not equal 1"
+    const val EXCEPTION_THIRD_PRIORITY_NOT_HAVE_ACTION = "third priority not have action"
+    const val EXCEPTION_SECOND_PRIORITY_NOT_HAVE_ACTION = "second priority not have action"
+    const val EXCEPTION_FIRST_PRIORITY_NOT_HAVE_ACTION = "first priority not have action"
+    const val EXCEPTION_LOWEST_PRIORITY_NOT_HAVE_ACTION = "lowest priority not have action"
 }

@@ -1,4 +1,4 @@
-package com.example.calculator_compose.domain.calculation.calculation
+package com.example.calculator_compose.domain.calculation
 
 import javax.inject.Inject
 import kotlin.math.*

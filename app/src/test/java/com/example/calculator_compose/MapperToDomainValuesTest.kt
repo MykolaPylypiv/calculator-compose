@@ -3,7 +3,6 @@ package com.example.calculator_compose
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
 import com.example.calculator_compose.domain.model.PresentationValues
 import org.junit.Test
-import kotlin.math.asin
 import kotlin.test.assertEquals
 
 class MapperToDomainValuesTest {

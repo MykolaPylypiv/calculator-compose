@@ -126,7 +126,7 @@ class AdditionalViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             saveHistory(history.first() + newHistory)
         }
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = example.value
     }
 
     fun exampleBack() {
@@ -134,11 +134,13 @@ class AdditionalViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
+        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
     }
 
     fun exampleClear() {
         example.value = Strings.START_EXAMPLE
         action = ""
+        result.value = "0"
     }
 
     fun converting() {

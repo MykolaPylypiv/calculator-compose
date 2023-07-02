@@ -1,6 +1,6 @@
 package com.example.calculator_compose
 
-import com.example.calculator_compose.domain.calculation.calculation.PrimitiveCalculation
+import com.example.calculator_compose.domain.calculation.PrimitiveCalculation
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import kotlin.math.*

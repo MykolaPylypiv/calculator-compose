@@ -1,11 +1,12 @@
 package com.example.calculator_compose
 
 import com.example.calculator_compose.app.Strings
-import com.example.calculator_compose.domain.calculation.additional.Result.Base
-import com.example.calculator_compose.domain.calculation.calculation.PrimitiveCalculation
+import com.example.calculator_compose.domain.calculation.ExampleComponent
+import com.example.calculator_compose.domain.calculation.PrimitiveCalculation
+import com.example.calculator_compose.domain.calculation.Priority
+import com.example.calculator_compose.domain.calculation.Result.Base
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
 import org.junit.Test
-import kotlin.math.asin
 import kotlin.math.ln
 import kotlin.math.log10
 import kotlin.math.sin
@@ -18,7 +19,12 @@ class ResultTest {
 
     private val mapper = MapperToDomainValues()
 
-    private val result = Base(mapper = mapper, primitiveCalculation = primitiveCalculation)
+    private val component = ExampleComponent.Base()
+
+    private val priority =
+        Priority.Base(primitiveCalculation = primitiveCalculation, component = component)
+
+    private val result = Base(mapper = mapper, component = component, priority = priority)
 
     @Test
     fun zero() {

@@ -73,11 +73,13 @@ class MainViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
+        result.value = interactor.renewal(example.value.toString(), action)
     }
 
     fun exampleClear() {
         example.value = Strings.START_EXAMPLE
         action = ""
+        result.value = "0"
     }
 
     fun navigationToAdditional(navController: NavController) {

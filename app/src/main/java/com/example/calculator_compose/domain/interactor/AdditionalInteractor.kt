@@ -2,7 +2,7 @@ package com.example.calculator_compose.domain.interactor
 
 import com.example.calculator_compose.core.Store
 import com.example.calculator_compose.domain.ConstCalculationRow
-import com.example.calculator_compose.domain.calculation.additional.Result
+import com.example.calculator_compose.domain.calculation.Result
 import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.domain.usecases.*
 

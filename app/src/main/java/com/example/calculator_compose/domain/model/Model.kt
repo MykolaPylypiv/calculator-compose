@@ -6,9 +6,5 @@ data class DomainAllValues(val calculation: String, val action: String, val hist
 
 data class DomainValues(val numbers: MutableList<String>, val action: MutableList<String>)
 
-data class DomainCalculationValues(
-    var numbers: MutableList<Double>, var action: MutableList<String>
-)
-
 
 

@@ -2,7 +2,7 @@ package com.example.calculator_compose.di
 
 import com.example.calculator_compose.data.StoreHistoryCalculation
 import com.example.calculator_compose.domain.ConstCalculationRow
-import com.example.calculator_compose.domain.calculation.additional.Result
+import com.example.calculator_compose.domain.calculation.Result
 import com.example.calculator_compose.domain.interactor.AdditionalInteractor
 import com.example.calculator_compose.domain.interactor.MainInteractor
 import com.example.calculator_compose.domain.usecases.*

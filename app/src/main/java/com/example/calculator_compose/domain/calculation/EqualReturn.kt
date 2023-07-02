@@ -1,4 +1,4 @@
-package com.example.calculator_compose.domain.calculation.additional
+package com.example.calculator_compose.domain.calculation
 
 import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.model.DomainAllValues
