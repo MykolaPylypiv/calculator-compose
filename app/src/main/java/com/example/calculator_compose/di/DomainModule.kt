@@ -1,10 +1,12 @@
 package com.example.calculator_compose.di
 
-import com.example.calculator_compose.data.StoreHistoryCalculation
+import com.example.calculator_compose.data.store.StoreHistoryCalculation
 import com.example.calculator_compose.domain.ConstCalculationRow
 import com.example.calculator_compose.domain.calculation.Result
 import com.example.calculator_compose.domain.interactor.AdditionalInteractor
 import com.example.calculator_compose.domain.interactor.MainInteractor
+import com.example.calculator_compose.domain.repository.DeleteColor
+import com.example.calculator_compose.domain.repository.InsertColor
 import com.example.calculator_compose.domain.usecases.*
 import dagger.Module
 import dagger.Provides
@@ -23,7 +25,7 @@ class DomainModule {
         action: ActionUseCase.Base,
         equal: EqualUseCase.Base,
         back: BackUseCase.Base,
-        store: StoreHistoryCalculation,
+        storeHistory: StoreHistoryCalculation,
         calculation: ConstCalculationRow.Base,
         result: Result.Base,
     ): MainInteractor = MainInteractor.Base(
@@ -33,9 +35,9 @@ class DomainModule {
         action = action,
         equal = equal,
         back = back,
-        storeHistoryCalculation = store,
+        storeHistoryCalculation = storeHistory,
         constCalculationRow = calculation,
-        result = result
+        result = result,
     )
 
     @Provides

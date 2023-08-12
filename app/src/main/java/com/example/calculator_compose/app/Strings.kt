@@ -47,6 +47,10 @@ object Strings {
     const val DEGREES = "deg"
     const val RADIANS = "rad"
 
+    const val DATABASE_NAME = "database"
+}
+
+object Exceptions {
     const val EXCEPTION_NUMBERS_COUNT_EQUAL_ONE = "numbers count == 1 in action with two numbers"
     const val EXCEPTION_THIRD_PRIORITY_NOT_HAVE_ACTION = "third priority not have action"
     const val EXCEPTION_SECOND_PRIORITY_NOT_HAVE_ACTION = "second priority not have action"

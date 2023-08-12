@@ -21,3 +21,21 @@ val darkPalette = Colors(
     tertiaryText = Color(0xFF0591b4),
     additionalText = Color.Gray
 )
+
+fun defaultTheme(
+    primaryText: Color,
+    secondaryText: Color,
+    primaryButton: Color,
+    secondaryButton: Color,
+    tertiaryText: Color,
+    additionalText: Color,
+    primaryBackground: Color,
+) = Colors(
+    primaryText = primaryText,
+    secondaryText = secondaryText,
+    primaryButton = primaryButton,
+    secondaryButton = secondaryButton,
+    tertiaryText = tertiaryText,
+    additionalText = additionalText,
+    primaryBackground = primaryBackground,
+)

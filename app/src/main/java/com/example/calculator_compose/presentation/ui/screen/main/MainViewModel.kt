@@ -82,6 +82,10 @@ class MainViewModel @Inject constructor(
         result.value = "0"
     }
 
+    fun navigationToSettingsTheme(navController: NavController) {
+        navController.navigate(NavigationTree.SettingsTheme.name)
+    }
+
     fun navigationToAdditional(navController: NavController) {
         navController.navigate(NavigationTree.Additional.name)
         interactor.setCalculation(

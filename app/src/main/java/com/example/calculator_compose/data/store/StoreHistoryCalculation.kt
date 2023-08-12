@@ -1,4 +1,4 @@
-package com.example.calculator_compose.data
+package com.example.calculator_compose.data.store
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -14,9 +14,9 @@ import javax.inject.Inject
 
 class StoreHistoryCalculation @Inject constructor(
     @ApplicationContext private val context: Context
-) : Store {
+) : Store<String> {
 
-    override fun get(): Flow<String?> = context.dataStore.data.map { preferences ->
+    override fun get(): Flow<String> = context.dataStore.data.map { preferences ->
         preferences[HISTORY_CALCULATION] ?: ""
     }
 

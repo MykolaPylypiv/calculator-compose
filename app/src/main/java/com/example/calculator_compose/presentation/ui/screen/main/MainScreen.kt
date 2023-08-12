@@ -1,16 +1,12 @@
 package com.example.calculator_compose.presentation.ui.screen.main
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.CropRotate
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors
+import com.example.calculator_compose.app.ThemeColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,11 +40,27 @@ fun MainBody(
 
     val scroll = ScrollState(Int.MAX_VALUE)
 
+    val colors = ThemeColors
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colors.primaryBackground)
     ) {
+        TopAppBar(backgroundColor = colors.primaryBackground) {
+            Spacer(modifier = Modifier.weight(1F))
+
+            IconButton(onClick = {
+                viewModel.navigationToSettingsTheme(navController = navController)
+            }) {
+                Icon(
+                    Icons.Filled.Brush,
+                    contentDescription = "Change theme",
+                    tint = colors.secondaryText
+                )
+            }
+        }
+
         Row(
             modifier = Modifier
                 .weight(1F)
@@ -262,9 +274,6 @@ fun MainBody(
                     }
                 }
             }
-
         }
     }
 }
-
-

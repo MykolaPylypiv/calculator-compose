@@ -11,7 +11,7 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
     AdditionalNumberUseCase, DegreesToRadians, TwoNDUseCase, ConstCalculationRow, BracketUseCase,
     Result {
 
-    fun storeHistory(): Store
+    fun storeHistory(): Store<String>
 
     class Base(
         val number: NumberUseCase,
@@ -27,7 +27,7 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
         val additionalNumber: AdditionalNumberUseCase,
         val degreesToRadians: DegreesToRadians,
         val twoND: TwoNDUseCase,
-        val storeHistoryCalculation: Store,
+        val storeHistoryCalculation: Store<String>,
         val constCalculationRow: ConstCalculationRow,
         val result: Result
     ) : AdditionalInteractor {
@@ -85,6 +85,6 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
         override fun renewal(example: String, operation: String, radians: String) =
             result.renewal(example, operation, radians)
 
-        override fun storeHistory(): Store = storeHistoryCalculation
+        override fun storeHistory(): Store<String> = storeHistoryCalculation
     }
 }

@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.calculator_compose.app.Strings
+import com.example.calculator_compose.app.ThemeColors
 import com.example.calculator_compose.presentation.ui.screen.main.AdditionalButton
 import com.example.calculator_compose.presentation.ui.screen.main.PrimaryButton
 import com.example.calculator_compose.presentation.ui.screen.main.SecondaryButton
 import com.example.calculator_compose.presentation.ui.screen.main.TertiaryButton
-import com.example.calculator_compose.presentation.ui.theme.AppTheme
 
 @Composable
 fun AdditionalScreen(
@@ -41,10 +41,12 @@ fun AdditionalScreen(
 
     val sinText = viewModel.sinText.observeAsState()
 
+    val colors = ThemeColors
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.primaryBackground)
+            .background(color = colors.primaryBackground)
     ) {
         Row(
             modifier = Modifier
@@ -55,7 +57,7 @@ fun AdditionalScreen(
         ) {
             Text(
                 text = history.value.toString(),
-                color = AppTheme.colors.additionalText,
+                color = colors.additionalText,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Right,
                 modifier = Modifier
@@ -69,7 +71,7 @@ fun AdditionalScreen(
 
             Text(
                 text = example.value.toString(),
-                color = AppTheme.colors.primaryText,
+                color = colors.primaryText,
                 fontSize = 36.sp,
                 modifier = Modifier.padding(bottom = 10.dp, end = 5.dp)
             )
@@ -80,7 +82,7 @@ fun AdditionalScreen(
 
             Text(
                 text = result.value.toString(),
-                color = AppTheme.colors.additionalText,
+                color = colors.additionalText,
                 fontSize = 28.sp,
                 modifier = Modifier.padding(bottom = 20.dp, end = 10.dp)
             )
@@ -88,7 +90,7 @@ fun AdditionalScreen(
 
         Row(
             modifier = Modifier
-                .background(color = AppTheme.colors.primaryBackground)
+                .background(color = colors.primaryBackground)
                 .weight(1.8F)
         ) {
             Column(
@@ -145,7 +147,7 @@ fun AdditionalScreen(
 
                 Button(
                     onClick = { viewModel.navigationToAdditional(navController = navController) },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = AppTheme.colors.primaryButton),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryButton),
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F),
@@ -154,7 +156,7 @@ fun AdditionalScreen(
                     Icon(
                         Icons.Filled.CropRotate,
                         contentDescription = "Rotate",
-                        tint = AppTheme.colors.secondaryText
+                        tint = colors.secondaryText
                     )
                 }
             }
@@ -229,7 +231,7 @@ fun AdditionalScreen(
 
                 Button(
                     onClick = { viewModel.exampleBack() },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = AppTheme.colors.primaryButton),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryButton),
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F),
@@ -238,7 +240,7 @@ fun AdditionalScreen(
                     Icon(
                         Icons.Filled.ArrowBackIos,
                         contentDescription = "Back",
-                        tint = AppTheme.colors.secondaryText
+                        tint = colors.secondaryText
                     )
                 }
 

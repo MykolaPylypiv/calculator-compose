@@ -9,7 +9,7 @@ import com.example.calculator_compose.domain.usecases.*
 interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCase, EqualUseCase,
     BackUseCase, ConstCalculationRow, Result {
 
-    fun storeHistory(): Store
+    fun storeHistory(): Store<String>
 
     class Base(
         val number: NumberUseCase,
@@ -18,9 +18,9 @@ interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCas
         val action: ActionUseCase,
         val equal: EqualUseCase,
         val back: BackUseCase,
-        val storeHistoryCalculation: Store,
+        val storeHistoryCalculation: Store<String>,
         val constCalculationRow: ConstCalculationRow,
-        val result: Result
+        val result: Result,
     ) : MainInteractor {
 
         override fun number(text: String, example: String, action: String) =
@@ -50,7 +50,7 @@ interface MainInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, ActionUseCas
         override fun renewal(example: String, operation: String, radians: String) =
             result.renewal(example, operation, radians)
 
-        override fun storeHistory(): Store = storeHistoryCalculation
+        override fun storeHistory(): Store<String> = storeHistoryCalculation
 
     }
 }

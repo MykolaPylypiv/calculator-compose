@@ -1,5 +1,6 @@
 package com.example.calculator_compose.domain.calculation
 
+import com.example.calculator_compose.app.Exceptions
 import com.example.calculator_compose.app.Strings
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ interface Priority {
 
                 component.factorial -> return primitiveCalculation.factorial(num = num.toInt()).toDouble()
             }
-            throw IllegalArgumentException(Strings.EXCEPTION_FIRST_PRIORITY_NOT_HAVE_ACTION)
+            throw IllegalArgumentException(Exceptions.EXCEPTION_FIRST_PRIORITY_NOT_HAVE_ACTION)
         }
 
         override fun secondPriority(text: String, num: Double, isRadians: Boolean): Double {
@@ -66,11 +67,11 @@ interface Priority {
 
                 component.sqrt -> return primitiveCalculation.sqrt(num = num)
             }
-            throw IllegalArgumentException(Strings.EXCEPTION_SECOND_PRIORITY_NOT_HAVE_ACTION)
+            throw IllegalArgumentException(Exceptions.EXCEPTION_SECOND_PRIORITY_NOT_HAVE_ACTION)
         }
 
         override fun thirdPriority(action: String, num: Double, num1: Double): Double {
-            if (component.numbers.count() == 1) throw IllegalArgumentException(Strings.EXCEPTION_NUMBERS_COUNT_EQUAL_ONE)
+            if (component.numbers.count() == 1) throw IllegalArgumentException(Exceptions.EXCEPTION_NUMBERS_COUNT_EQUAL_ONE)
 
             when (action) {
                 component.pow -> return primitiveCalculation.power(num = num, num1 = num1)
@@ -81,18 +82,18 @@ interface Priority {
 
                 component.division -> return primitiveCalculation.division(num = num, num1 = num1)
             }
-            throw IllegalArgumentException(Strings.EXCEPTION_THIRD_PRIORITY_NOT_HAVE_ACTION)
+            throw IllegalArgumentException(Exceptions.EXCEPTION_THIRD_PRIORITY_NOT_HAVE_ACTION)
         }
 
         override fun lowestPriority(action: String, num: Double, num1: Double): Double {
-            if (component.numbers.count() == 1) throw IllegalArgumentException(Strings.EXCEPTION_NUMBERS_COUNT_EQUAL_ONE)
+            if (component.numbers.count() == 1) throw IllegalArgumentException(Exceptions.EXCEPTION_NUMBERS_COUNT_EQUAL_ONE)
 
             when (action) {
                 component.plus -> return primitiveCalculation.plus(num = num, num1 = num1)
 
                 component.minus -> return primitiveCalculation.minus(num = num, num1 = num1)
             }
-            throw IllegalArgumentException(Strings.EXCEPTION_LOWEST_PRIORITY_NOT_HAVE_ACTION)
+            throw IllegalArgumentException(Exceptions.EXCEPTION_LOWEST_PRIORITY_NOT_HAVE_ACTION)
         }
     }
 }
