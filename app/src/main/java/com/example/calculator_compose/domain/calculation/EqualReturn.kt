@@ -15,16 +15,20 @@ interface EqualReturn {
         private val zero = Strings.NUMBER_ZERO
 
         override fun equalReturn(result: Double, example: String): DomainAllValues {
-            val history = "\n\n$example\n = $result"
             val stringResult = result.toString()
 
             return if (stringResult.length >= 2 && stringResult.drop(n = stringResult.length - 2) == point + zero) {
+                val history = "\n\n$example\n = ${stringResult.dropLast(2)}"
                 DomainAllValues(
                     calculation = stringResult.dropLast(2), action = empty, history = history
                 )
-            } else DomainAllValues(
-                calculation = stringResult, action = empty, history = history
-            )
+            } else {
+                val history = "\n\n$example\n = $stringResult"
+
+                DomainAllValues(
+                    calculation = stringResult, action = empty, history = history
+                )
+            }
         }
 
     }

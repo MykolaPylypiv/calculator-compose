@@ -19,8 +19,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.calculator_compose.app.Strings.EMPTY
+import com.example.calculator_compose.app.Strings.TEXT_ACCEPT_BUTTON
+import com.example.calculator_compose.app.Strings.TEXT_BACKGROUND_COLOR
+import com.example.calculator_compose.app.Strings.TEXT_BLACK_BUTTON
+import com.example.calculator_compose.app.Strings.TEXT_BUTTON_COLOR
+import com.example.calculator_compose.app.Strings.TEXT_CHANGE_THEME_DIALOG
+import com.example.calculator_compose.app.Strings.TEXT_COLOR
+import com.example.calculator_compose.app.Strings.TEXT_DARK_BUTTON
+import com.example.calculator_compose.app.Strings.TEXT_GRAY_BUTTON
+import com.example.calculator_compose.app.Strings.TEXT_HISTORY_COLOR
+import com.example.calculator_compose.app.Strings.TEXT_LIGHT_BUTTON
+import com.example.calculator_compose.app.Strings.TEXT_MORE_BUTTON
+import com.example.calculator_compose.app.Strings.TEXT_SECONDARY_BUTTON_COLOR
+import com.example.calculator_compose.app.Strings.TEXT_SECONDARY_COLOR
+import com.example.calculator_compose.app.Strings.TEXT_TERTIARY_COLOR
+import com.example.calculator_compose.app.Strings.TEXT_TOP_BAR_SETTINGS_THEME
+import com.example.calculator_compose.app.Strings.TEXT_WHITE_COLOR_BUTTON
 import com.example.calculator_compose.app.ThemeColors
 import com.example.calculator_compose.domain.model.ColorTheme
+import com.example.calculator_compose.domain.model.DarkColorTheme
 import com.example.calculator_compose.domain.model.LightColorTheme
 import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
@@ -44,19 +62,19 @@ fun SettingsThemeScreen(
         LazyColumn(modifier = Modifier.fillMaxSize(), content = {
             item { DarkLightItem(viewModel = viewModel, navController = navController) }
 
-            item { TextColor() }
+            item { TextColor(viewModel = viewModel) }
 
-            item { SecondaryTextColor() }
+            item { SecondaryTextColor(viewModel = viewModel) }
 
-            item { TertiaryTextColor() }
+            item { TertiaryTextColor(viewModel = viewModel) }
 
-            item { AdditionalTextColor() }
+            item { AdditionalTextColor(viewModel = viewModel) }
 
-            item { ButtonColor() }
+            item { ButtonColor(viewModel = viewModel) }
 
-            item { SecondaryButtonColor() }
+            item { SecondaryButtonColor(viewModel = viewModel) }
 
-            item { BackgroundColor(controller) }
+            item { BackgroundColor(controller = controller, viewModel = viewModel) }
 
             item { AcceptItem(viewModel = viewModel, navController = navController) }
         })
@@ -76,7 +94,7 @@ fun SettingsThemeTopBar(viewModel: SettingsThemeViewModel, navController: NavCon
     }
 
     Text(
-        text = "Settings theme",
+        text = TEXT_TOP_BAR_SETTINGS_THEME,
         fontSize = 18.sp,
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
@@ -99,7 +117,7 @@ fun DarkLightItem(viewModel: SettingsThemeViewModel, navController: NavControlle
             imageVector = Icons.Filled.DarkMode
         ) {
             viewModel.navigationToMain(navController)
-            viewModel.deleteAll()
+            viewModel.updateTheme(DarkColorTheme)
         }
 
         DarkLightThemeButton(
@@ -114,88 +132,80 @@ fun DarkLightItem(viewModel: SettingsThemeViewModel, navController: NavControlle
 }
 
 @Composable
-fun TextColor() {
+fun TextColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Select text color",
+            text = TEXT_COLOR,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
             color = ThemeColors.primaryText
         )
 
-        SectionSelectColor(section = "TextColor")
+        SectionSelectColor(section = "TextColor", viewModel = viewModel)
     }
 }
 
 @Composable
-fun SecondaryTextColor() {
+fun SecondaryTextColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Select secondary text color",
+            text = TEXT_SECONDARY_COLOR,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
             color = ThemeColors.primaryText
         )
 
-        SectionSelectColor(section = "SecondaryTextColor")
+        SectionSelectColor(section = "SecondaryTextColor", viewModel = viewModel)
     }
 }
 
 @Composable
-fun ButtonColor() {
+fun ButtonColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Select button color",
+            text = TEXT_BUTTON_COLOR,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
             color = ThemeColors.primaryText
         )
 
-        SectionSelectColor(section = "ButtonColor")
+        SectionSelectColor(section = "ButtonColor", viewModel = viewModel)
     }
 }
 
 @Composable
-fun SecondaryButtonColor() {
+fun SecondaryButtonColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Select secondary button color",
+            text = TEXT_SECONDARY_BUTTON_COLOR,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
             color = ThemeColors.primaryText
         )
 
-        SectionSelectColor(section = "SecondaryButtonColor")
+        SectionSelectColor(section = "SecondaryButtonColor", viewModel = viewModel)
     }
 }
 
 @Composable
-fun TertiaryTextColor() {
+fun TertiaryTextColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Select tertiary text color",
+            text = TEXT_TERTIARY_COLOR,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
             color = ThemeColors.primaryText
         )
 
-        SectionSelectColor(section = "TertiaryTextColor")
+        SectionSelectColor(section = "TertiaryTextColor", viewModel = viewModel)
     }
 }
 
-var textColor = LightColorTheme.primaryText
-var secondaryText = LightColorTheme.secondaryText
-var tertiaryText = LightColorTheme.tertiaryText
-var additionalText = LightColorTheme.historyColor
-var primaryButton = LightColorTheme.primaryButton
-var secondaryButton = LightColorTheme.secondaryButton
-var backgroundColor = LightColorTheme.primaryBackground
-
 @Composable
-fun AdditionalTextColor() {
+fun AdditionalTextColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Select history color",
+            text = TEXT_HISTORY_COLOR,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
             color = ThemeColors.primaryText
@@ -210,13 +220,13 @@ fun AdditionalTextColor() {
                     if (color1.value == ThemeColors.primaryButton) {
                         color1.value = ThemeColors.secondaryButton
                         color2.value = ThemeColors.primaryButton
-                        additionalText = -0x797979
+                        viewModel.additionalText = -0x797979
                     } else color1.value = ThemeColors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color1.value)
             ) {
-                Text(text = "Dark", color = ThemeColors.primaryText)
+                Text(text = TEXT_DARK_BUTTON, color = ThemeColors.primaryText)
             }
 
             Button(
@@ -224,26 +234,26 @@ fun AdditionalTextColor() {
                     if (color2.value == ThemeColors.primaryButton) {
                         color1.value = ThemeColors.primaryButton
                         color2.value = ThemeColors.secondaryButton
-                        additionalText = 0x33333333
+                        viewModel.additionalText = 0x33333333
                     } else color2.value = ThemeColors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color2.value)
             ) {
-                Text(text = "Light", color = ThemeColors.primaryText)
+                Text(text = TEXT_LIGHT_BUTTON, color = ThemeColors.primaryText)
             }
         }
     }
 }
 
 @Composable
-fun BackgroundColor(controller: ColorPickerController) {
+fun BackgroundColor(controller: ColorPickerController, viewModel: SettingsThemeViewModel) {
     val colorCustomTheme = remember { mutableStateOf(ThemeColors.primaryBackground) }
     val changeThemeDialog = remember { mutableStateOf(false) }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Select background color",
+            text = TEXT_BACKGROUND_COLOR,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
             color = ThemeColors.primaryText
@@ -265,13 +275,13 @@ fun BackgroundColor(controller: ColorPickerController) {
                         color4.value = ThemeColors.primaryButton
                         color5.value = ThemeColors.primaryButton
                         colorCustomTheme.value = ThemeColors.primaryBackground
-                        backgroundColor = -0xFFFFFF
+                        viewModel.backgroundColor = -0xFFFFFF
                     } else color1.value = ThemeColors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color1.value)
             ) {
-                Text(text = "Black", color = ThemeColors.primaryText)
+                Text(text = TEXT_BLACK_BUTTON, color = ThemeColors.primaryText)
             }
 
             Button(
@@ -283,13 +293,13 @@ fun BackgroundColor(controller: ColorPickerController) {
                         color4.value = ThemeColors.primaryButton
                         color5.value = ThemeColors.primaryButton
                         colorCustomTheme.value = ThemeColors.primaryBackground
-                        backgroundColor = -0x797979
+                        viewModel.backgroundColor = -0x797979
                     } else color2.value = ThemeColors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color2.value)
             ) {
-                Text(text = "Dark", color = ThemeColors.primaryText)
+                Text(text = TEXT_DARK_BUTTON, color = ThemeColors.primaryText)
             }
 
             Button(
@@ -301,13 +311,13 @@ fun BackgroundColor(controller: ColorPickerController) {
                         color4.value = ThemeColors.primaryButton
                         color5.value = ThemeColors.primaryButton
                         colorCustomTheme.value = ThemeColors.primaryBackground
-                        backgroundColor = -0x808080
+                        viewModel.backgroundColor = -0x808080
                     } else color3.value = ThemeColors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color3.value)
             ) {
-                Text(text = "Gray", color = ThemeColors.primaryText)
+                Text(text = TEXT_GRAY_BUTTON, color = ThemeColors.primaryText)
             }
 
             Button(
@@ -319,13 +329,13 @@ fun BackgroundColor(controller: ColorPickerController) {
                         color4.value = ThemeColors.secondaryButton
                         color5.value = ThemeColors.primaryButton
                         colorCustomTheme.value = ThemeColors.primaryBackground
-                        backgroundColor = 0x33333333
+                        viewModel.backgroundColor = 0x33333333
                     } else color4.value = ThemeColors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color4.value)
             ) {
-                Text(text = "Light", color = ThemeColors.primaryText)
+                Text(text = TEXT_LIGHT_BUTTON, color = ThemeColors.primaryText)
             }
 
             Button(
@@ -337,13 +347,13 @@ fun BackgroundColor(controller: ColorPickerController) {
                         color4.value = ThemeColors.primaryButton
                         color5.value = ThemeColors.secondaryButton
                         colorCustomTheme.value = ThemeColors.primaryBackground
-                        backgroundColor = 0xffffff
+                        viewModel.backgroundColor = 0xffffff
                     } else color5.value = ThemeColors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color5.value)
             ) {
-                Text(text = "White", color = ThemeColors.primaryText)
+                Text(text = TEXT_WHITE_COLOR_BUTTON, color = ThemeColors.primaryText)
             }
         }
 
@@ -363,14 +373,14 @@ fun BackgroundColor(controller: ColorPickerController) {
                 modifier = Modifier.width(150.dp)
             ) {
                 Text(
-                    text = "More...", fontSize = 14.sp, color = ThemeColors.primaryText
+                    text = TEXT_MORE_BUTTON, fontSize = 14.sp, color = ThemeColors.primaryText
                 )
             }
 
             Spacer(modifier = Modifier.width(15.dp))
 
             Text(
-                text = "",
+                text = EMPTY,
                 Modifier
                     .background(color = colorCustomTheme.value)
                     .width(75.dp)
@@ -382,7 +392,7 @@ fun BackgroundColor(controller: ColorPickerController) {
             AlertDialog(onDismissRequest = {
                 changeThemeDialog.value = false
             }, title = {
-                Text(fontSize = 22.sp, text = "Select a theme")
+                Text(fontSize = 22.sp, text = TEXT_CHANGE_THEME_DIALOG)
             }, text = {
                 IconButton(onClick = {}) {
                     HsvColorPicker(
@@ -403,11 +413,11 @@ fun BackgroundColor(controller: ColorPickerController) {
                         onClick = {
                             changeThemeDialog.value = false
                             colorCustomTheme.value = controller.selectedColor.value
-                            backgroundColor = (controller.selectedColor.value.toArgb()).toLong()
+                            viewModel.backgroundColor = (controller.selectedColor.value.toArgb()).toLong()
                         }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray)
                     ) {
                         Text(
-                            text = "Accept",
+                            text = TEXT_ACCEPT_BUTTON,
                             fontSize = 22.sp,
                             color = Color.White,
                         )
@@ -428,13 +438,13 @@ fun AcceptItem(viewModel: SettingsThemeViewModel, navController: NavController) 
             viewModel.updateTheme(
                 ColorTheme(
                     uid = 0,
-                    primaryText = textColor,
-                    secondaryText = secondaryText,
-                    primaryButton = primaryButton,
-                    secondaryButton = secondaryButton,
-                    tertiaryText = tertiaryText,
-                    historyColor = additionalText,
-                    primaryBackground = backgroundColor
+                    primaryText = viewModel.textColor,
+                    secondaryText = viewModel.secondaryText,
+                    primaryButton = viewModel.primaryButton,
+                    secondaryButton = viewModel.secondaryButton,
+                    tertiaryText = viewModel.tertiaryText,
+                    historyColor = viewModel.additionalText,
+                    primaryBackground = viewModel.backgroundColor
                 )
             )
         },
@@ -444,5 +454,5 @@ fun AcceptItem(viewModel: SettingsThemeViewModel, navController: NavController) 
         colors = ButtonDefaults.buttonColors(
             backgroundColor = ThemeColors.primaryButton, contentColor = ThemeColors.primaryText
         )
-    ) { Text(text = "Accept", fontSize = 18.sp) }
+    ) { Text(text = TEXT_ACCEPT_BUTTON, fontSize = 18.sp) }
 }

@@ -110,7 +110,7 @@ class AdditionalViewModel @Inject constructor(
     }
 
     fun equalPress() {
-        var newHistory = ""
+        var newHistory = Strings.EMPTY
 
         val allValues = interactor.equal(
             example = example.value.toString(),
@@ -139,8 +139,8 @@ class AdditionalViewModel @Inject constructor(
 
     fun exampleClear() {
         example.value = Strings.START_EXAMPLE
-        action = ""
-        result.value = "0"
+        action = Strings.EMPTY
+        result.value = Strings.NUMBER_ZERO
     }
 
     fun converting() {

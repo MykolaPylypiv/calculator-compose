@@ -24,15 +24,15 @@ interface ExampleComponent {
 
     class Base @Inject constructor() : ExampleComponent {
         val zero = Strings.NUMBER_ZERO
-        val one = Strings.NUMBER_ONE
-        val two = Strings.NUMBER_TWO
-        val three = Strings.NUMBER_THREE
-        val four = Strings.NUMBER_FOUR
-        val five = Strings.NUMBER_FIVE
-        val six = Strings.NUMBER_SIX
-        val seven = Strings.NUMBER_SEVEN
-        val eight = Strings.NUMBER_EIGHT
-        val nine = Strings.NUMBER_NINE
+        private val one = Strings.NUMBER_ONE
+        private val two = Strings.NUMBER_TWO
+        private val three = Strings.NUMBER_THREE
+        private val four = Strings.NUMBER_FOUR
+        private val five = Strings.NUMBER_FIVE
+        private val six = Strings.NUMBER_SIX
+        private val seven = Strings.NUMBER_SEVEN
+        private val eight = Strings.NUMBER_EIGHT
+        private val nine = Strings.NUMBER_NINE
 
         val minus = Strings.ACTION_MINUS
         val plus = Strings.ACTION_PLUS
@@ -54,15 +54,13 @@ interface ExampleComponent {
         val acos = Strings.ACTION_ARCCOS.dropLast(1)
         val atan = Strings.ACTION_ARCTAN.dropLast(1)
 
-        val leftBr = Strings.LEFT_BRACKET
-        val rightBr = Strings.RIGHT_BRACKET
+        private val leftBr = Strings.LEFT_BRACKET
+        private val rightBr = Strings.RIGHT_BRACKET
 
         val pi = Strings.NUMBER_P
         val e = Strings.NUMBER_E
 
         val deg = Strings.DEGREES
-
-        val point = Strings.POINT
 
         override val simple = mutableListOf(plus, minus)
 

@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.calculator_compose.app.Strings.STORE_HISTORY_KEY
+import com.example.calculator_compose.app.Strings.STORE_HISTORY_PREFERENCES
 import com.example.calculator_compose.core.Store
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +29,9 @@ class StoreHistoryCalculation @Inject constructor(
     }
 
     private companion object {
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("historyCalculation")
-        val HISTORY_CALCULATION = stringPreferencesKey("history_calculation")
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+            STORE_HISTORY_PREFERENCES
+        )
+        val HISTORY_CALCULATION = stringPreferencesKey(STORE_HISTORY_KEY)
     }
 }

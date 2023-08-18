@@ -6,14 +6,38 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.Brush
+import androidx.compose.material.icons.rounded.History
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.calculator_compose.app.Strings.ACTION_DIVISION
+import com.example.calculator_compose.app.Strings.ACTION_MINUS
+import com.example.calculator_compose.app.Strings.ACTION_MULTIPLY
+import com.example.calculator_compose.app.Strings.ACTION_PERCENT
+import com.example.calculator_compose.app.Strings.ACTION_PLUS
+import com.example.calculator_compose.app.Strings.NUMBER_EIGHT
+import com.example.calculator_compose.app.Strings.NUMBER_FIVE
+import com.example.calculator_compose.app.Strings.NUMBER_FOUR
+import com.example.calculator_compose.app.Strings.NUMBER_NINE
+import com.example.calculator_compose.app.Strings.NUMBER_ONE
+import com.example.calculator_compose.app.Strings.NUMBER_SEVEN
+import com.example.calculator_compose.app.Strings.NUMBER_SIX
+import com.example.calculator_compose.app.Strings.NUMBER_THREE
+import com.example.calculator_compose.app.Strings.NUMBER_TWO
+import com.example.calculator_compose.app.Strings.NUMBER_ZERO
+import com.example.calculator_compose.app.Strings.POINT
+import com.example.calculator_compose.app.Strings.TEXT_ACCEPT_BUTTON
+import com.example.calculator_compose.app.Strings.TEXT_CLEAR_CALCULATION
+import com.example.calculator_compose.app.Strings.TEXT_DELETE_HISTORY_DIALOG
+import com.example.calculator_compose.app.Strings.TEXT_DISMISS_BUTTON
+import com.example.calculator_compose.app.Strings.TEXT_EQUAL
 import com.example.calculator_compose.app.ThemeColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +66,8 @@ fun MainBody(
 
     val colors = ThemeColors
 
+    val deleteHistoryDialog = remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,10 +77,20 @@ fun MainBody(
             Spacer(modifier = Modifier.weight(1F))
 
             IconButton(onClick = {
+                deleteHistoryDialog.value = true
+            }) {
+                Icon(
+                    Icons.Rounded.History,
+                    contentDescription = "Delete history",
+                    tint = colors.secondaryText
+                )
+            }
+
+            IconButton(onClick = {
                 viewModel.navigationToSettingsTheme(navController = navController)
             }) {
                 Icon(
-                    Icons.Filled.Brush,
+                    Icons.Rounded.Brush,
                     contentDescription = "Change theme",
                     tint = colors.secondaryText
                 )
@@ -115,26 +151,26 @@ fun MainBody(
                 SecondaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "C"
+                        .weight(1F), text = TEXT_CLEAR_CALCULATION
                 ) { viewModel.exampleClear() }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "7"
-                ) { viewModel.numberPress("7") }
+                        .weight(1F), text = NUMBER_SEVEN
+                ) { viewModel.numberPress(NUMBER_SEVEN) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "4"
-                ) { viewModel.numberPress("4") }
+                        .weight(1F), text = NUMBER_FOUR
+                ) { viewModel.numberPress(NUMBER_FOUR) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "1"
-                ) { viewModel.numberPress("1") }
+                        .weight(1F), text = NUMBER_ONE
+                ) { viewModel.numberPress(NUMBER_ONE) }
 
                 Button(
                     onClick = { viewModel.navigationToAdditional(navController = navController) },
@@ -176,25 +212,25 @@ fun MainBody(
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "8"
-                ) { viewModel.numberPress("8") }
+                        .weight(1F), text = NUMBER_EIGHT
+                ) { viewModel.numberPress(NUMBER_EIGHT) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "5"
-                ) { viewModel.numberPress("5") }
+                        .weight(1F), text = NUMBER_FIVE
+                ) { viewModel.numberPress(NUMBER_FIVE) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "2"
-                ) { viewModel.numberPress("2") }
+                        .weight(1F), text = NUMBER_TWO
+                ) { viewModel.numberPress(NUMBER_TWO) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "0"
+                        .weight(1F), text = NUMBER_ZERO
                 ) { viewModel.zeroPress() }
             }
 
@@ -206,31 +242,31 @@ fun MainBody(
                 SecondaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "%"
-                ) { viewModel.actionPress("%") }
+                        .weight(1F), text = ACTION_PERCENT
+                ) { viewModel.actionPress(ACTION_PERCENT) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "9"
-                ) { viewModel.numberPress("9") }
+                        .weight(1F), text = NUMBER_NINE
+                ) { viewModel.numberPress(NUMBER_NINE) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "6"
-                ) { viewModel.numberPress("6") }
+                        .weight(1F), text = NUMBER_SIX
+                ) { viewModel.numberPress(NUMBER_SIX) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "3"
-                ) { viewModel.numberPress("3") }
+                        .weight(1F), text = NUMBER_THREE
+                ) { viewModel.numberPress(NUMBER_THREE) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "."
+                        .weight(1F), text = POINT
                 ) { viewModel.comaPress() }
             }
 
@@ -242,31 +278,31 @@ fun MainBody(
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "/"
-                ) { viewModel.actionPress("/") }
+                        .weight(1F), ACTION_DIVISION
+                ) { viewModel.actionPress(ACTION_DIVISION) }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "*"
-                ) { viewModel.actionPress("*") }
+                        .weight(1F), ACTION_MULTIPLY
+                ) { viewModel.actionPress(ACTION_MULTIPLY) }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "-"
-                ) { viewModel.actionPress("-") }
+                        .weight(1F), ACTION_MINUS
+                ) { viewModel.actionPress(ACTION_MINUS) }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "+"
-                ) { viewModel.actionPress("+") }
+                        .weight(1F), ACTION_PLUS
+                ) { viewModel.actionPress(ACTION_PLUS) }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "="
+                        .weight(1F), TEXT_EQUAL
                 ) {
                     viewModel.equalPress()
                     CoroutineScope(Dispatchers.Default).launch {
@@ -274,6 +310,47 @@ fun MainBody(
                     }
                 }
             }
+        }
+
+        if (deleteHistoryDialog.value) {
+            AlertDialog(onDismissRequest = {
+                deleteHistoryDialog.value = false
+            }, title = {
+                Text(fontSize = 22.sp, text = TEXT_DELETE_HISTORY_DIALOG)
+            }, text = {}, buttons = {
+                Row(
+                    modifier = Modifier.background(color = Color.DarkGray)
+                ) {
+                    Button(
+                        onClick = {
+                            deleteHistoryDialog.value = false
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
+                        modifier = Modifier.weight(1F)
+                    ) {
+                        Text(
+                            text = TEXT_DISMISS_BUTTON,
+                            fontSize = 22.sp,
+                            color = colors.primaryText,
+                        )
+                    }
+
+                    Button(
+                        onClick = {
+                            deleteHistoryDialog.value = false
+                            viewModel.resetHistory()
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
+                        modifier = Modifier.weight(1F)
+                    ) {
+                        Text(
+                            text = TEXT_ACCEPT_BUTTON,
+                            fontSize = 22.sp,
+                            color = colors.primaryText,
+                        )
+                    }
+                }
+            })
         }
     }
 }

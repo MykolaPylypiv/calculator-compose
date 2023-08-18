@@ -5,7 +5,7 @@ import com.example.calculator_compose.data.room.ColorThemeDao
 import javax.inject.Inject
 
 interface Repository {
-    fun colorTheme(): List<ColorTheme>
+    fun colorTheme(): ColorTheme
 
     class Base @Inject constructor(private val colorThemeDao: ColorThemeDao) : Repository {
         override fun colorTheme() = colorThemeDao.get()

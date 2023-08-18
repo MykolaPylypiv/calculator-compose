@@ -21,6 +21,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.calculator_compose.app.Strings
+import com.example.calculator_compose.app.Strings.ACTION_DIVISION
+import com.example.calculator_compose.app.Strings.ACTION_MINUS
+import com.example.calculator_compose.app.Strings.ACTION_MULTIPLY
+import com.example.calculator_compose.app.Strings.ACTION_PERCENT
+import com.example.calculator_compose.app.Strings.ACTION_PLUS
+import com.example.calculator_compose.app.Strings.ACTION_POW
+import com.example.calculator_compose.app.Strings.LEFT_BRACKET
+import com.example.calculator_compose.app.Strings.NUMBER_E
+import com.example.calculator_compose.app.Strings.NUMBER_EIGHT
+import com.example.calculator_compose.app.Strings.NUMBER_FIVE
+import com.example.calculator_compose.app.Strings.NUMBER_FOUR
+import com.example.calculator_compose.app.Strings.NUMBER_NINE
+import com.example.calculator_compose.app.Strings.NUMBER_ONE
+import com.example.calculator_compose.app.Strings.NUMBER_SEVEN
+import com.example.calculator_compose.app.Strings.NUMBER_SIX
+import com.example.calculator_compose.app.Strings.NUMBER_THREE
+import com.example.calculator_compose.app.Strings.NUMBER_TWO
+import com.example.calculator_compose.app.Strings.NUMBER_ZERO
+import com.example.calculator_compose.app.Strings.POINT
+import com.example.calculator_compose.app.Strings.RIGHT_BRACKET
+import com.example.calculator_compose.app.Strings.TEXT_CLEAR_CALCULATION
+import com.example.calculator_compose.app.Strings.TEXT_EQUAL
 import com.example.calculator_compose.app.ThemeColors
 import com.example.calculator_compose.presentation.ui.screen.main.AdditionalButton
 import com.example.calculator_compose.presentation.ui.screen.main.PrimaryButton
@@ -102,7 +124,7 @@ fun AdditionalScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F),
-                    text = "2nd",
+                    text = Strings.TEXT_TWO_ND,
                     enabled = viewModel.enabledTwoND()
                 ) {
                     viewModel.twoND()
@@ -111,39 +133,39 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "x^y"
-                ) { viewModel.actionPress("^") }
+                        .weight(1F), text = Strings.TEXT_ACTION_POW
+                ) { viewModel.actionPress(ACTION_POW) }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "√"
+                        .weight(1F), text = Strings.ACTION_SQUARE_ROOT
                 ) { viewModel.squareRootPress() }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "X!"
+                        .weight(1F), text = Strings.TEXT_FACTORIAL
                 ) { viewModel.factorialPress() }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "1/x"
+                        .weight(1F), text = Strings.TEXT_POW_MINUS_ONE
                 ) {
-                    viewModel.actionPress("^")
+                    viewModel.actionPress(ACTION_POW)
                     viewModel.leftBracket()
-                    viewModel.numberPress("0")
-                    viewModel.actionPress("-")
-                    viewModel.numberPress("1")
+                    viewModel.numberPress(NUMBER_ZERO)
+                    viewModel.actionPress(ACTION_MINUS)
+                    viewModel.numberPress(NUMBER_ONE)
                     viewModel.rightBracket()
                 }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "π"
-                ) { viewModel.letterNumPress("π") }
+                        .weight(1F), text = Strings.NUMBER_P
+                ) { viewModel.letterNumPress(Strings.NUMBER_P) }
 
                 Button(
                     onClick = { viewModel.navigationToAdditional(navController = navController) },
@@ -177,38 +199,39 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = Strings.ACTION_LG.dropLast(1)
+                        .weight(1F),
+                    text = Strings.ACTION_LG.dropLast(1)
                 ) { viewModel.trigonometricPress(Strings.ACTION_LG) }
 
                 SecondaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "C"
+                        .weight(1F), text = TEXT_CLEAR_CALCULATION
                 ) { viewModel.exampleClear() }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "7"
-                ) { viewModel.numberPress("7") }
+                        .weight(1F), text = NUMBER_SEVEN
+                ) { viewModel.numberPress(NUMBER_SEVEN) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "4"
-                ) { viewModel.numberPress("4") }
+                        .weight(1F), text = NUMBER_FOUR
+                ) { viewModel.numberPress(NUMBER_FOUR) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "1"
-                ) { viewModel.numberPress("1") }
+                        .weight(1F), text = NUMBER_ONE
+                ) { viewModel.numberPress(NUMBER_ONE) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "e"
-                ) { viewModel.letterNumPress("e") }
+                        .weight(1F), text = NUMBER_E
+                ) { viewModel.letterNumPress(NUMBER_E) }
             }
 
             Column(
@@ -226,7 +249,8 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = Strings.ACTION_LN.dropLast(1)
+                        .weight(1F),
+                    text = Strings.ACTION_LN.dropLast(1)
                 ) { viewModel.trigonometricPress(Strings.ACTION_LN) }
 
                 Button(
@@ -247,25 +271,25 @@ fun AdditionalScreen(
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "8"
-                ) { viewModel.numberPress("8") }
+                        .weight(1F), text = NUMBER_EIGHT
+                ) { viewModel.numberPress(NUMBER_EIGHT) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "5"
-                ) { viewModel.numberPress("5") }
+                        .weight(1F), text = NUMBER_FIVE
+                ) { viewModel.numberPress(NUMBER_FIVE) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "2"
-                ) { viewModel.numberPress("2") }
+                        .weight(1F), text = NUMBER_TWO
+                ) { viewModel.numberPress(NUMBER_TWO) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "0"
+                        .weight(1F), text = NUMBER_ZERO
                 ) { viewModel.zeroPress() }
             }
 
@@ -284,37 +308,37 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "("
+                        .weight(1F), text = LEFT_BRACKET
                 ) { viewModel.leftBracket() }
 
                 SecondaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "%"
-                ) { viewModel.actionPress("%") }
+                        .weight(1F), text = ACTION_PERCENT
+                ) { viewModel.actionPress(ACTION_PERCENT) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "9"
-                ) { viewModel.numberPress("9") }
+                        .weight(1F), text = NUMBER_NINE
+                ) { viewModel.numberPress(NUMBER_NINE) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "6"
-                ) { viewModel.numberPress("6") }
+                        .weight(1F), text = NUMBER_SIX
+                ) { viewModel.numberPress(NUMBER_SIX) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "3"
-                ) { viewModel.numberPress("3") }
+                        .weight(1F), text = NUMBER_THREE
+                ) { viewModel.numberPress(NUMBER_THREE) }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = "."
+                        .weight(1F), text = POINT
                 ) { viewModel.comaPress() }
             }
 
@@ -333,37 +357,37 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = ")"
+                        .weight(1F), text = RIGHT_BRACKET
                 ) { viewModel.rightBracket() }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "/"
-                ) { viewModel.actionPress("/") }
+                        .weight(1F), ACTION_DIVISION
+                ) { viewModel.actionPress(ACTION_DIVISION) }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "*"
-                ) { viewModel.actionPress("*") }
+                        .weight(1F), ACTION_MULTIPLY
+                ) { viewModel.actionPress(ACTION_MULTIPLY) }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "-"
-                ) { viewModel.actionPress("-") }
+                        .weight(1F), ACTION_MINUS
+                ) { viewModel.actionPress(ACTION_MINUS) }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "+"
-                ) { viewModel.actionPress("+") }
+                        .weight(1F), ACTION_PLUS
+                ) { viewModel.actionPress(ACTION_PLUS) }
 
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F), "="
+                        .weight(1F), TEXT_EQUAL
                 ) { viewModel.equalPress() }
             }
 

@@ -1,6 +1,25 @@
 package com.example.calculator_compose.domain.calculation
 
 import com.example.calculator_compose.app.Strings
+import com.example.calculator_compose.app.Strings.ACTION_FACTORIAL
+import com.example.calculator_compose.app.Strings.ACTION_MINUS
+import com.example.calculator_compose.app.Strings.CONST_NUMBER_E
+import com.example.calculator_compose.app.Strings.CONST_NUMBER_PI
+import com.example.calculator_compose.app.Strings.EMPTY
+import com.example.calculator_compose.app.Strings.LEFT_BRACKET
+import com.example.calculator_compose.app.Strings.NUMBER_EIGHT
+import com.example.calculator_compose.app.Strings.NUMBER_FIVE
+import com.example.calculator_compose.app.Strings.NUMBER_FOUR
+import com.example.calculator_compose.app.Strings.NUMBER_NINE
+import com.example.calculator_compose.app.Strings.NUMBER_ONE
+import com.example.calculator_compose.app.Strings.NUMBER_SEVEN
+import com.example.calculator_compose.app.Strings.NUMBER_SIX
+import com.example.calculator_compose.app.Strings.NUMBER_THREE
+import com.example.calculator_compose.app.Strings.NUMBER_TWO
+import com.example.calculator_compose.app.Strings.NUMBER_ZERO
+import com.example.calculator_compose.app.Strings.POINT
+import com.example.calculator_compose.app.Strings.RIGHT_BRACKET
+import com.example.calculator_compose.app.Strings.SPACE
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
 import com.example.calculator_compose.domain.model.PresentationValues
 import javax.inject.Inject
@@ -22,7 +41,7 @@ interface Result {
 
         override fun renewal(example: String, operation: String, radians: String): String {
             var finalExample =
-                example.replace(component.pi, "3.14159265").replace(component.e, "2.71828183")
+                example.replace(component.pi, CONST_NUMBER_PI).replace(component.e, CONST_NUMBER_E)
             val data = PresentationValues(calculation = finalExample, action = operation)
             val values = mapper.map(data)
 
@@ -30,17 +49,17 @@ interface Result {
             var action = values.action
 
             if (strNumbers.isEmpty()) {
-                return "0"
+                return NUMBER_ZERO
             }
 
-            if (finalExample.first().toString() == "-") {
+            if (finalExample.first().toString() == ACTION_MINUS) {
                 strNumbers[0] = (-strNumbers[0].toDouble()).toString()
                 action.removeFirst()
             }
 
             if (action.isNotEmpty() && strNumbers.isNotEmpty()) {
-                if (strNumbers[0] == "0" && action[0] == "!") {
-                    strNumbers[0] = "1"
+                if (strNumbers[0] == NUMBER_ZERO && action[0] == ACTION_FACTORIAL) {
+                    strNumbers[0] = NUMBER_ONE
                     action.removeFirst()
                 }
             }
@@ -65,8 +84,8 @@ interface Result {
 
                 result = priority.secondPriority(text, num, isRadians)
 
-                return if (result.toString().last().toString() == "0" && result.toString()
-                        .contains(".")
+                return if (result.toString().last().toString() == NUMBER_ZERO && result.toString()
+                        .contains(POINT)
                 ) {
                     result.roundToInt().toString()
                 } else {
@@ -76,7 +95,7 @@ interface Result {
 
             while (!component.numbers.contains(
                     finalExample.last().toString()
-                ) && finalExample.last().toString() != ")"
+                ) && finalExample.last().toString() != RIGHT_BRACKET
             ) {
                 action.removeLast()
 
@@ -102,45 +121,61 @@ interface Result {
 
             while (action.isNotEmpty()) {
                 if (action.any { component.brackets.contains(it) }) {
-                    val index = exam.indexOf("(")
+                    val index = exam.indexOf(LEFT_BRACKET)
                     var index1 = exam.length
 
-                    if (action.contains(")")) {
-                        index1 = exam.indexOf(")")
+                    if (action.contains(RIGHT_BRACKET)) {
+                        index1 = exam.indexOf(RIGHT_BRACKET)
                     }
 
                     val newExample = exam.split("").subList(index + 2, index1 + 1).joinToString("")
 
                     val newOperation = newExample.split(
-                        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "(", ")", ".", " "
-                    ).joinToString("")
+                        NUMBER_ZERO,
+                        NUMBER_ONE,
+                        NUMBER_TWO,
+                        NUMBER_THREE,
+                        NUMBER_FOUR,
+                        NUMBER_FIVE,
+                        NUMBER_SIX,
+                        NUMBER_SEVEN,
+                        NUMBER_EIGHT,
+                        NUMBER_NINE,
+                        LEFT_BRACKET,
+                        RIGHT_BRACKET,
+                        POINT,
+                        SPACE
+                    ).joinToString(EMPTY)
 
-                    if (action.reversed().indexOf("(") - action.reversed().indexOf(")") != 1) {
-                        if (action.indexOf("(") != 0 && component.actionWithOneNumber.contains(
-                                action[action.indexOf("(") - 1]
+                    if (action.reversed().indexOf(LEFT_BRACKET) - action.reversed().indexOf(
+                            RIGHT_BRACKET
+                        ) != 1
+                    ) {
+                        if (action.indexOf(LEFT_BRACKET) != 0 && component.actionWithOneNumber.contains(
+                                action[action.indexOf(LEFT_BRACKET) - 1]
                             ) || component.actionWithOneNumber.contains(action[0])
                         ) {
-                            numeric[action.indexOf("(") - 1] = renewal(
+                            numeric[action.indexOf(LEFT_BRACKET) - 1] = renewal(
                                 example = newExample, operation = newOperation, radians = radians
                             ).toDouble()
 
                         } else {
-                            numeric[action.indexOf("(")] = renewal(
+                            numeric[action.indexOf(LEFT_BRACKET)] = renewal(
                                 example = newExample, operation = newOperation, radians = radians
                             ).toDouble()
                         }
                     }
 
-                    if (action.indexOf(")") == action.size || action.indexOf(")") == -1) {
-                        action = (action.subList(0, action.indexOf("(")))
-                        exam = exam.substring(0, exam.indexOf("("))
+                    if (action.indexOf(RIGHT_BRACKET) == action.size || action.indexOf(RIGHT_BRACKET) == -1) {
+                        action = (action.subList(0, action.indexOf(LEFT_BRACKET)))
+                        exam = exam.substring(0, exam.indexOf(LEFT_BRACKET))
                     } else {
-                        action = (action.subList(0, action.indexOf("(")) + action.subList(
-                            action.indexOf(")") + 1, action.size
+                        action = (action.subList(0, action.indexOf(LEFT_BRACKET)) + action.subList(
+                            action.indexOf(RIGHT_BRACKET) + 1, action.size
                         )).toMutableList()
 
-                        exam = exam.substring(0, exam.indexOf("(")) + exam.substring(
-                            exam.indexOf(")") + 1, exam.length
+                        exam = exam.substring(0, exam.indexOf(LEFT_BRACKET)) + exam.substring(
+                            exam.indexOf(RIGHT_BRACKET) + 1, exam.length
                         )
                     }
 
@@ -232,8 +267,8 @@ interface Result {
 
             result = numeric[0]
 
-            return if (result.toString().last().toString() == "0" && result.toString()
-                    .contains(".")
+            return if (result.toString().last().toString() == NUMBER_ZERO && result.toString()
+                    .contains(POINT)
             ) {
                 result.roundToInt().toString()
             } else {

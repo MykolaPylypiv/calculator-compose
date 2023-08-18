@@ -34,7 +34,7 @@ fun DarkLightThemeButton(
 }
 
 @Composable
-fun SectionSelectColor(section: String) {
+fun SectionSelectColor(section: String, viewModel: SettingsThemeViewModel) {
     val colors = DefaultColorHex()
 
     val color1 = remember { mutableStateOf(ThemeColors.primaryButton) }
@@ -55,7 +55,7 @@ fun SectionSelectColor(section: String) {
                     color4.value = ThemeColors.primaryButton
                     color5.value = ThemeColors.primaryButton
 
-                    section(section = section, color = selectColor)
+                    section(section = section, color = selectColor, viewModel = viewModel)
 
                 } else color1.value = ThemeColors.primaryButton
             },
@@ -76,7 +76,7 @@ fun SectionSelectColor(section: String) {
                     color4.value = ThemeColors.primaryButton
                     color5.value = ThemeColors.primaryButton
 
-                    section(section = section, color = selectColor)
+                    section(section = section, color = selectColor, viewModel = viewModel)
 
                 } else color2.value = ThemeColors.primaryButton
             },
@@ -97,7 +97,7 @@ fun SectionSelectColor(section: String) {
                     color4.value = ThemeColors.primaryButton
                     color5.value = ThemeColors.primaryButton
 
-                    section(section = section, color = selectColor)
+                    section(section = section, color = selectColor, viewModel = viewModel)
 
                 } else color3.value = ThemeColors.primaryButton
             },
@@ -118,7 +118,7 @@ fun SectionSelectColor(section: String) {
                     color4.value = ThemeColors.secondaryButton
                     color5.value = ThemeColors.primaryButton
 
-                    section(section = section, color = selectColor)
+                    section(section = section, color = selectColor, viewModel = viewModel)
 
                 } else color4.value = ThemeColors.primaryButton
             },
@@ -139,7 +139,7 @@ fun SectionSelectColor(section: String) {
                     color4.value = ThemeColors.primaryButton
                     color5.value = ThemeColors.secondaryButton
 
-                    section(section = section, color = selectColor)
+                    section(section = section, color = selectColor, viewModel = viewModel)
 
                 } else color5.value = ThemeColors.primaryButton
             },
@@ -151,14 +151,14 @@ fun SectionSelectColor(section: String) {
     }
 }
 
-fun section(color: Long, section: String) {
+fun section(color: Long, section: String, viewModel: SettingsThemeViewModel) {
     when (section) {
-        "TextColor" -> textColor = color
-        "SecondaryTextColor" -> secondaryText = color
-        "TertiaryTextColor" -> tertiaryText = color
-        "AdditionalTextColor" -> additionalText = color
-        "ButtonColor" -> primaryButton = color
-        "SecondaryButtonColor" -> secondaryButton = color
-        "BackgroundColor" -> backgroundColor = color
+        "TextColor" -> viewModel.textColor = color
+        "SecondaryTextColor" -> viewModel.secondaryText = color
+        "TertiaryTextColor" -> viewModel.tertiaryText = color
+        "AdditionalTextColor" -> viewModel.additionalText = color
+        "ButtonColor" -> viewModel.primaryButton = color
+        "SecondaryButtonColor" -> viewModel.secondaryButton = color
+        "BackgroundColor" -> viewModel.backgroundColor = color
     }
 }

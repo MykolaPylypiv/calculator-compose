@@ -78,8 +78,8 @@ class MainViewModel @Inject constructor(
 
     fun exampleClear() {
         example.value = Strings.START_EXAMPLE
-        action = ""
-        result.value = "0"
+        action = Strings.EMPTY
+        result.value = Strings.NUMBER_ZERO
     }
 
     fun navigationToSettingsTheme(navController: NavController) {
@@ -93,6 +93,12 @@ class MainViewModel @Inject constructor(
                 calculation = example.value.toString(), action = action
             )
         )
+    }
+
+    fun resetHistory () {
+        viewModelScope.launch(dispatcher) {
+            saveHistory("")
+        }
     }
 
     private fun saveHistory(history: String) = viewModelScope.launch(dispatcher) {

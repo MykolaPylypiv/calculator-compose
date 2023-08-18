@@ -1,8 +1,11 @@
 package com.example.calculator_compose.domain.model
 
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.graphics.toColorLong
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.calculator_compose.presentation.ui.theme.darkPalette
 
 @Entity(tableName = "colorTheme")
 data class ColorTheme(
@@ -20,11 +23,22 @@ val LightColorTheme = ColorTheme(
     uid = 0,
     primaryText = -0xFFFFFF,
     secondaryText = 0xFFfe5e00,
-    primaryButton = 0xffffff,
+    primaryButton = 0xFFFFFF,
     secondaryButton = 0xFF1c1c1c,
     tertiaryText = 0xFF0591b4,
     historyColor = -0x808080,
-    primaryBackground = 0xffffff,
+    primaryBackground = 0xFFFFFF,
+)
+
+val DarkColorTheme = ColorTheme(
+    uid = 0,
+    primaryText = 0xFFFFFFFFF,
+    secondaryText = 0xFFfe5e00,
+    primaryButton = -0xFFFFFF,
+    secondaryButton = 0xFF1c1c1c,
+    tertiaryText = 0xFF0591b4,
+    historyColor = -0x808080,
+    primaryBackground = -0xFFFFFF,
 )
 
 data class DefaultColorHex(
@@ -32,5 +46,6 @@ data class DefaultColorHex(
     val white: Long = 0xffffff,
     val lightGray: Long = 0x33333333,
     val gray: Long = -0x808080,
-    val darkGray: Long = -0x797979,
+    val darkGray: Long = -0x797979
 )
+
