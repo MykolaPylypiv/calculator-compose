@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.Color
 data class Colors(
     val primaryBackground: Color,
     val primaryButton: Color,
-    val secondaryButton: Color,
     val primaryText: Color,
     val secondaryText: Color,
     val tertiaryText: Color,
@@ -15,7 +14,6 @@ data class Colors(
 val darkPalette = Colors(
     primaryBackground = Color.Black,
     primaryButton = Color.Black,
-    secondaryButton = Color(0xFF1c1c1c),
     primaryText = Color.White,
     secondaryText = Color(0xFFfe5e00),
     tertiaryText = Color(0xFF0591b4),
@@ -26,7 +24,6 @@ fun defaultTheme(
     primaryText: Color,
     secondaryText: Color,
     primaryButton: Color,
-    secondaryButton: Color,
     tertiaryText: Color,
     additionalText: Color,
     primaryBackground: Color,
@@ -34,7 +31,6 @@ fun defaultTheme(
     primaryText = primaryText,
     secondaryText = secondaryText,
     primaryButton = primaryButton,
-    secondaryButton = secondaryButton,
     tertiaryText = tertiaryText,
     additionalText = additionalText,
     primaryBackground = primaryBackground,

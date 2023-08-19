@@ -1,14 +1,11 @@
 package com.example.calculator_compose.presentation.ui.screen.main
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.rounded.Brush
-import androidx.compose.material.icons.rounded.History
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -16,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,12 +37,10 @@ import com.example.calculator_compose.app.Strings.POINT
 import com.example.calculator_compose.app.Strings.TEXT_CLEAR_CALCULATION
 import com.example.calculator_compose.app.Strings.TEXT_EQUAL
 import com.example.calculator_compose.app.colors
-import com.example.calculator_compose.app.language
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     viewModel: MainViewModel, navController: NavController
@@ -63,9 +57,6 @@ fun MainBody(
     val example = viewModel.example.observeAsState()
     val result = viewModel.result.observeAsState()
 
-    val changeLanguage = remember { mutableStateOf(viewModel.textChangeLanguage()) }
-    val deleteHistoryDialog = remember { mutableStateOf(false) }
-
     val scroll = ScrollState(Int.MAX_VALUE)
 
     val context = LocalContext.current
@@ -78,45 +69,10 @@ fun MainBody(
             .fillMaxSize()
             .background(color = colors.primaryBackground),
         topBar = {
-            TopAppBar(backgroundColor = colors.primaryBackground, elevation = 1.dp) {
-                Spacer(modifier = Modifier.weight(1F))
-
-                TextButton(
-                    onClick = {
-                        changeLanguage.value = viewModel.changeText(changeLanguage.value)
-                        viewModel.updateLanguage(changeLanguage.value)
-                        Toast.makeText(context, language.toastChangeLanguage, Toast.LENGTH_LONG)
-                            .show()
-                    }, colors = ButtonDefaults.buttonColors(
-                        backgroundColor = colors.primaryBackground,
-                        contentColor = colors.secondaryText
-                    )
-                ) {
-                    Text(text = changeLanguage.value)
-                }
-
-                IconButton(onClick = {
-                    deleteHistoryDialog.value = true
-                }) {
-                    Icon(
-                        Icons.Rounded.History,
-                        contentDescription = "Delete history",
-                        tint = colors.secondaryText
-                    )
-                }
-
-                IconButton(onClick = {
-                    viewModel.navigationToSettingsTheme(navController = navController)
-                }) {
-                    Icon(
-                        Icons.Rounded.Brush,
-                        contentDescription = "Change theme",
-                        tint = colors.secondaryText
-                    )
-                }
-            }
-        }
-    ) {
+            MainAppBar(
+                viewModel = viewModel, navController = navController, context = context
+            )
+        }) {
         Column(modifier = Modifier.background(color = colors.primaryBackground)) {
             Row(
                 modifier = Modifier
@@ -362,47 +318,6 @@ fun MainBody(
                     }
                 }
             }
-        }
-
-        if (deleteHistoryDialog.value) {
-            AlertDialog(onDismissRequest = {
-                deleteHistoryDialog.value = false
-            }, title = {
-                Text(fontSize = 22.sp, text = language.deleteHistoryDialog)
-            }, text = {}, buttons = {
-                Row(
-                    modifier = Modifier.background(color = Color.DarkGray)
-                ) {
-                    TextButton(
-                        onClick = {
-                            deleteHistoryDialog.value = false
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
-                        modifier = Modifier.weight(1F)
-                    ) {
-                        Text(
-                            text = language.dialogDeleteHistoryDismiss,
-                            fontSize = 22.sp,
-                            color = colors.primaryText,
-                        )
-                    }
-
-                    TextButton(
-                        onClick = {
-                            deleteHistoryDialog.value = false
-                            viewModel.resetHistory()
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
-                        modifier = Modifier.weight(1F)
-                    ) {
-                        Text(
-                            text = language.dialogDeleteHistoryAccept,
-                            fontSize = 22.sp,
-                            color = colors.primaryText,
-                        )
-                    }
-                }
-            })
         }
     }
 }

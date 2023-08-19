@@ -9,10 +9,9 @@ data class ColorTheme(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "primaryText") var primaryText: Long = 0x000000,
     @ColumnInfo(name = "secondaryText") var secondaryText: Long = 0xFFfe5e00,
-    @ColumnInfo(name = "primaryButton") var primaryButton: Long = 0xFFFFF,
-    @ColumnInfo(name = "secondaryButton") var secondaryButton: Long = 0xFF1c1c1c,
     @ColumnInfo(name = "tertiaryText") var tertiaryText: Long = 0xFF0591b4,
-    @ColumnInfo(name = "historyColor") var historyColor: Long = 0x000000,
+    @ColumnInfo(name = "historyColor") var additionalTextColor: Long = 0x000000,
+    @ColumnInfo(name = "primaryButton") var primaryButton: Long = 0xFFFFF,
     @ColumnInfo(name = "primaryBackground") var primaryBackground: Long = 0xFFFFF,
 )
 
@@ -21,9 +20,8 @@ val LightColorTheme = ColorTheme(
     primaryText = -0xFFFFFF,
     secondaryText = 0xFFfe5e00,
     primaryButton = 0xFFFFFF,
-    secondaryButton = 0xFF1c1c1c,
     tertiaryText = 0xFF0591b4,
-    historyColor = -0x808080,
+    additionalTextColor = -0x808080,
     primaryBackground = 0xFFFFFF,
 )
 
@@ -32,9 +30,8 @@ val DarkColorTheme = ColorTheme(
     primaryText = 0xFFFFFFFFF,
     secondaryText = 0xFFfe5e00,
     primaryButton = -0xFFFFFF,
-    secondaryButton = 0xFF1c1c1c,
     tertiaryText = 0xFF0591b4,
-    historyColor = -0x808080,
+    additionalTextColor = -0x808080,
     primaryBackground = -0xFFFFFF,
 )
 

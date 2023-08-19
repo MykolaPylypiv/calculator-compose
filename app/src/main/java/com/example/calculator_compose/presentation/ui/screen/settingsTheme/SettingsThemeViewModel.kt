@@ -41,21 +41,15 @@ class SettingsThemeViewModel @Inject constructor(
     }
 
     var additionalText = try {
-        colors.historyColor
+        colors.additionalTextColor
     } catch (e: NullPointerException) {
-        LightColorTheme.historyColor
+        LightColorTheme.additionalTextColor
     }
 
     var primaryButton = try {
         colors.primaryButton
     } catch (e: NullPointerException) {
         LightColorTheme.primaryButton
-    }
-
-    var secondaryButton = try {
-        colors.secondaryButton
-    } catch (e: NullPointerException) {
-        LightColorTheme.secondaryButton
     }
 
     var backgroundColor = try {

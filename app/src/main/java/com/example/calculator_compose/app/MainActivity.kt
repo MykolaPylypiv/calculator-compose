@@ -44,9 +44,8 @@ class MainActivity : ComponentActivity() {
                     primaryText = Color(themeColors.primaryText),
                     secondaryText = Color(themeColors.secondaryText),
                     primaryButton = Color(themeColors.primaryButton),
-                    secondaryButton = Color(themeColors.secondaryButton),
                     tertiaryText = Color(themeColors.tertiaryText),
-                    additionalText = Color(themeColors.historyColor),
+                    additionalText = Color(themeColors.additionalTextColor),
                     primaryBackground = Color(themeColors.primaryBackground),
                 )
             } catch (e: NullPointerException) {
