@@ -1,11 +1,8 @@
 package com.example.calculator_compose.domain.model
 
-import androidx.compose.ui.graphics.toArgb
-import androidx.core.graphics.toColorLong
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.calculator_compose.presentation.ui.theme.darkPalette
 
 @Entity(tableName = "colorTheme")
 data class ColorTheme(

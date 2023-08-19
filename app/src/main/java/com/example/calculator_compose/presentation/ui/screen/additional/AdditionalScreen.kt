@@ -43,7 +43,7 @@ import com.example.calculator_compose.app.Strings.POINT
 import com.example.calculator_compose.app.Strings.RIGHT_BRACKET
 import com.example.calculator_compose.app.Strings.TEXT_CLEAR_CALCULATION
 import com.example.calculator_compose.app.Strings.TEXT_EQUAL
-import com.example.calculator_compose.app.ThemeColors
+import com.example.calculator_compose.app.colors
 import com.example.calculator_compose.presentation.ui.screen.main.AdditionalButton
 import com.example.calculator_compose.presentation.ui.screen.main.PrimaryButton
 import com.example.calculator_compose.presentation.ui.screen.main.SecondaryButton
@@ -62,8 +62,6 @@ fun AdditionalScreen(
     val degreesEnabled = viewModel.degreesEnabled.observeAsState()
 
     val sinText = viewModel.sinText.observeAsState()
-
-    val colors = ThemeColors
 
     Column(
         modifier = Modifier

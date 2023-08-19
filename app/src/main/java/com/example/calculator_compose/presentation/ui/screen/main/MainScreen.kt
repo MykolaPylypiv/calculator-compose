@@ -1,6 +1,7 @@
 package com.example.calculator_compose.presentation.ui.screen.main
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -13,6 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,12 +35,10 @@ import com.example.calculator_compose.app.Strings.NUMBER_THREE
 import com.example.calculator_compose.app.Strings.NUMBER_TWO
 import com.example.calculator_compose.app.Strings.NUMBER_ZERO
 import com.example.calculator_compose.app.Strings.POINT
-import com.example.calculator_compose.app.Strings.TEXT_ACCEPT_BUTTON
 import com.example.calculator_compose.app.Strings.TEXT_CLEAR_CALCULATION
-import com.example.calculator_compose.app.Strings.TEXT_DELETE_HISTORY_DIALOG
-import com.example.calculator_compose.app.Strings.TEXT_DISMISS_BUTTON
 import com.example.calculator_compose.app.Strings.TEXT_EQUAL
-import com.example.calculator_compose.app.ThemeColors
+import com.example.calculator_compose.app.colors
+import com.example.calculator_compose.app.language
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -62,11 +62,12 @@ fun MainBody(
     val example = viewModel.example.observeAsState()
     val result = viewModel.result.observeAsState()
 
+    val changeLanguage = remember { mutableStateOf(viewModel.textChangeLanguage()) }
+    val deleteHistoryDialog = remember { mutableStateOf(false) }
+
     val scroll = ScrollState(Int.MAX_VALUE)
 
-    val colors = ThemeColors
-
-    val deleteHistoryDialog = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -75,6 +76,18 @@ fun MainBody(
     ) {
         TopAppBar(backgroundColor = colors.primaryBackground) {
             Spacer(modifier = Modifier.weight(1F))
+
+            Button(
+                onClick = {
+                    changeLanguage.value = viewModel.changeText(changeLanguage.value)
+                    viewModel.updateLanguage(changeLanguage.value)
+                    Toast.makeText(context, language.toastChangeLanguage, Toast.LENGTH_LONG).show()
+                }, colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colors.primaryBackground, contentColor = colors.secondaryText
+                )
+            ) {
+                Text(text = changeLanguage.value)
+            }
 
             IconButton(onClick = {
                 deleteHistoryDialog.value = true
@@ -316,7 +329,7 @@ fun MainBody(
             AlertDialog(onDismissRequest = {
                 deleteHistoryDialog.value = false
             }, title = {
-                Text(fontSize = 22.sp, text = TEXT_DELETE_HISTORY_DIALOG)
+                Text(fontSize = 22.sp, text = language.deleteHistoryDialog)
             }, text = {}, buttons = {
                 Row(
                     modifier = Modifier.background(color = Color.DarkGray)
@@ -329,7 +342,7 @@ fun MainBody(
                         modifier = Modifier.weight(1F)
                     ) {
                         Text(
-                            text = TEXT_DISMISS_BUTTON,
+                            text = language.dismissButton,
                             fontSize = 22.sp,
                             color = colors.primaryText,
                         )
@@ -344,7 +357,7 @@ fun MainBody(
                         modifier = Modifier.weight(1F)
                     ) {
                         Text(
-                            text = TEXT_ACCEPT_BUTTON,
+                            text = language.acceptButton,
                             fontSize = 22.sp,
                             color = colors.primaryText,
                         )

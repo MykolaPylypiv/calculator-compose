@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import com.example.calculator_compose.app.ThemeColors
+import com.example.calculator_compose.app.colors
 
 @Composable
 fun DefaultCalcButton(
@@ -34,7 +34,7 @@ fun DefaultCalcButton(
 
 @Composable
 fun PrimaryButton(modifier: Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
-    val colors = ThemeColors
+    val colors = colors
 
     DefaultCalcButton(
         modifier = modifier,
@@ -48,7 +48,7 @@ fun PrimaryButton(modifier: Modifier, text: String, enabled: Boolean = true, onC
 
 @Composable
 fun SecondaryButton(modifier: Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
-    val colors = ThemeColors
+    val colors = colors
 
     DefaultCalcButton(
         modifier = modifier,
@@ -62,7 +62,7 @@ fun SecondaryButton(modifier: Modifier, text: String, enabled: Boolean = true, o
 
 @Composable
 fun TertiaryButton(modifier: Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
-    val colors = ThemeColors
+    val colors = colors
 
     DefaultCalcButton(
         modifier = modifier,
@@ -76,7 +76,7 @@ fun TertiaryButton(modifier: Modifier, text: String, enabled: Boolean = true, on
 
 @Composable
 fun AdditionalButton(modifier: Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
-    val colors = ThemeColors
+    val colors = colors
 
     DefaultCalcButton(
         modifier = modifier,

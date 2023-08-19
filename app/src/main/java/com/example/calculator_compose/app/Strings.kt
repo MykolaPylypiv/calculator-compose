@@ -62,31 +62,6 @@ object Strings {
     const val TEXT_POW_MINUS_ONE = "1/x"
     const val TEXT_CLEAR_CALCULATION = "C"
     const val TEXT_EQUAL = "="
-
-    const val TEXT_DELETE_HISTORY_DIALOG = "Are you sure you want to delete the history ?"
-    const val TEXT_CHANGE_THEME_DIALOG = "Select a theme"
-
-    const val TEXT_DISMISS_BUTTON = "Cancel"
-    const val TEXT_ACCEPT_BUTTON = "Accept"
-
-    const val TEXT_TOP_BAR_SETTINGS_THEME = "Settings theme"
-
-    const val TEXT_COLOR = "Select text color"
-    const val TEXT_SECONDARY_COLOR = "Select secondary text color"
-    const val TEXT_TERTIARY_COLOR = "Select tertiary text color"
-    const val TEXT_BUTTON_COLOR = "Select button color"
-    const val TEXT_SECONDARY_BUTTON_COLOR = "Select secondary button color"
-    const val TEXT_HISTORY_COLOR = "Select history color"
-    const val TEXT_BACKGROUND_COLOR = "Select background color"
-
-    const val TEXT_DARK_BUTTON = "Dark"
-    const val TEXT_LIGHT_BUTTON = "Light"
-
-    const val TEXT_MORE_BUTTON = "More..."
-
-    const val TEXT_WHITE_COLOR_BUTTON = "White"
-    const val TEXT_GRAY_BUTTON = "Gray"
-    const val TEXT_BLACK_BUTTON = "Black"
 }
 
 object Exceptions {

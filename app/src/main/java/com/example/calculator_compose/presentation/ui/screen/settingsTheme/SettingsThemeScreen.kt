@@ -1,5 +1,7 @@
 package com.example.calculator_compose.presentation.ui.screen.settingsTheme
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,28 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.calculator_compose.app.Strings.EMPTY
-import com.example.calculator_compose.app.Strings.TEXT_ACCEPT_BUTTON
-import com.example.calculator_compose.app.Strings.TEXT_BACKGROUND_COLOR
-import com.example.calculator_compose.app.Strings.TEXT_BLACK_BUTTON
-import com.example.calculator_compose.app.Strings.TEXT_BUTTON_COLOR
-import com.example.calculator_compose.app.Strings.TEXT_CHANGE_THEME_DIALOG
-import com.example.calculator_compose.app.Strings.TEXT_COLOR
-import com.example.calculator_compose.app.Strings.TEXT_DARK_BUTTON
-import com.example.calculator_compose.app.Strings.TEXT_GRAY_BUTTON
-import com.example.calculator_compose.app.Strings.TEXT_HISTORY_COLOR
-import com.example.calculator_compose.app.Strings.TEXT_LIGHT_BUTTON
-import com.example.calculator_compose.app.Strings.TEXT_MORE_BUTTON
-import com.example.calculator_compose.app.Strings.TEXT_SECONDARY_BUTTON_COLOR
-import com.example.calculator_compose.app.Strings.TEXT_SECONDARY_COLOR
-import com.example.calculator_compose.app.Strings.TEXT_TERTIARY_COLOR
-import com.example.calculator_compose.app.Strings.TEXT_TOP_BAR_SETTINGS_THEME
-import com.example.calculator_compose.app.Strings.TEXT_WHITE_COLOR_BUTTON
-import com.example.calculator_compose.app.ThemeColors
+import com.example.calculator_compose.app.colors
+import com.example.calculator_compose.app.language
 import com.example.calculator_compose.domain.model.ColorTheme
 import com.example.calculator_compose.domain.model.DarkColorTheme
 import com.example.calculator_compose.domain.model.LightColorTheme
@@ -49,13 +37,14 @@ fun SettingsThemeScreen(
     navController: NavController, viewModel: SettingsThemeViewModel
 ) {
     val controller = rememberColorPickerController()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = ThemeColors.primaryBackground)
+            .background(color = colors.primaryBackground)
     ) {
-        TopAppBar(backgroundColor = ThemeColors.primaryBackground) {
+        TopAppBar(backgroundColor = colors.primaryBackground) {
             SettingsThemeTopBar(viewModel = viewModel, navController = navController)
         }
 
@@ -76,7 +65,13 @@ fun SettingsThemeScreen(
 
             item { BackgroundColor(controller = controller, viewModel = viewModel) }
 
-            item { AcceptItem(viewModel = viewModel, navController = navController) }
+            item {
+                AcceptItem(
+                    viewModel = viewModel,
+                    navController = navController,
+                    context = context
+                )
+            }
         })
     }
 }
@@ -89,22 +84,22 @@ fun SettingsThemeTopBar(viewModel: SettingsThemeViewModel, navController: NavCon
         Icon(
             Icons.Filled.ArrowBackIosNew,
             contentDescription = "Change theme",
-            tint = ThemeColors.secondaryText
+            tint = colors.secondaryText
         )
     }
 
     Text(
-        text = TEXT_TOP_BAR_SETTINGS_THEME,
+        text = language.topBarSettingsTheme,
         fontSize = 18.sp,
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
-        color = ThemeColors.primaryText
+        color = colors.primaryText
     )
 }
 
 @Composable
 fun DarkLightItem(viewModel: SettingsThemeViewModel, navController: NavController) {
-    val colors = ThemeColors
+    val colors = colors
 
     Row(
         Modifier
@@ -135,10 +130,10 @@ fun DarkLightItem(viewModel: SettingsThemeViewModel, navController: NavControlle
 fun TextColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = TEXT_COLOR,
+            text = language.textColor,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
-            color = ThemeColors.primaryText
+            color = colors.primaryText
         )
 
         SectionSelectColor(section = "TextColor", viewModel = viewModel)
@@ -149,10 +144,10 @@ fun TextColor(viewModel: SettingsThemeViewModel) {
 fun SecondaryTextColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = TEXT_SECONDARY_COLOR,
+            text = language.secondaryTextColor,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
-            color = ThemeColors.primaryText
+            color = colors.primaryText
         )
 
         SectionSelectColor(section = "SecondaryTextColor", viewModel = viewModel)
@@ -163,10 +158,10 @@ fun SecondaryTextColor(viewModel: SettingsThemeViewModel) {
 fun ButtonColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = TEXT_BUTTON_COLOR,
+            text = language.buttonColor,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
-            color = ThemeColors.primaryText
+            color = colors.primaryText
         )
 
         SectionSelectColor(section = "ButtonColor", viewModel = viewModel)
@@ -177,10 +172,10 @@ fun ButtonColor(viewModel: SettingsThemeViewModel) {
 fun SecondaryButtonColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = TEXT_SECONDARY_BUTTON_COLOR,
+            text = language.secondaryButtonColor,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
-            color = ThemeColors.primaryText
+            color = colors.primaryText
         )
 
         SectionSelectColor(section = "SecondaryButtonColor", viewModel = viewModel)
@@ -191,10 +186,10 @@ fun SecondaryButtonColor(viewModel: SettingsThemeViewModel) {
 fun TertiaryTextColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = TEXT_TERTIARY_COLOR,
+            text = language.tertiaryTextColor,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
-            color = ThemeColors.primaryText
+            color = colors.primaryText
         )
 
         SectionSelectColor(section = "TertiaryTextColor", viewModel = viewModel)
@@ -205,42 +200,42 @@ fun TertiaryTextColor(viewModel: SettingsThemeViewModel) {
 fun AdditionalTextColor(viewModel: SettingsThemeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = TEXT_HISTORY_COLOR,
+            text = language.historyColor,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
-            color = ThemeColors.primaryText
+            color = colors.primaryText
         )
 
-        val color1 = remember { mutableStateOf(ThemeColors.primaryButton) }
-        val color2 = remember { mutableStateOf(ThemeColors.primaryButton) }
+        val color1 = remember { mutableStateOf(colors.primaryButton) }
+        val color2 = remember { mutableStateOf(colors.primaryButton) }
 
         Row {
             Button(
                 onClick = {
-                    if (color1.value == ThemeColors.primaryButton) {
-                        color1.value = ThemeColors.secondaryButton
-                        color2.value = ThemeColors.primaryButton
+                    if (color1.value == colors.primaryButton) {
+                        color1.value = colors.secondaryButton
+                        color2.value = colors.primaryButton
                         viewModel.additionalText = -0x797979
-                    } else color1.value = ThemeColors.primaryButton
+                    } else color1.value = colors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color1.value)
             ) {
-                Text(text = TEXT_DARK_BUTTON, color = ThemeColors.primaryText)
+                Text(text = language.darkButton, color = colors.primaryText)
             }
 
             Button(
                 onClick = {
-                    if (color2.value == ThemeColors.primaryButton) {
-                        color1.value = ThemeColors.primaryButton
-                        color2.value = ThemeColors.secondaryButton
+                    if (color2.value == colors.primaryButton) {
+                        color1.value = colors.primaryButton
+                        color2.value = colors.secondaryButton
                         viewModel.additionalText = 0x33333333
-                    } else color2.value = ThemeColors.primaryButton
+                    } else color2.value = colors.primaryButton
                 },
                 modifier = Modifier.weight(1F),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color2.value)
             ) {
-                Text(text = TEXT_LIGHT_BUTTON, color = ThemeColors.primaryText)
+                Text(text = language.lightButton, color = colors.primaryText)
             }
         }
     }
@@ -248,151 +243,155 @@ fun AdditionalTextColor(viewModel: SettingsThemeViewModel) {
 
 @Composable
 fun BackgroundColor(controller: ColorPickerController, viewModel: SettingsThemeViewModel) {
-    val colorCustomTheme = remember { mutableStateOf(ThemeColors.primaryBackground) }
+    val colorCustomTheme = remember { mutableStateOf(colors.primaryBackground) }
     val changeThemeDialog = remember { mutableStateOf(false) }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = TEXT_BACKGROUND_COLOR,
+            text = language.backgroundColor,
             modifier = Modifier.padding(top = 35.dp, bottom = 15.dp),
             fontSize = 18.sp,
-            color = ThemeColors.primaryText
+            color = colors.primaryText
         )
 
-        val color1 = remember { mutableStateOf(ThemeColors.primaryButton) }
-        val color2 = remember { mutableStateOf(ThemeColors.primaryButton) }
-        val color3 = remember { mutableStateOf(ThemeColors.primaryButton) }
-        val color4 = remember { mutableStateOf(ThemeColors.primaryButton) }
-        val color5 = remember { mutableStateOf(ThemeColors.primaryButton) }
+        val color1 = remember { mutableStateOf(colors.primaryButton) }
+        val color2 = remember { mutableStateOf(colors.primaryButton) }
+        val color3 = remember { mutableStateOf(colors.primaryButton) }
+        val color4 = remember { mutableStateOf(colors.primaryButton) }
+        val color5 = remember { mutableStateOf(colors.primaryButton) }
 
-        Row {
-            Button(
-                onClick = {
-                    if (color1.value == ThemeColors.primaryButton) {
-                        color1.value = ThemeColors.secondaryButton
-                        color2.value = ThemeColors.primaryButton
-                        color3.value = ThemeColors.primaryButton
-                        color4.value = ThemeColors.primaryButton
-                        color5.value = ThemeColors.primaryButton
-                        colorCustomTheme.value = ThemeColors.primaryBackground
-                        viewModel.backgroundColor = -0xFFFFFF
-                    } else color1.value = ThemeColors.primaryButton
-                },
-                modifier = Modifier.weight(1F),
-                colors = ButtonDefaults.buttonColors(backgroundColor = color1.value)
-            ) {
-                Text(text = TEXT_BLACK_BUTTON, color = ThemeColors.primaryText)
+        Column {
+            Row {
+                Button(
+                    onClick = {
+                        if (color1.value == colors.primaryButton) {
+                            color1.value = colors.secondaryButton
+                            color2.value = colors.primaryButton
+                            color3.value = colors.primaryButton
+                            color4.value = colors.primaryButton
+                            color5.value = colors.primaryButton
+                            colorCustomTheme.value = colors.primaryBackground
+                            viewModel.backgroundColor = -0xFFFFFF
+                        } else color1.value = colors.primaryButton
+                    },
+                    modifier = Modifier.weight(1F),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = color1.value)
+                ) {
+                    Text(text = language.blackButton, color = colors.primaryText)
+                }
+
+                Button(
+                    onClick = {
+                        if (color3.value == colors.primaryButton) {
+                            color1.value = colors.primaryButton
+                            color2.value = colors.primaryButton
+                            color3.value = colors.secondaryButton
+                            color4.value = colors.primaryButton
+                            color5.value = colors.primaryButton
+                            colorCustomTheme.value = colors.primaryBackground
+                            viewModel.backgroundColor = -0x808080
+                        } else color3.value = colors.primaryButton
+                    },
+                    modifier = Modifier.weight(1F),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = color3.value)
+                ) {
+                    Text(text = language.grayButton, color = colors.primaryText)
+                }
+
+                Button(
+                    onClick = {
+                        if (color5.value == colors.primaryButton) {
+                            color1.value = colors.primaryButton
+                            color2.value = colors.primaryButton
+                            color3.value = colors.primaryButton
+                            color4.value = colors.primaryButton
+                            color5.value = colors.secondaryButton
+                            colorCustomTheme.value = colors.primaryBackground
+                            viewModel.backgroundColor = 0xffffff
+                        } else color5.value = colors.primaryButton
+                    },
+                    modifier = Modifier.weight(1F),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = color5.value)
+                ) {
+                    Text(text = language.whiteButton, color = colors.primaryText)
+                }
             }
 
-            Button(
-                onClick = {
-                    if (color2.value == ThemeColors.primaryButton) {
-                        color1.value = ThemeColors.primaryButton
-                        color2.value = ThemeColors.secondaryButton
-                        color3.value = ThemeColors.primaryButton
-                        color4.value = ThemeColors.primaryButton
-                        color5.value = ThemeColors.primaryButton
-                        colorCustomTheme.value = ThemeColors.primaryBackground
-                        viewModel.backgroundColor = -0x797979
-                    } else color2.value = ThemeColors.primaryButton
-                },
-                modifier = Modifier.weight(1F),
-                colors = ButtonDefaults.buttonColors(backgroundColor = color2.value)
-            ) {
-                Text(text = TEXT_DARK_BUTTON, color = ThemeColors.primaryText)
-            }
+            Spacer(modifier = Modifier.height(10.dp))
 
-            Button(
-                onClick = {
-                    if (color3.value == ThemeColors.primaryButton) {
-                        color1.value = ThemeColors.primaryButton
-                        color2.value = ThemeColors.primaryButton
-                        color3.value = ThemeColors.secondaryButton
-                        color4.value = ThemeColors.primaryButton
-                        color5.value = ThemeColors.primaryButton
-                        colorCustomTheme.value = ThemeColors.primaryBackground
-                        viewModel.backgroundColor = -0x808080
-                    } else color3.value = ThemeColors.primaryButton
-                },
-                modifier = Modifier.weight(1F),
-                colors = ButtonDefaults.buttonColors(backgroundColor = color3.value)
-            ) {
-                Text(text = TEXT_GRAY_BUTTON, color = ThemeColors.primaryText)
-            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Button(
+                    onClick = {
+                        if (color4.value == colors.primaryButton) {
+                            color1.value = colors.primaryButton
+                            color2.value = colors.primaryButton
+                            color3.value = colors.primaryButton
+                            color4.value = colors.secondaryButton
+                            color5.value = colors.primaryButton
+                            colorCustomTheme.value = colors.primaryBackground
+                            viewModel.backgroundColor = 0x33333333
+                        } else color4.value = colors.primaryButton
+                    },
+                    modifier = Modifier.weight(1F),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = color4.value)
+                ) {
+                    Text(text = language.lightButton, color = colors.primaryText)
+                }
 
-            Button(
-                onClick = {
-                    if (color4.value == ThemeColors.primaryButton) {
-                        color1.value = ThemeColors.primaryButton
-                        color2.value = ThemeColors.primaryButton
-                        color3.value = ThemeColors.primaryButton
-                        color4.value = ThemeColors.secondaryButton
-                        color5.value = ThemeColors.primaryButton
-                        colorCustomTheme.value = ThemeColors.primaryBackground
-                        viewModel.backgroundColor = 0x33333333
-                    } else color4.value = ThemeColors.primaryButton
-                },
-                modifier = Modifier.weight(1F),
-                colors = ButtonDefaults.buttonColors(backgroundColor = color4.value)
-            ) {
-                Text(text = TEXT_LIGHT_BUTTON, color = ThemeColors.primaryText)
-            }
+                Button(
+                    onClick = {
+                        if (color2.value == colors.primaryButton) {
+                            color1.value = colors.primaryButton
+                            color2.value = colors.secondaryButton
+                            color3.value = colors.primaryButton
+                            color4.value = colors.primaryButton
+                            color5.value = colors.primaryButton
+                            colorCustomTheme.value = colors.primaryBackground
+                            viewModel.backgroundColor = -0x797979
+                        } else color2.value = colors.primaryButton
+                    },
+                    modifier = Modifier.weight(1F),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = color2.value)
+                ) {
+                    Text(text = language.darkButton, color = colors.primaryText)
+                }
 
-            Button(
-                onClick = {
-                    if (color5.value == ThemeColors.primaryButton) {
-                        color1.value = ThemeColors.primaryButton
-                        color2.value = ThemeColors.primaryButton
-                        color3.value = ThemeColors.primaryButton
-                        color4.value = ThemeColors.primaryButton
-                        color5.value = ThemeColors.secondaryButton
-                        colorCustomTheme.value = ThemeColors.primaryBackground
-                        viewModel.backgroundColor = 0xffffff
-                    } else color5.value = ThemeColors.primaryButton
-                },
-                modifier = Modifier.weight(1F),
-                colors = ButtonDefaults.buttonColors(backgroundColor = color5.value)
-            ) {
-                Text(text = TEXT_WHITE_COLOR_BUTTON, color = ThemeColors.primaryText)
-            }
-        }
+                Button(
+                    onClick = {
+                        color1.value = colors.primaryButton
+                        color2.value = colors.primaryButton
+                        color3.value = colors.primaryButton
+                        color4.value = colors.primaryButton
+                        color5.value = colors.primaryButton
+                        changeThemeDialog.value = true
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryButton),
+                    modifier = Modifier.width(150.dp)
+                ) {
+                    Text(
+                        text = language.moreButton,
+                        fontSize = 14.sp,
+                        color = colors.primaryText
+                    )
+                }
 
-        Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.width(15.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Button(
-                onClick = {
-                    color1.value = ThemeColors.primaryButton
-                    color2.value = ThemeColors.primaryButton
-                    color3.value = ThemeColors.primaryButton
-                    color4.value = ThemeColors.primaryButton
-                    color5.value = ThemeColors.primaryButton
-                    changeThemeDialog.value = true
-                },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ThemeColors.primaryButton),
-                modifier = Modifier.width(150.dp)
-            ) {
                 Text(
-                    text = TEXT_MORE_BUTTON, fontSize = 14.sp, color = ThemeColors.primaryText
+                    text = EMPTY,
+                    Modifier
+                        .background(color = colorCustomTheme.value)
+                        .width(40.dp)
+                        .height(40.dp)
                 )
             }
-
-            Spacer(modifier = Modifier.width(15.dp))
-
-            Text(
-                text = EMPTY,
-                Modifier
-                    .background(color = colorCustomTheme.value)
-                    .width(75.dp)
-                    .height(40.dp)
-            )
         }
 
         if (changeThemeDialog.value) {
             AlertDialog(onDismissRequest = {
                 changeThemeDialog.value = false
             }, title = {
-                Text(fontSize = 22.sp, text = TEXT_CHANGE_THEME_DIALOG)
+                Text(fontSize = 22.sp, text = language.changeThemeDialog)
             }, text = {
                 IconButton(onClick = {}) {
                     HsvColorPicker(
@@ -413,11 +412,13 @@ fun BackgroundColor(controller: ColorPickerController, viewModel: SettingsThemeV
                         onClick = {
                             changeThemeDialog.value = false
                             colorCustomTheme.value = controller.selectedColor.value
-                            viewModel.backgroundColor = (controller.selectedColor.value.toArgb()).toLong()
-                        }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray)
+                            viewModel.backgroundColor =
+                                (controller.selectedColor.value.toArgb()).toLong()
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray)
                     ) {
                         Text(
-                            text = TEXT_ACCEPT_BUTTON,
+                            text = language.acceptButton,
                             fontSize = 22.sp,
                             color = Color.White,
                         )
@@ -431,7 +432,11 @@ fun BackgroundColor(controller: ColorPickerController, viewModel: SettingsThemeV
 }
 
 @Composable
-fun AcceptItem(viewModel: SettingsThemeViewModel, navController: NavController) {
+fun AcceptItem(
+    viewModel: SettingsThemeViewModel,
+    navController: NavController,
+    context: Context
+) {
     Button(
         onClick = {
             viewModel.navigationToMain(navController)
@@ -447,12 +452,13 @@ fun AcceptItem(viewModel: SettingsThemeViewModel, navController: NavController) 
                     primaryBackground = viewModel.backgroundColor
                 )
             )
+            Toast.makeText(context, language.toastChangeTheme, Toast.LENGTH_LONG).show()
         },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 25.dp),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = ThemeColors.primaryButton, contentColor = ThemeColors.primaryText
+            backgroundColor = colors.primaryButton, contentColor = colors.primaryText
         )
-    ) { Text(text = TEXT_ACCEPT_BUTTON, fontSize = 18.sp) }
+    ) { Text(text = language.acceptButton, fontSize = 18.sp) }
 }

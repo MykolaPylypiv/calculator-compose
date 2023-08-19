@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.calculator_compose.app.Strings
+import com.example.calculator_compose.data.room.AppDatabase
 import com.example.calculator_compose.domain.interactor.MainInteractor
+import com.example.calculator_compose.domain.model.Languages
 import com.example.calculator_compose.domain.model.PresentationValues
 import com.example.calculator_compose.navigation.NavigationTree
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +19,11 @@ import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val interactor: MainInteractor, private val dispatcher: CoroutineContext
+    private val interactor: MainInteractor,
+    private val dispatcher: CoroutineContext,
+    private val db: AppDatabase
 ) : ViewModel() {
+
 
     var example: MutableLiveData<String> = MutableLiveData(interactor.getCalculation().calculation)
     var result: MutableLiveData<String> = MutableLiveData(interactor.result())
@@ -95,11 +100,25 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun resetHistory () {
+    fun resetHistory() {
         viewModelScope.launch(dispatcher) {
             saveHistory("")
         }
     }
+
+    fun textChangeLanguage(): String = if (db.languageDao().get().isEnglish) "ENG" else "UKR"
+
+    fun updateLanguage(value: String) {
+        val isEnglish = value != "UKR"
+
+        viewModelScope.launch(dispatcher) {
+            db.languageDao().deleteAll()
+            db.languageDao().insert(Languages(uid = 0, isEnglish = isEnglish))
+        }
+    }
+
+    fun changeText(value: String): String = if (value == "UKR") "ENG" else "UKR"
+
 
     private fun saveHistory(history: String) = viewModelScope.launch(dispatcher) {
         interactor.storeHistory().save(history)
