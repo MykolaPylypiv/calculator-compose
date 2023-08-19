@@ -27,7 +27,10 @@ data class Language(
     val blackButton: String,
 
     val toastChangeLanguage: String,
-    val toastChangeTheme: String
+    val toastChangeTheme: String,
+
+    val dialogDeleteHistoryAccept: String,
+    val dialogDeleteHistoryDismiss: String,
 )
 
 val english = Language(
@@ -52,12 +55,15 @@ val english = Language(
 
     moreButton = "More...",
 
-    whiteButton = "White",
+    whiteButton = "Transparent",
     grayButton = "Gray",
     blackButton = "Black",
 
     toastChangeLanguage = "The language will change after restart",
-    toastChangeTheme = "Theme will change after restart"
+    toastChangeTheme = "Theme will change after restart",
+
+    dialogDeleteHistoryAccept = "Accept",
+    dialogDeleteHistoryDismiss = "Cancel",
 )
 
 val ukrainian = Language(
@@ -82,10 +88,13 @@ val ukrainian = Language(
 
     moreButton = "Більше...",
 
-    whiteButton = "Білий",
+    whiteButton = "Прозорий",
     grayButton = "Сірий",
     blackButton = "Чорний",
 
     toastChangeLanguage = "Мова зміниться після перезапуску",
-    toastChangeTheme = "Тема зміниться після перезапуску"
+    toastChangeTheme = "Тема зміниться після перезапуску",
+
+    dialogDeleteHistoryAccept = "Так",
+    dialogDeleteHistoryDismiss = "Ні",
 )

@@ -22,7 +22,7 @@ object Strings {
 
     const val ACTION_MINUS = "-"
     const val ACTION_PLUS = "+"
-    const val ACTION_MULTIPLY = "x"
+    const val ACTION_MULTIPLY = "×"
     const val ACTION_DIVISION = "÷"
     const val ACTION_PERCENT = "%"
     const val ACTION_POW = "^"

@@ -4,10 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.CropRotate
@@ -16,6 +13,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,6 +62,9 @@ fun AdditionalScreen(
     val degreesEnabled = viewModel.degreesEnabled.observeAsState()
 
     val sinText = viewModel.sinText.observeAsState()
+
+    val borderSize = 1.dp
+    val borderColor = Color.LightGray
 
     Column(
         modifier = Modifier
@@ -121,7 +124,15 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F),
+                        .weight(1F)
+                        .drawBehind {
+                            drawLine(
+                                color = borderColor,
+                                start = Offset(x = 0f, y = 0f),
+                                end = Offset(x = size.width, 0f),
+                                strokeWidth = borderSize.toPx()
+                            )
+                        },
                     text = Strings.TEXT_TWO_ND,
                     enabled = viewModel.enabledTwoND()
                 ) {
@@ -131,25 +142,29 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = Strings.TEXT_ACTION_POW
+                        .weight(1F),
+                    text = Strings.TEXT_ACTION_POW
                 ) { viewModel.actionPress(ACTION_POW) }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = Strings.ACTION_SQUARE_ROOT
+                        .weight(1F),
+                    text = Strings.ACTION_SQUARE_ROOT
                 ) { viewModel.squareRootPress() }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = Strings.TEXT_FACTORIAL
+                        .weight(1F),
+                    text = Strings.TEXT_FACTORIAL
                 ) { viewModel.factorialPress() }
 
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = Strings.TEXT_POW_MINUS_ONE
+                        .weight(1F),
+                    text = Strings.TEXT_POW_MINUS_ONE
                 ) {
                     viewModel.actionPress(ACTION_POW)
                     viewModel.leftBracket()
@@ -165,8 +180,8 @@ fun AdditionalScreen(
                         .weight(1F), text = Strings.NUMBER_P
                 ) { viewModel.letterNumPress(Strings.NUMBER_P) }
 
-                Button(
-                    onClick = { viewModel.navigationToAdditional(navController = navController) },
+                TextButton(
+                    onClick = { viewModel.navigationToMain(navController = navController) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryButton),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -189,7 +204,15 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F),
+                        .weight(1F)
+                        .drawBehind {
+                            drawLine(
+                                color = borderColor,
+                                start = Offset(x = 0f, y = 0f),
+                                end = Offset(x = size.width, 0f),
+                                strokeWidth = borderSize.toPx()
+                            )
+                        },
                     text = degrees.value.toString(),
                     enabled = degreesEnabled.value!!
                 ) { viewModel.converting() }
@@ -204,14 +227,17 @@ fun AdditionalScreen(
                 SecondaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F), text = TEXT_CLEAR_CALCULATION
+                        .weight(1F),
+                    text = TEXT_CLEAR_CALCULATION
                 ) { viewModel.exampleClear() }
 
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F), text = NUMBER_SEVEN
-                ) { viewModel.numberPress(NUMBER_SEVEN) }
+                ) {
+                    viewModel.numberPress(NUMBER_SEVEN)
+                }
 
                 PrimaryButton(
                     modifier = Modifier
@@ -240,7 +266,15 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F),
+                        .weight(1F)
+                        .drawBehind {
+                            drawLine(
+                                color = borderColor,
+                                start = Offset(x = 0f, y = 0f),
+                                end = Offset(x = size.width, 0f),
+                                strokeWidth = borderSize.toPx()
+                            )
+                        },
                     text = viewModel.sinText.value.toString().dropLast(1)
                 ) { viewModel.trigonometricPress(sinText.value.toString()) }
 
@@ -251,13 +285,12 @@ fun AdditionalScreen(
                     text = Strings.ACTION_LN.dropLast(1)
                 ) { viewModel.trigonometricPress(Strings.ACTION_LN) }
 
-                Button(
+                TextButton(
                     onClick = { viewModel.exampleBack() },
                     colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryButton),
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F),
-
                     ) {
                     Icon(
                         Icons.Filled.ArrowBackIos,
@@ -299,7 +332,15 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F),
+                        .weight(1F)
+                        .drawBehind {
+                            drawLine(
+                                color = borderColor,
+                                start = Offset(x = 0f, y = 0f),
+                                end = Offset(x = size.width, 0f),
+                                strokeWidth = borderSize.toPx()
+                            )
+                        },
                     text = viewModel.cosText.value.toString().dropLast(1)
                 ) { viewModel.trigonometricPress(viewModel.cosText.value.toString()) }
 
@@ -348,7 +389,15 @@ fun AdditionalScreen(
                 AdditionalButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F),
+                        .weight(1F)
+                        .drawBehind {
+                            drawLine(
+                                color = borderColor,
+                                start = Offset(x = 0f, y = 0f),
+                                end = Offset(x = size.width, 0f),
+                                strokeWidth = borderSize.toPx()
+                            )
+                        },
                     text = viewModel.tanText.value.toString().dropLast(1)
                 ) { viewModel.trigonometricPress(viewModel.tanText.value.toString()) }
 

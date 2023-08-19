@@ -13,6 +13,7 @@ import com.example.calculator_compose.presentation.ui.screen.ApplicationScreen
 import com.example.calculator_compose.presentation.ui.theme.Colors
 import com.example.calculator_compose.presentation.ui.theme.darkPalette
 import com.example.calculator_compose.presentation.ui.theme.defaultTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val themeColors = db.colorThemeDao().get()
+            val systemUiController = rememberSystemUiController()
 
             language = try {
                 if (db.languageDao().get().isEnglish) english else ukrainian
@@ -58,7 +60,10 @@ class MainActivity : ComponentActivity() {
             ) {
                 ApplicationScreen()
             }
+
+            systemUiController.setSystemBarsColor(color = colors.primaryBackground)
         }
+
     }
 }
 

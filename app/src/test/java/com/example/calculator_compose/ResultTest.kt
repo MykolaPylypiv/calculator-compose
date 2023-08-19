@@ -38,6 +38,17 @@ class ResultTest {
     }
 
     @Test
+    fun `degrees and number`() {
+        val example = "(3"
+        val operation = "("
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, operation, isRadians)
+
+        assertEquals("3", result)
+    }
+
+    @Test
     fun `numbers is empty`() {
         val example = ""
         val operation = "sin("
@@ -94,8 +105,8 @@ class ResultTest {
 
     @Test
     fun `equal 2 action with other priority`() {
-        val example = "3+3*3"
-        val operation = "+*"
+        val example = "3+3×3"
+        val operation = "+×"
         val isRadians = Strings.DEGREES
 
         val result = result.renewal(example, operation, isRadians)
@@ -127,8 +138,8 @@ class ResultTest {
 
     @Test
     fun `equal 2 action with other priority brackets`() {
-        val example = "(3+3*2)"
-        val operation = "(+*)"
+        val example = "(3+3×2)"
+        val operation = "(+×)"
         val isRadians = Strings.DEGREES
 
         val result = result.renewal(example, operation, isRadians)
@@ -347,7 +358,7 @@ class ResultTest {
 
     @Test
     fun `equal one minus number`() {
-        val example = "-5"
+        val example = "0-5"
         val operation = "-"
         val isRadians = Strings.DEGREES
 
@@ -402,8 +413,8 @@ class ResultTest {
 
     @Test
     fun `equal zero division exception`() {
-        val example = "2/0"
-        val operation = "/"
+        val example = "2÷0"
+        val operation = "÷"
         val isRadians = Strings.DEGREES
 
         val result = result.renewal(example, operation, isRadians)

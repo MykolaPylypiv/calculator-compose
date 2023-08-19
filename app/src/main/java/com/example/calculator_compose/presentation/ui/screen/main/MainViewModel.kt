@@ -24,7 +24,6 @@ class MainViewModel @Inject constructor(
     private val db: AppDatabase
 ) : ViewModel() {
 
-
     var example: MutableLiveData<String> = MutableLiveData(interactor.getCalculation().calculation)
     var result: MutableLiveData<String> = MutableLiveData(interactor.result())
 
@@ -106,19 +105,23 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun textChangeLanguage(): String = if (db.languageDao().get().isEnglish) "ENG" else "UKR"
+    fun textChangeLanguage(): String = try {
+        if (db.languageDao().get().isEnglish) "ENG" else "UKR"
+    } catch (e: NullPointerException) {
+        "ENG"
+    }
 
     fun updateLanguage(value: String) {
         val isEnglish = value != "UKR"
+        val dao = db.languageDao()
 
         viewModelScope.launch(dispatcher) {
-            db.languageDao().deleteAll()
-            db.languageDao().insert(Languages(uid = 0, isEnglish = isEnglish))
+            dao.deleteAll()
+            dao.insert(Languages(uid = 0, isEnglish = isEnglish))
         }
     }
 
     fun changeText(value: String): String = if (value == "UKR") "ENG" else "UKR"
-
 
     private fun saveHistory(history: String) = viewModelScope.launch(dispatcher) {
         interactor.storeHistory().save(history)

@@ -50,7 +50,7 @@ fun SectionSelectColor(section: String, viewModel: SettingsThemeViewModel) {
 
     Column {
         Row {
-            Button(
+            TextButton(
                 onClick = {
                     val selectColor = colors.black
 
@@ -74,7 +74,7 @@ fun SectionSelectColor(section: String, viewModel: SettingsThemeViewModel) {
                 )
             }
 
-            Button(
+            TextButton(
                 onClick = {
                     val selectColor = colors.gray
 
@@ -98,7 +98,7 @@ fun SectionSelectColor(section: String, viewModel: SettingsThemeViewModel) {
                 )
             }
 
-            Button(
+            TextButton(
                 onClick = {
                     val selectColor = colors.white
 
@@ -124,7 +124,7 @@ fun SectionSelectColor(section: String, viewModel: SettingsThemeViewModel) {
         }
 
         Row {
-            Button(
+            TextButton(
                 onClick = {
                     val selectColor = colors.darkGray
 
@@ -148,7 +148,7 @@ fun SectionSelectColor(section: String, viewModel: SettingsThemeViewModel) {
                 )
             }
 
-            Button(
+            TextButton(
                 onClick = {
                     val selectColor = colors.lightGray
 

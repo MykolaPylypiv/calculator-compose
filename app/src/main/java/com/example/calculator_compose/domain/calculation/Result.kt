@@ -48,20 +48,26 @@ interface Result {
             val strNumbers = values.numbers
             var action = values.action
 
-            if (strNumbers.isEmpty()) {
-                return NUMBER_ZERO
-            }
-
-            if (finalExample.first().toString() == ACTION_MINUS) {
-                strNumbers[0] = (-strNumbers[0].toDouble()).toString()
-                action.removeFirst()
-            }
-
             if (action.isNotEmpty() && strNumbers.isNotEmpty()) {
                 if (strNumbers[0] == NUMBER_ZERO && action[0] == ACTION_FACTORIAL) {
                     strNumbers[0] = NUMBER_ONE
                     action.removeFirst()
                 }
+            }
+
+            if (strNumbers.size == 1 && action.size == 1 && action.first() == "(") return strNumbers.first().toString()
+
+            if (strNumbers.isEmpty()) {
+                return NUMBER_ZERO
+            }
+
+            if (action.isEmpty()) {
+                return strNumbers.first().toString()
+            }
+
+            if (finalExample.first().toString() == ACTION_MINUS) {
+                strNumbers[0] = (-strNumbers[0].toDouble()).toString()
+                action.removeFirst()
             }
 
             val isRadians = radians != component.deg
@@ -74,7 +80,7 @@ interface Result {
             if (strNumbers.size == 1 && strNumbers.first() != "0.0") {
                 action.removeAll(component.brackets)
 
-                if (action.isEmpty() || !component.actionWithOneNumber.contains(action[0])) {
+                if (!component.actionWithOneNumber.contains(action[0])) {
                     return ((strNumbers.first().toDouble()
                         .roundToInt() * 10000000) / 10000000).toString()
                 }
