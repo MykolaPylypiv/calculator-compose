@@ -2,11 +2,14 @@ package com.example.calculator_compose.domain.calculation.mapper
 
 import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.core.Mapper
+import com.example.calculator_compose.domain.calculation.ExampleComponent
 import com.example.calculator_compose.domain.model.DomainValues
 import com.example.calculator_compose.domain.model.PresentationValues
 import javax.inject.Inject
 
-class MapperToDomainValues @Inject constructor() : Mapper<PresentationValues, DomainValues> {
+class MapperToDomainValues @Inject constructor(
+    private val component: ExampleComponent.Base,
+) : Mapper<PresentationValues, DomainValues> {
 
     private val asin = Strings.ACTION_ARCSIN.dropLast(1)
     private val acos = Strings.ACTION_ARCCOS.dropLast(1)
@@ -37,7 +40,9 @@ class MapperToDomainValues @Inject constructor() : Mapper<PresentationValues, Do
             .replace(oldValue = tan, newValue = "t").replace(oldValue = lg, newValue = "l")
             .replace(oldValue = ln, newValue = "n")
 
-        val numbers = data.calculation.split(
+        val numbers = data.calculation.replace(component.pi, Strings.CONST_NUMBER_PI).replace(
+            component.e, Strings.CONST_NUMBER_E
+        ).split(
             plus,
             minus,
             multiply,

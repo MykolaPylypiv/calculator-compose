@@ -1,7 +1,7 @@
 package com.example.calculator_compose.domain.usecases
 
 import com.example.calculator_compose.domain.calculation.EqualReturn
-import com.example.calculator_compose.domain.calculation.Result
+import com.example.calculator_compose.domain.calculation.result.Result
 import com.example.calculator_compose.domain.model.DomainAllValues
 import javax.inject.Inject
 

@@ -2,11 +2,9 @@ package com.example.calculator_compose.di
 
 import com.example.calculator_compose.data.store.StoreHistoryCalculation
 import com.example.calculator_compose.domain.ConstCalculationRow
-import com.example.calculator_compose.domain.calculation.Result
+import com.example.calculator_compose.domain.calculation.result.Result
 import com.example.calculator_compose.domain.interactor.AdditionalInteractor
 import com.example.calculator_compose.domain.interactor.MainInteractor
-import com.example.calculator_compose.domain.repository.DeleteColor
-import com.example.calculator_compose.domain.repository.InsertColor
 import com.example.calculator_compose.domain.usecases.*
 import dagger.Module
 import dagger.Provides

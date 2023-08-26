@@ -1,5 +1,6 @@
 package com.example.calculator_compose
 
+import com.example.calculator_compose.domain.calculation.ExampleComponent
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
 import com.example.calculator_compose.domain.model.PresentationValues
 import org.junit.Test
@@ -7,7 +8,9 @@ import kotlin.test.assertEquals
 
 class MapperToDomainValuesTest {
 
-    private val mapper = MapperToDomainValues()
+    private val component = ExampleComponent.Base()
+
+    private val mapper = MapperToDomainValues(component)
 
         @Test
     fun `mapper action`() {

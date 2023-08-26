@@ -1,10 +1,8 @@
-package com.example.calculator_compose.domain.calculation
+package com.example.calculator_compose.domain.calculation.result
 
 import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.app.Strings.ACTION_FACTORIAL
 import com.example.calculator_compose.app.Strings.ACTION_MINUS
-import com.example.calculator_compose.app.Strings.CONST_NUMBER_E
-import com.example.calculator_compose.app.Strings.CONST_NUMBER_PI
 import com.example.calculator_compose.app.Strings.EMPTY
 import com.example.calculator_compose.app.Strings.LEFT_BRACKET
 import com.example.calculator_compose.app.Strings.NUMBER_EIGHT
@@ -20,6 +18,8 @@ import com.example.calculator_compose.app.Strings.NUMBER_ZERO
 import com.example.calculator_compose.app.Strings.POINT
 import com.example.calculator_compose.app.Strings.RIGHT_BRACKET
 import com.example.calculator_compose.app.Strings.SPACE
+import com.example.calculator_compose.domain.calculation.ExampleComponent
+import com.example.calculator_compose.domain.calculation.Priority
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
 import com.example.calculator_compose.domain.model.PresentationValues
 import javax.inject.Inject
@@ -35,108 +35,147 @@ interface Result {
         private val mapper: MapperToDomainValues,
         private val component: ExampleComponent.Base,
         private val priority: Priority.Base,
-    ) : Result {
-
+    ) : Result, UtilResult {
         override fun result() = result
 
         override fun renewal(example: String, operation: String, radians: String): String {
-            var finalExample =
-                example.replace(component.pi, CONST_NUMBER_PI).replace(component.e, CONST_NUMBER_E)
-            val data = PresentationValues(calculation = finalExample, action = operation)
+            val data = PresentationValues(calculation = example, action = operation)
             val values = mapper.map(data)
 
-            val strNumbers = values.numbers
+            val numbers = values.numbers
             var action = values.action
 
-            if (action.isNotEmpty() && strNumbers.isNotEmpty()) {
-                if (strNumbers[0] == NUMBER_ZERO && action[0] == ACTION_FACTORIAL) {
-                    strNumbers[0] = NUMBER_ONE
-                    action.removeFirst()
-                }
-            }
+            val isRadians = radians != component.deg
 
-            if (strNumbers.size == 1 && action.size == 1 && action.first() == "(") return strNumbers.first().toString()
+            /** if numbers empty return */
 
-            if (strNumbers.isEmpty()) {
+            if (numbers.isEmpty()) {
                 return NUMBER_ZERO
             }
 
+            /** if action empty return */
+
             if (action.isEmpty()) {
-                return strNumbers.first().toString()
+                return numbers.first().toString()
             }
 
-            if (finalExample.first().toString() == ACTION_MINUS) {
-                strNumbers[0] = (-strNumbers[0].toDouble()).toString()
+            /** if example starts 0! */
+
+            if (numbers[0] == NUMBER_ZERO && action[0] == ACTION_FACTORIAL) {
+                numbers[0] = NUMBER_ONE
+                action.removeFirst()
+
+                if (action.size == 0) {
+                    return NUMBER_ONE
+                }
+            }
+
+            /** if example starts ( */
+
+            if (numbers.size == 1 && action.first() == "(") {
+                return numbers.first().toString()
+            }
+
+            /** if first number starts with - */
+
+            if (example.first().toString() == ACTION_MINUS) {
+                numbers[0] = (-numbers[0].toDouble()).toString()
                 action.removeFirst()
             }
 
-            val isRadians = radians != component.deg
-            val result: Double
+            /** if first number ends with action */
 
-            if (strNumbers.size == 0) {
-                return ""
+            val preparationValues = preparation(exam = data.calculation, action = action)
+
+            val exam = preparationValues.example
+            action = preparationValues.action
+
+            /** calculation */
+
+            val result: Double = calculation(
+                CalculationValues(
+                    action = action,
+                    example = exam,
+                    numbers = numbers,
+                    radians = radians,
+                    isRadians = isRadians
+                )
+            )
+
+            /** return */
+
+            return output(result = result)
+        }
+
+        private companion object {
+            var result = Strings.START_EXAMPLE
+        }
+
+        /** return round result */
+
+        override fun output(result: Double): String {
+            val output = result.toString()
+            return if (output.last().toString() == NUMBER_ZERO && output.contains(POINT)) {
+                result.roundToInt().toString()
+            } else {
+                output
             }
+        }
 
-            if (strNumbers.size == 1 && strNumbers.first() != "0.0") {
-                action.removeAll(component.brackets)
+        /** if first number ends with action */
 
-                if (!component.actionWithOneNumber.contains(action[0])) {
-                    return ((strNumbers.first().toDouble()
-                        .roundToInt() * 10000000) / 10000000).toString()
-                }
-
-                val num = strNumbers.first().toDouble()
-                val text = action.first()
-
-                result = priority.secondPriority(text, num, isRadians)
-
-                return if (result.toString().last().toString() == NUMBER_ZERO && result.toString()
-                        .contains(POINT)
-                ) {
-                    result.roundToInt().toString()
-                } else {
-                    result.toString()
-                }
-            }
-
+        override fun preparation(exam: String, action: MutableList<String>): PreparationValues {
+            var example = exam
             while (!component.numbers.contains(
-                    finalExample.last().toString()
-                ) && finalExample.last().toString() != RIGHT_BRACKET
+                    example.last().toString()
+                ) && example.last().toString() != RIGHT_BRACKET
             ) {
                 action.removeLast()
 
-                finalExample = if (!component.numbers.contains(
-                        finalExample.last().toString()
-                    ) && component.actionWithOneNumber.contains(
-                        finalExample.substring(
-                            finalExample.lastIndex - 2, finalExample.lastIndex + 1
+                /** if last action equal sin, cos, tg ect... */
+
+                example = if (component.actionWithOneNumber.contains(
+                        example.substring(
+                            example.lastIndex - 2, example.lastIndex + 1
                         )
                     )
                 ) {
-                    finalExample.removeRange(finalExample.lastIndex - 2, finalExample.length)
+                    example.removeRange(example.lastIndex - 2, example.lastIndex + 1)
                 } else {
-                    finalExample.substring(0, finalExample.lastIndex)
+                    example.substring(0, example.lastIndex)
                 }
             }
 
-            val numeric = strNumbers.map { value ->
+            return PreparationValues(action = action, example = example)
+        }
+
+        /** calculation */
+
+        override fun calculation(values: CalculationValues): Double {
+            var action = values.action
+            var sectionExample = values.example
+
+            val isRadians = values.isRadians
+            val radians = values.radians
+
+            val numeric = values.numbers.map { value ->
                 value.toDouble()
             }.toMutableList()
 
-            var exam = finalExample
-
             while (action.isNotEmpty()) {
                 if (action.any { component.brackets.contains(it) }) {
-                    val index = exam.indexOf(LEFT_BRACKET)
-                    var index1 = exam.length
+                    val start = sectionExample.indexOf(LEFT_BRACKET)
 
-                    if (action.contains(RIGHT_BRACKET)) {
-                        index1 = exam.indexOf(RIGHT_BRACKET)
+                    val end = if (action.contains(RIGHT_BRACKET)) {
+                        sectionExample.indexOf(RIGHT_BRACKET)
+                    } else {
+                        sectionExample.length
                     }
 
-                    val newExample = exam.split("").subList(index + 2, index1 + 1).joinToString("")
+                    val newExample =
+                        sectionExample.split("").subList(start + 2, end + 1).joinToString("")
 
-                    val newOperation = newExample.split(
+                    val newAction = newExample.split(
                         NUMBER_ZERO,
                         NUMBER_ONE,
                         NUMBER_TWO,
@@ -151,37 +190,40 @@ interface Result {
                         RIGHT_BRACKET,
                         POINT,
                         SPACE
-                    ).joinToString(EMPTY)
+                    )
 
-                    if (action.reversed().indexOf(LEFT_BRACKET) - action.reversed().indexOf(
-                            RIGHT_BRACKET
-                        ) != 1
+                    val newOperation = newAction.joinToString(EMPTY)
+
+                    if (action.indexOf(LEFT_BRACKET) != 0 && component.actionWithOneNumber.contains(
+                            action[action.indexOf(LEFT_BRACKET) - 1]
+                        ) || component.actionWithOneNumber.contains(action[0])
                     ) {
-                        if (action.indexOf(LEFT_BRACKET) != 0 && component.actionWithOneNumber.contains(
-                                action[action.indexOf(LEFT_BRACKET) - 1]
-                            ) || component.actionWithOneNumber.contains(action[0])
-                        ) {
-                            numeric[action.indexOf(LEFT_BRACKET) - 1] = renewal(
-                                example = newExample, operation = newOperation, radians = radians
-                            ).toDouble()
+                        numeric[action.indexOf(LEFT_BRACKET) - 1] = renewal(
+                            example = newExample, operation = newOperation, radians = radians
+                        ).toDouble()
 
-                        } else {
-                            numeric[action.indexOf(LEFT_BRACKET)] = renewal(
-                                example = newExample, operation = newOperation, radians = radians
-                            ).toDouble()
-                        }
+                    } else {
+                        numeric[action.indexOf(LEFT_BRACKET)] = renewal(
+                            example = newExample, operation = newOperation, radians = radians
+                        ).toDouble()
                     }
 
-                    if (action.indexOf(RIGHT_BRACKET) == action.size || action.indexOf(RIGHT_BRACKET) == -1) {
-                        action = (action.subList(0, action.indexOf(LEFT_BRACKET)))
-                        exam = exam.substring(0, exam.indexOf(LEFT_BRACKET))
+                    if (action.indexOf(RIGHT_BRACKET) == action.size || !action.contains(
+                            RIGHT_BRACKET
+                        )
+                    ) {
+                        action = action.subList(0, action.indexOf(LEFT_BRACKET))
+                        sectionExample =
+                            sectionExample.substring(0, sectionExample.indexOf(LEFT_BRACKET))
                     } else {
                         action = (action.subList(0, action.indexOf(LEFT_BRACKET)) + action.subList(
                             action.indexOf(RIGHT_BRACKET) + 1, action.size
                         )).toMutableList()
 
-                        exam = exam.substring(0, exam.indexOf(LEFT_BRACKET)) + exam.substring(
-                            exam.indexOf(RIGHT_BRACKET) + 1, exam.length
+                        sectionExample = sectionExample.substring(
+                            0, sectionExample.indexOf(LEFT_BRACKET)
+                        ) + sectionExample.substring(
+                            sectionExample.indexOf(RIGHT_BRACKET) + 1, sectionExample.length
                         )
                     }
 
@@ -268,22 +310,18 @@ interface Result {
                     numeric.removeAt(index)
                     action.removeAt(index)
                 }
-
             }
 
-            result = numeric[0]
-
-            return if (result.toString().last().toString() == NUMBER_ZERO && result.toString()
-                    .contains(POINT)
-            ) {
-                result.roundToInt().toString()
-            } else {
-                result.toString()
-            }
-        }
-
-        private companion object {
-            var result = Strings.START_EXAMPLE
+            return numeric[0]
         }
     }
+}
+
+interface UtilResult {
+
+    fun output(result: Double): String
+
+    fun preparation(exam: String, action: MutableList<String>): PreparationValues
+
+    fun calculation(values: CalculationValues): Double
 }

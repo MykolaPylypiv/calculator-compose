@@ -4,7 +4,7 @@ import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.calculation.ExampleComponent
 import com.example.calculator_compose.domain.calculation.PrimitiveCalculation
 import com.example.calculator_compose.domain.calculation.Priority
-import com.example.calculator_compose.domain.calculation.Result.Base
+import com.example.calculator_compose.domain.calculation.result.Result.Base
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
 import org.junit.Test
 import kotlin.math.ln
@@ -17,9 +17,9 @@ class ResultTest {
 
     private val primitiveCalculation = PrimitiveCalculation.Base()
 
-    private val mapper = MapperToDomainValues()
-
     private val component = ExampleComponent.Base()
+
+    private val mapper = MapperToDomainValues(component)
 
     private val priority =
         Priority.Base(primitiveCalculation = primitiveCalculation, component = component)
@@ -35,6 +35,17 @@ class ResultTest {
         val result = result.renewal(example, operation, isRadians)
 
         assertEquals("0", result)
+    }
+
+    @Test
+    fun `one number and one action`() {
+        val example = "3+"
+        val operation = ""
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, operation, isRadians)
+
+        assertEquals("3", result)
     }
 
     @Test
@@ -170,17 +181,6 @@ class ResultTest {
     }
 
     @Test
-    fun `result 1 brackets and 1 trigonometric`() {
-        val example = "sin(30)+(4-3)"
-        val operation = "sin()+(-)"
-        val isRadians = Strings.DEGREES
-
-        val result = result.renewal(example, operation, isRadians)
-
-        assertEquals("1.5", result)
-    }
-
-    @Test
     fun `two trigonometric action`() {
         val example = "sin(30)+sin(30)"
         val operation = "sin()+sin()"
@@ -189,6 +189,17 @@ class ResultTest {
         val result = result.renewal(example, operation, isRadians)
 
         assertEquals("1", result)
+    }
+
+    @Test
+    fun `result 1 brackets and 1 trigonometric`() {
+        val example = "sin(30)+(4-3)"
+        val operation = "sin()+(-)"
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, operation, isRadians)
+
+        assertEquals("1.5", result)
     }
 
     @Test
@@ -464,5 +475,16 @@ class ResultTest {
         val result = result.renewal(example, operation, isRadians)
 
         assertEquals(3.5, result.toDouble())
+    }
+
+    @Test
+    fun `float + float`() {
+        val example = "2.3 + 0.2"
+        val operation = "+"
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, operation, isRadians)
+
+        assertEquals("2.5", result)
     }
 }
