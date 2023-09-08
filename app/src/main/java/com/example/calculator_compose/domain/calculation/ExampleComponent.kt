@@ -14,6 +14,8 @@ interface ExampleComponent {
 
     val second: MutableList<String>
 
+    val actionWithThoNumber: MutableList<String>
+
     val personal: MutableList<String>
 
     val trigonometric: MutableList<String>
@@ -65,6 +67,8 @@ interface ExampleComponent {
         override val simple = mutableListOf(plus, minus)
 
         override val second = mutableListOf(multiply, division, percent, pow)
+
+        override val actionWithThoNumber: MutableList<String> = (simple + second).toMutableList()
 
         override val personal = mutableListOf(sqrt, factorial)
 

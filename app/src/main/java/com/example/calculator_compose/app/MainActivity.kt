@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.calculator_compose.data.room.AppDatabase
@@ -19,6 +20,8 @@ import javax.inject.Inject
 
 var colors: Colors = darkPalette
 lateinit var language: Language
+
+val theme = mutableStateOf("dark")
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

@@ -22,6 +22,7 @@ import com.example.calculator_compose.domain.calculation.ExampleComponent
 import com.example.calculator_compose.domain.calculation.Priority
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
 import com.example.calculator_compose.domain.model.PresentationValues
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -56,6 +57,10 @@ interface Result {
             /** if action empty return */
 
             if (action.isEmpty()) {
+                return numbers.first().toString()
+            }
+
+            if (component.actionWithThoNumber.contains(example.last().toString()) && numbers.size == 1) {
                 return numbers.first().toString()
             }
 
