@@ -1,7 +1,7 @@
 package com.example.calculator_compose.di
 
 import com.example.calculator_compose.data.room.AppDatabase
-import com.example.calculator_compose.domain.repository.Repository
+import com.example.calculator_compose.domain.repository.color.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

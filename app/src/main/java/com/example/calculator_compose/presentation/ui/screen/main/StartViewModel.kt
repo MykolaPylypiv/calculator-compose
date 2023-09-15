@@ -4,7 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.calculator_compose.app.Language
 import com.example.calculator_compose.app.Strings
+import com.example.calculator_compose.app.english
+import com.example.calculator_compose.app.ukrainian
 import com.example.calculator_compose.data.room.AppDatabase
 import com.example.calculator_compose.domain.interactor.MainInteractor
 import com.example.calculator_compose.domain.model.Languages
@@ -18,7 +21,7 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class StartViewModel @Inject constructor(
     private val interactor: MainInteractor,
     private val dispatcher: CoroutineContext,
     private val db: AppDatabase
@@ -105,23 +108,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun textChangeLanguage(): String = try {
-        if (db.languageDao().get().isEnglish) "ENG" else "UKR"
-    } catch (e: NullPointerException) {
-        "ENG"
-    }
-
-    fun updateLanguage(value: String) {
-        val isEnglish = value != "UKR"
+    fun updateLanguage(value: Boolean) {
         val dao = db.languageDao()
 
         viewModelScope.launch(dispatcher) {
             dao.deleteAll()
-            dao.insert(Languages(uid = 0, isEnglish = isEnglish))
+            dao.insert(Languages(uid = 0, isEnglish = value))
         }
     }
 
-    fun changeText(value: String): String = if (value == "UKR") "ENG" else "UKR"
+    fun textButtonChangeLanguage(value: Boolean) = if (value) "ENG" else "UKR"
 
     private fun saveHistory(history: String) = viewModelScope.launch(dispatcher) {
         interactor.storeHistory().save(history)

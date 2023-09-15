@@ -1,11 +1,15 @@
 package com.example.calculator_compose.presentation.ui.screen.main
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.material.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Brush
 import androidx.compose.material.icons.rounded.History
@@ -17,27 +21,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.calculator_compose.app.colors
-import com.example.calculator_compose.app.language
+import com.example.calculator_compose.app.main.isEnglish
+import com.example.calculator_compose.app.main.language
+import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors
 
 @Composable
-fun MainAppBar(viewModel: MainViewModel, navController: NavController, context: Context) {
-    val changeLanguage = remember { mutableStateOf(viewModel.textChangeLanguage()) }
+fun StartAppBar(viewModel: StartViewModel, navController: NavController) {
     val deleteHistoryDialog = remember { mutableStateOf(false) }
+    val textChangeLanguage = remember { mutableStateOf(viewModel.textButtonChangeLanguage(isEnglish.value)) }
 
     TopAppBar(backgroundColor = colors.primaryBackground, elevation = 1.dp) {
         Spacer(modifier = Modifier.weight(1F))
 
         TextButton(
             onClick = {
-                changeLanguage.value = viewModel.changeText(changeLanguage.value)
-                viewModel.updateLanguage(changeLanguage.value)
-                Toast.makeText(context, language.toastChangeLanguage, Toast.LENGTH_LONG).show()
+                isEnglish.value = !isEnglish.value
+                viewModel.updateLanguage(isEnglish.value)
+                textChangeLanguage.value = viewModel.textButtonChangeLanguage(isEnglish.value)
             }, colors = ButtonDefaults.buttonColors(
                 backgroundColor = colors.primaryBackground, contentColor = colors.secondaryText
             )
         ) {
-            Text(text = changeLanguage.value)
+            Text(text = textChangeLanguage.value)
         }
 
         IconButton(onClick = {
@@ -65,7 +70,7 @@ fun MainAppBar(viewModel: MainViewModel, navController: NavController, context: 
         AlertDialog(onDismissRequest = {
             deleteHistoryDialog.value = false
         }, title = {
-            Text(fontSize = 22.sp, text = language.deleteHistoryDialog)
+            Text(fontSize = 22.sp, text = language.value.deleteHistoryDialog)
         }, buttons = {
             Row(
                 modifier = Modifier.background(color = Color.DarkGray)
@@ -73,14 +78,16 @@ fun MainAppBar(viewModel: MainViewModel, navController: NavController, context: 
                 DialogButton(
                     onClick = { deleteHistoryDialog.value = false },
                     modifier = Modifier.weight(1F),
-                    text = language.dialogDeleteHistoryDismiss
+                    text = language.value.dialogDeleteHistoryDismiss
                 )
 
                 DialogButton(
                     onClick = {
                         deleteHistoryDialog.value = false
                         viewModel.resetHistory()
-                    }, modifier = Modifier.weight(1F), text = language.dialogDeleteHistoryAccept
+                    },
+                    modifier = Modifier.weight(1F),
+                    text = language.value.dialogDeleteHistoryAccept
                 )
             }
         })

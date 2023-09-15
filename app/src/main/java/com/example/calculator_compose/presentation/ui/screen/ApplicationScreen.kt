@@ -8,8 +8,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.calculator_compose.navigation.NavigationTree
 import com.example.calculator_compose.presentation.ui.screen.additional.AdditionalScreen
 import com.example.calculator_compose.presentation.ui.screen.additional.AdditionalViewModel
-import com.example.calculator_compose.presentation.ui.screen.main.MainScreen
-import com.example.calculator_compose.presentation.ui.screen.main.MainViewModel
+import com.example.calculator_compose.presentation.ui.screen.main.StartScreen
+import com.example.calculator_compose.presentation.ui.screen.main.StartViewModel
 import com.example.calculator_compose.presentation.ui.screen.settingsTheme.SettingsThemeScreen
 import com.example.calculator_compose.presentation.ui.screen.settingsTheme.SettingsThemeViewModel
 
@@ -17,10 +17,10 @@ import com.example.calculator_compose.presentation.ui.screen.settingsTheme.Setti
 fun ApplicationScreen() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = NavigationTree.Main.name) {
-        composable(NavigationTree.Main.name) {
-            val mainViewModel = hiltViewModel<MainViewModel>()
-            MainScreen(viewModel = mainViewModel, navController = navController)
+    NavHost(navController = navController, startDestination = NavigationTree.Start.name) {
+        composable(NavigationTree.Start.name) {
+            val startViewModel = hiltViewModel<StartViewModel>()
+            StartScreen(viewModel = startViewModel, navController = navController)
         }
         composable(NavigationTree.Additional.name) {
             val additionalViewModel = hiltViewModel<AdditionalViewModel>()

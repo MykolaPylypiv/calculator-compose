@@ -29,6 +29,10 @@ class AppModule {
     @Provides
     fun provideColorDao(db: AppDatabase) = db.colorThemeDao()
 
+    @Singleton
+    @Provides
+    fun provideThemeDao(db: AppDatabase) = db.variableThemeDao()
+
     @Provides
     fun provideDispatchers(): CoroutineContext = Dispatchers.IO
 }

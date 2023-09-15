@@ -1,4 +1,4 @@
-package com.example.calculator_compose.data.room
+package com.example.calculator_compose.data.room.dao
 
 import androidx.room.*
 import com.example.calculator_compose.domain.model.ColorTheme

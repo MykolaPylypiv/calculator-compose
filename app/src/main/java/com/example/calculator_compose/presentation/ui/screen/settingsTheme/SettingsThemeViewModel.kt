@@ -5,68 +5,98 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.calculator_compose.data.room.AppDatabase
 import com.example.calculator_compose.domain.model.ColorTheme
-import com.example.calculator_compose.domain.model.LightColorTheme
-import com.example.calculator_compose.domain.repository.DeleteColor
-import com.example.calculator_compose.domain.repository.InsertColor
+import com.example.calculator_compose.domain.model.VariableTheme
+import com.example.calculator_compose.domain.repository.color.DeleteColor
+import com.example.calculator_compose.domain.repository.color.InsertColor
+import com.example.calculator_compose.domain.repository.variableTheme.DeleteVariableTheme
+import com.example.calculator_compose.domain.repository.variableTheme.InsertVariableTheme
 import com.example.calculator_compose.navigation.NavigationTree
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class SettingsThemeViewModel @Inject constructor(
     private val insertColor: InsertColor.Base,
     private val deleteColor: DeleteColor.Base,
+    private val insertTheme: InsertVariableTheme.Base,
+    private val deleteTheme: DeleteVariableTheme.Base,
+    private val dispatcher: CoroutineContext,
     db: AppDatabase
 ) : ViewModel() {
 
     private val colors = db.colorThemeDao().get()
 
+    private val defaultColorTheme = ColorTheme(
+        uid = 0,
+        primaryText = 0xFF000000,
+        secondaryText = 0xFFfe5e00,
+        primaryButton = 0xFFFFFFFF,
+        tertiaryText = 0xFF0591b4,
+        additionalTextColor = 0xFF808080,
+        primaryBackground = 0xFFFFFFFF,
+    )
+
     var textColor = try {
         colors.primaryText
     } catch (e: NullPointerException) {
-        LightColorTheme.primaryText
+        defaultColorTheme.primaryText
     }
 
     var secondaryText = try {
         colors.secondaryText
     } catch (e: NullPointerException) {
-        LightColorTheme.secondaryText
+        defaultColorTheme.secondaryText
     }
 
     var tertiaryText = try {
         colors.tertiaryText
     } catch (e: NullPointerException) {
-        LightColorTheme.tertiaryText
+        defaultColorTheme.tertiaryText
     }
 
-    var additionalText = try {
+    var historyText = try {
         colors.additionalTextColor
     } catch (e: NullPointerException) {
-        LightColorTheme.additionalTextColor
+        defaultColorTheme.additionalTextColor
     }
 
     var primaryButton = try {
         colors.primaryButton
     } catch (e: NullPointerException) {
-        LightColorTheme.primaryButton
+        defaultColorTheme.primaryButton
     }
 
     var backgroundColor = try {
         colors.primaryBackground
     } catch (e: NullPointerException) {
-        LightColorTheme.primaryBackground
+        defaultColorTheme.primaryBackground
     }
 
     fun navigationToMain(navController: NavController) {
-        navController.navigate(NavigationTree.Main.name)
+        navController.navigate(NavigationTree.Start.name)
     }
 
-    fun updateTheme(palette: ColorTheme) {
-        viewModelScope.launch {
+    fun deleteColor() {
+        viewModelScope.launch(dispatcher) {
+            deleteColor.deleteAll()
+        }
+    }
+
+    fun updateColorTheme(palette: ColorTheme) {
+        viewModelScope.launch(dispatcher) {
             deleteColor.deleteAll()
 
             insertColor.insert(palette)
+        }
+    }
+
+    fun updateVariableTheme(theme: String) {
+        viewModelScope.launch(dispatcher) {
+            deleteTheme.deleteAll()
+
+            insertTheme.insert(VariableTheme(theme = theme))
         }
     }
 

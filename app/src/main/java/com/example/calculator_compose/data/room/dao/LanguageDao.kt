@@ -1,4 +1,4 @@
-package com.example.calculator_compose.data.room
+package com.example.calculator_compose.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

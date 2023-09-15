@@ -14,7 +14,7 @@
         android:theme="@style/Theme.CalculatorCompose"
         tools:targetApi="31">
         <activity
-            android:name=".app.MainActivity"
+            android:name=".app.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.CalculatorCompose">
             <intent-filter>

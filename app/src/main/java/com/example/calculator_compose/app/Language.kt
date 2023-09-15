@@ -55,7 +55,7 @@ val english = Language(
 
     moreButton = "More...",
 
-    whiteButton = "Transparent",
+    whiteButton = "White",
     grayButton = "Gray",
     blackButton = "Black",
 
@@ -88,7 +88,7 @@ val ukrainian = Language(
 
     moreButton = "Більше...",
 
-    whiteButton = "Прозорий",
+    whiteButton = "Білий",
     grayButton = "Сірий",
     blackButton = "Чорний",
 

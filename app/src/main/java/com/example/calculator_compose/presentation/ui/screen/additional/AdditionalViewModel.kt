@@ -165,7 +165,7 @@ class AdditionalViewModel @Inject constructor(
     fun enabledTwoND() = degrees.value != Strings.RADIANS
 
     fun navigationToMain(navController: NavController) {
-        navController.navigate(NavigationTree.Main.name)
+        navController.navigate(NavigationTree.Start.name)
         interactor.setCalculation(
             PresentationValues(
                 calculation = example.value.toString(), action = action

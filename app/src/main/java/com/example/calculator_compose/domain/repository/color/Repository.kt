@@ -1,7 +1,7 @@
-package com.example.calculator_compose.domain.repository
+package com.example.calculator_compose.domain.repository.color
 
 import com.example.calculator_compose.domain.model.ColorTheme
-import com.example.calculator_compose.data.room.ColorThemeDao
+import com.example.calculator_compose.data.room.dao.ColorThemeDao
 import javax.inject.Inject
 
 interface Repository {

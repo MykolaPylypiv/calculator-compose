@@ -20,6 +20,15 @@ val darkPalette = Colors(
     additionalText = Color.Gray
 )
 
+val lightPalette = Colors(
+    primaryBackground = Color.White,
+    primaryButton = Color.White,
+    primaryText = Color.Black,
+    secondaryText = Color(0xFFfe5e00),
+    tertiaryText = Color(0xFF0591b4),
+    additionalText = Color.Gray
+)
+
 fun defaultTheme(
     primaryText: Color,
     secondaryText: Color,
