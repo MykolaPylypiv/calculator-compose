@@ -15,8 +15,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 val customColors = mutableStateOf(darkPalette)
+val systemBarColors = mutableStateOf(darkPalette.primaryBackground)
+
 val language = mutableStateOf(english)
 val isEnglish = mutableStateOf(true)
+
 val variableTheme = mutableStateOf(Strings.DARK)
 
 @AndroidEntryPoint
@@ -38,7 +41,7 @@ class MainActivity : ComponentActivity() {
                 ApplicationScreen()
             }
 
-            systemUiController.setSystemBarsColor(color = customColors.value.primaryBackground)
+            systemUiController.setSystemBarsColor(color = systemBarColors.value)
         }
 
     }

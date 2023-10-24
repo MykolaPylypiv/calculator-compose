@@ -630,6 +630,9 @@ fun BackgroundColorItem(
 fun AcceptItem(
     viewModel: SettingsThemeViewModel, navController: NavController, context: Context
 ) {
+    val borderSize = 1.dp
+    val borderColor = Color.LightGray
+
     Button(
         onClick = {
             viewModel.updateColorTheme(
@@ -650,6 +653,14 @@ fun AcceptItem(
         },
         modifier = Modifier
             .fillMaxWidth()
+            .drawBehind {
+                drawLine(
+                    color = borderColor,
+                    start = Offset(x = 0f, y = 0f),
+                    end = Offset(x = size.width, 0f),
+                    strokeWidth = borderSize.toPx()
+                )
+            }
             .padding(top = 25.dp),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colors.primaryButton, contentColor = colors.primaryText

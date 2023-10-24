@@ -91,6 +91,8 @@ fun SettingsThemeBody(navController: NavController, viewModel: SettingsThemeView
         }
 
         item {
+            Spacer(modifier = Modifier.height(24.dp))
+
             AcceptItem(
                 viewModel = viewModel, navController = navController, context = context
             )

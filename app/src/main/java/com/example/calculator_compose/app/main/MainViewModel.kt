@@ -7,6 +7,7 @@ import com.example.calculator_compose.app.ukrainian
 import com.example.calculator_compose.data.room.AppDatabase
 import com.example.calculator_compose.presentation.ui.theme.darkPalette
 import com.example.calculator_compose.presentation.ui.theme.defaultTheme
+import com.example.calculator_compose.presentation.ui.theme.lightPalette
 
 class MainViewModel(private val db: AppDatabase) {
 
@@ -29,6 +30,14 @@ class MainViewModel(private val db: AppDatabase) {
             Strings.LIGHT
         }
 
+        if (variableTheme.value == Strings.DARK) {
+            systemBarColors.value = darkPalette.primaryBackground
+        }
+
+        if (variableTheme.value == Strings.LIGHT) {
+            systemBarColors.value = lightPalette.primaryBackground
+        }
+
         if (variableTheme.value == Strings.CUSTOM) {
             val themeColors = db.colorThemeDao().get()
 
@@ -44,6 +53,8 @@ class MainViewModel(private val db: AppDatabase) {
             } catch (e: NullPointerException) {
                 darkPalette
             }
+
+            systemBarColors.value = customColors.value.primaryBackground
         }
     }
 

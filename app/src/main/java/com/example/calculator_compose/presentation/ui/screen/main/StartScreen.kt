@@ -1,8 +1,15 @@
 package com.example.calculator_compose.presentation.ui.screen.main
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -40,6 +47,7 @@ import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -106,7 +114,7 @@ fun StartBody(
 
         Row(modifier = Modifier.fillMaxWidth()) {
             IconButton(onClick = {
-                moved += 0.1F
+                if (moved < 1.2F) moved += 0.1F
             }) {
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
@@ -118,7 +126,7 @@ fun StartBody(
             Spacer(modifier = Modifier.width(8.dp))
 
             IconButton(onClick = {
-                moved -= 0.1F
+                if (moved > 0.1F) moved -= 0.1F
             }) {
                 Icon(
                     imageVector = Icons.Default.ArrowDropUp,
@@ -137,20 +145,18 @@ fun StartBody(
             )
         }
 
-        Row(
-            modifier = Modifier
-                .background(color = colors.primaryBackground)
-                .weight(1F)
-                .drawBehind {
-                    drawLine(
-                        color = borderColor,
-                        start = Offset(x = 0f, y = 0f),
-                        end = Offset(x = size.width, 0f),
-                        strokeWidth = borderSize.toPx()
-                    )
-                }
-                .animateContentSize()
-        ) {
+        Row(modifier = Modifier
+            .background(color = colors.primaryBackground)
+            .weight(1F)
+            .drawBehind {
+                drawLine(
+                    color = borderColor,
+                    start = Offset(x = 0f, y = 0f),
+                    end = Offset(x = size.width, 0f),
+                    strokeWidth = borderSize.toPx()
+                )
+            }
+            .animateContentSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
