@@ -247,10 +247,7 @@ fun DarkLightItem(
         DarkLightThemeButton(
             contentDescription = darkDescription, modifier = modifier, imageVector = darkIcon
         ) {
-            viewModel.navigationToMain(navController)
-            viewModel.deleteColor()
-            variableTheme.value = Strings.DARK
-            viewModel.updateVariableTheme(variableTheme.value)
+            viewModel.selectTheme(theme = Strings.DARK, navController = navController)
         }
 
         val lightIcon = Icons.Filled.LightMode
@@ -259,10 +256,8 @@ fun DarkLightItem(
         DarkLightThemeButton(
             contentDescription = lightDescription, modifier = modifier, imageVector = lightIcon
         ) {
-            viewModel.navigationToMain(navController)
-            viewModel.deleteColor()
-            variableTheme.value = Strings.LIGHT
-            viewModel.updateVariableTheme(Strings.LIGHT)
+            viewModel.selectTheme(theme = Strings.LIGHT, navController = navController)
+
         }
     }
 }
@@ -637,7 +632,6 @@ fun AcceptItem(
 ) {
     Button(
         onClick = {
-            viewModel.navigationToMain(navController)
             viewModel.updateColorTheme(
                 ColorTheme(
                     uid = 0,
@@ -652,6 +646,7 @@ fun AcceptItem(
             variableTheme.value = Strings.CUSTOM
             viewModel.updateVariableTheme(variableTheme.value)
             Toast.makeText(context, language.value.toastChangeTheme, Toast.LENGTH_LONG).show()
+            viewModel.navigationToMain(navController)
         },
         modifier = Modifier
             .fillMaxWidth()

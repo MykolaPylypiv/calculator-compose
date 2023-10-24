@@ -1,6 +1,7 @@
 package com.example.calculator_compose.presentation.ui.screen.main
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -71,10 +72,12 @@ fun StartBody(
     val borderSize = 1.dp
     val borderColor = Color.LightGray
 
+    var moved by remember { mutableStateOf(0.6F) }
+
     Column(modifier = Modifier.background(color = colors.primaryBackground)) {
         Row(
             modifier = Modifier
-                .weight(1F)
+                .weight(moved)
                 .fillMaxWidth()
                 .verticalScroll(scroll),
             verticalAlignment = Alignment.Bottom
@@ -101,7 +104,29 @@ fun StartBody(
             )
         }
 
-        Row {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            IconButton(onClick = {
+                moved += 0.1F
+            }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = "Down",
+                    tint = colors.primaryText
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            IconButton(onClick = {
+                moved -= 0.1F
+            }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropUp,
+                    contentDescription = "Up",
+                    tint = colors.primaryText
+                )
+            }
+
             Spacer(modifier = Modifier.weight(1F))
 
             Text(
@@ -116,8 +141,16 @@ fun StartBody(
             modifier = Modifier
                 .background(color = colors.primaryBackground)
                 .weight(1F)
+                .drawBehind {
+                    drawLine(
+                        color = borderColor,
+                        start = Offset(x = 0f, y = 0f),
+                        end = Offset(x = size.width, 0f),
+                        strokeWidth = borderSize.toPx()
+                    )
+                }
+                .animateContentSize()
         ) {
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -126,15 +159,7 @@ fun StartBody(
                 SecondaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F)
-                        .drawBehind {
-                            drawLine(
-                                color = borderColor,
-                                start = Offset(x = 0f, y = 0f),
-                                end = Offset(x = size.width, 0f),
-                                strokeWidth = borderSize.toPx()
-                            )
-                        }, text = TEXT_CLEAR_CALCULATION
+                        .weight(1F), text = TEXT_CLEAR_CALCULATION
                 ) { viewModel.exampleClear() }
 
                 PrimaryButton(
@@ -181,15 +206,7 @@ fun StartBody(
                     colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryButton),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F)
-                        .drawBehind {
-                            drawLine(
-                                color = borderColor,
-                                start = Offset(x = 0f, y = 0f),
-                                end = Offset(x = size.width, 0f),
-                                strokeWidth = borderSize.toPx()
-                            )
-                        },
+                        .weight(1F),
                 ) {
                     Icon(
                         Icons.Filled.ArrowBackIos,
@@ -231,15 +248,7 @@ fun StartBody(
                 SecondaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F)
-                        .drawBehind {
-                            drawLine(
-                                color = borderColor,
-                                start = Offset(x = 0f, y = 0f),
-                                end = Offset(x = size.width, 0f),
-                                strokeWidth = borderSize.toPx()
-                            )
-                        }, text = ACTION_PERCENT
+                        .weight(1F), text = ACTION_PERCENT
                 ) { viewModel.actionPress(ACTION_PERCENT) }
 
                 PrimaryButton(
@@ -275,15 +284,7 @@ fun StartBody(
                 TertiaryButton(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1F)
-                        .drawBehind {
-                            drawLine(
-                                color = borderColor,
-                                start = Offset(x = 0f, y = 0f),
-                                end = Offset(x = size.width, 0f),
-                                strokeWidth = borderSize.toPx()
-                            )
-                        }, ACTION_DIVISION
+                        .weight(1F), ACTION_DIVISION
                 ) { viewModel.actionPress(ACTION_DIVISION) }
 
                 TertiaryButton(

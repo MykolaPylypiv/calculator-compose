@@ -3,6 +3,8 @@ package com.example.calculator_compose.presentation.ui.screen.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -28,7 +30,8 @@ import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors
 @Composable
 fun StartAppBar(viewModel: StartViewModel, navController: NavController) {
     val deleteHistoryDialog = remember { mutableStateOf(false) }
-    val textChangeLanguage = remember { mutableStateOf(viewModel.textButtonChangeLanguage(isEnglish.value)) }
+    val textChangeLanguage =
+        remember { mutableStateOf(viewModel.textButtonChangeLanguage(isEnglish.value)) }
 
     TopAppBar(backgroundColor = colors.primaryBackground, elevation = 1.dp) {
         Spacer(modifier = Modifier.weight(1F))
@@ -67,11 +70,13 @@ fun StartAppBar(viewModel: StartViewModel, navController: NavController) {
     }
 
     if (deleteHistoryDialog.value) {
-        AlertDialog(onDismissRequest = {
+        AlertDialog(shape = RoundedCornerShape(20), onDismissRequest = {
             deleteHistoryDialog.value = false
         }, title = {
             Text(fontSize = 22.sp, text = language.value.deleteHistoryDialog)
         }, buttons = {
+            Spacer(modifier = Modifier.height(40.dp))
+
             Row(
                 modifier = Modifier.background(color = Color.DarkGray)
             ) {
@@ -104,7 +109,7 @@ fun DialogButton(onClick: () -> Unit, modifier: Modifier, text: String) {
         Text(
             text = text,
             fontSize = 22.sp,
-            color = colors.primaryText,
+            color = Color.White,
         )
     }
 }

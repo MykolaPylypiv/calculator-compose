@@ -3,6 +3,7 @@ package com.example.calculator_compose.presentation.ui.screen.settingsTheme
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.calculator_compose.app.main.variableTheme
 import com.example.calculator_compose.data.room.AppDatabase
 import com.example.calculator_compose.domain.model.ColorTheme
 import com.example.calculator_compose.domain.model.VariableTheme
@@ -12,6 +13,7 @@ import com.example.calculator_compose.domain.repository.variableTheme.DeleteVari
 import com.example.calculator_compose.domain.repository.variableTheme.InsertVariableTheme
 import com.example.calculator_compose.navigation.NavigationTree
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -74,14 +76,21 @@ class SettingsThemeViewModel @Inject constructor(
         defaultColorTheme.primaryBackground
     }
 
-    fun navigationToMain(navController: NavController) {
+    fun selectTheme(theme: String, navController: NavController) {
         navController.navigate(NavigationTree.Start.name)
+
+        viewModelScope.launch(dispatcher) {
+            delay(250)
+
+            deleteColor.deleteAll()
+            variableTheme.value = theme
+            deleteTheme.deleteAll()
+            insertTheme.insert(VariableTheme(theme = theme))
+        }
     }
 
-    fun deleteColor() {
-        viewModelScope.launch(dispatcher) {
-            deleteColor.deleteAll()
-        }
+    fun navigationToMain(navController: NavController) {
+        navController.navigate(NavigationTree.Start.name)
     }
 
     fun updateColorTheme(palette: ColorTheme) {

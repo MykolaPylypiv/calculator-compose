@@ -22,7 +22,7 @@ class AdditionalViewModel @Inject constructor(
 
     var example: MutableLiveData<String> = MutableLiveData(interactor.getCalculation().calculation)
     var result: MutableLiveData<String> = MutableLiveData(interactor.getCalculation().calculation)
-    val degrees: MutableLiveData<String> = MutableLiveData(interactor.converting())
+    val degrees: MutableLiveData<String> = MutableLiveData(Strings.DEGREES)
 
     val history: Flow<String?> = loadHistory()
 

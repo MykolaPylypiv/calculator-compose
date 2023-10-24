@@ -1,6 +1,7 @@
 package com.example.calculator_compose.presentation.ui.screen.additional
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -56,7 +56,6 @@ import com.example.calculator_compose.app.Strings.TEXT_EQUAL
 import com.example.calculator_compose.presentation.ui.screen.main.AdditionalButton
 import com.example.calculator_compose.presentation.ui.screen.main.PrimaryButton
 import com.example.calculator_compose.presentation.ui.screen.main.SecondaryButton
-import com.example.calculator_compose.presentation.ui.screen.main.StartViewModel
 import com.example.calculator_compose.presentation.ui.screen.main.TertiaryButton
 import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors
 
@@ -76,7 +75,7 @@ fun AdditionalBody(viewModel: AdditionalViewModel, navController: NavController)
     val result = viewModel.result.observeAsState()
     val degrees = viewModel.degrees.observeAsState()
     val history = viewModel.history.collectAsState(initial = "")
-    val scroll = rememberScrollState()
+    val scroll = ScrollState(Int.MAX_VALUE)
 
     val degreesEnabled = viewModel.degreesEnabled.observeAsState()
 
@@ -92,7 +91,7 @@ fun AdditionalBody(viewModel: AdditionalViewModel, navController: NavController)
     ) {
         Row(
             modifier = Modifier
-                .weight(1F)
+                .weight(0.9F)
                 .fillMaxWidth()
                 .verticalScroll(scroll),
             verticalAlignment = Alignment.Bottom
