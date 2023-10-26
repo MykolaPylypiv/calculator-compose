@@ -6,7 +6,9 @@ import com.example.calculator_compose.domain.calculation.PrimitiveCalculation
 import com.example.calculator_compose.domain.calculation.Priority
 import com.example.calculator_compose.domain.calculation.result.Result.Base
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
+import com.example.calculator_compose.domain.calculation.result.Calculation
 import com.example.calculator_compose.domain.calculation.result.SelectSection
+import com.example.calculator_compose.domain.calculation.result.UtilResult
 import org.junit.Test
 import kotlin.math.ln
 import kotlin.math.log10
@@ -27,7 +29,14 @@ class ResultTest {
 
     private val section = SelectSection.Base()
 
-    private val result = Base(mapper = mapper, component = component, priority = priority, section = section)
+    private val calculation = Calculation.Base(
+        mapper = mapper, component = component, priority = priority, section = section
+    )
+
+    private val util = UtilResult.Base(component = component)
+
+    private val result =
+        Base(mapper = mapper, component = component, calculation = calculation, util = util)
 
     @Test
     fun zero() {
