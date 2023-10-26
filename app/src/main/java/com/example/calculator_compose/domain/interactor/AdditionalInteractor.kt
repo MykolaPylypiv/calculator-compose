@@ -82,8 +82,8 @@ interface AdditionalInteractor : NumberUseCase, ZeroUseCase, ComaUseCase, Action
 
         override fun result() = result.result()
 
-        override fun renewal(example: String, operation: String, radians: String) =
-            result.renewal(example, operation, radians)
+        override fun renewal(example: String, radians: String) =
+            result.renewal(example, radians)
 
         override fun storeHistory(): Store<String> = storeHistoryCalculation
     }

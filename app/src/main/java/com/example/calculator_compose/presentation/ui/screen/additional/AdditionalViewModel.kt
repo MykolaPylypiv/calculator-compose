@@ -38,24 +38,24 @@ class AdditionalViewModel @Inject constructor(
         example.value = interactor.number(
             text = text, action = action, example = example.value.toString()
         )
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun letterNumPress(text: String) {
         example.value = interactor.letterNum(
             text = text, action = action, example = example.value.toString()
         )
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun zeroPress() {
         example.value = interactor.zero(example = example.value.toString())
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun comaPress() {
         example.value = interactor.coma(example = example.value.toString(), action = action)
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun actionPress(text: String) {
@@ -64,7 +64,7 @@ class AdditionalViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun squareRootPress() {
@@ -72,7 +72,7 @@ class AdditionalViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun factorialPress() {
@@ -80,7 +80,7 @@ class AdditionalViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun trigonometricPress(text: String) {
@@ -90,7 +90,7 @@ class AdditionalViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun rightBracket() {
@@ -98,7 +98,7 @@ class AdditionalViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun leftBracket() {
@@ -106,7 +106,7 @@ class AdditionalViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun equalPress() {
@@ -124,7 +124,7 @@ class AdditionalViewModel @Inject constructor(
         newHistory += allValues.history
 
         viewModelScope.launch(dispatcher) {
-            saveHistory(history.first() + newHistory)
+            interactor.storeHistory().save(history.first() + newHistory)
         }
         result.value = example.value
     }
@@ -134,7 +134,7 @@ class AdditionalViewModel @Inject constructor(
 
         example.value = values.calculation
         action = values.action
-        result.value = interactor.renewal(example.value.toString(), action, degrees.value.toString())
+        result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
     fun exampleClear() {
@@ -171,10 +171,6 @@ class AdditionalViewModel @Inject constructor(
                 calculation = example.value.toString(), action = action
             )
         )
-    }
-
-    private fun saveHistory(history: String) = viewModelScope.launch(dispatcher) {
-        interactor.storeHistory().save(history)
     }
 
     private fun loadHistory() = interactor.storeHistory().get()

@@ -30,7 +30,7 @@ fun ApplicationScreen() {
     NavHost(navController = navController, startDestination = NavigationTree.Start.name) {
         composable(NavigationTree.Start.name) {
             val startViewModel = hiltViewModel<StartViewModel>()
-                StartScreen(viewModel = startViewModel, navController = navController)
+            StartScreen(viewModel = startViewModel, navController = navController)
         }
         composable(NavigationTree.Additional.name) {
             val additionalViewModel = hiltViewModel<AdditionalViewModel>()

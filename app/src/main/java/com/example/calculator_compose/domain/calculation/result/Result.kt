@@ -3,26 +3,13 @@ package com.example.calculator_compose.domain.calculation.result
 import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.app.Strings.ACTION_FACTORIAL
 import com.example.calculator_compose.app.Strings.ACTION_MINUS
-import com.example.calculator_compose.app.Strings.EMPTY
-import com.example.calculator_compose.app.Strings.LEFT_BRACKET
-import com.example.calculator_compose.app.Strings.NUMBER_EIGHT
-import com.example.calculator_compose.app.Strings.NUMBER_FIVE
-import com.example.calculator_compose.app.Strings.NUMBER_FOUR
-import com.example.calculator_compose.app.Strings.NUMBER_NINE
 import com.example.calculator_compose.app.Strings.NUMBER_ONE
-import com.example.calculator_compose.app.Strings.NUMBER_SEVEN
-import com.example.calculator_compose.app.Strings.NUMBER_SIX
-import com.example.calculator_compose.app.Strings.NUMBER_THREE
-import com.example.calculator_compose.app.Strings.NUMBER_TWO
 import com.example.calculator_compose.app.Strings.NUMBER_ZERO
 import com.example.calculator_compose.app.Strings.POINT
 import com.example.calculator_compose.app.Strings.RIGHT_BRACKET
-import com.example.calculator_compose.app.Strings.SPACE
 import com.example.calculator_compose.domain.calculation.ExampleComponent
 import com.example.calculator_compose.domain.calculation.Priority
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
-import com.example.calculator_compose.domain.model.PresentationValues
-import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -30,21 +17,21 @@ interface Result {
 
     fun result(): String
 
-    fun renewal(example: String, operation: String, radians: String = "deg"): String
+    fun renewal(example: String, radians: String = "deg"): String
 
     class Base @Inject constructor(
         private val mapper: MapperToDomainValues,
         private val component: ExampleComponent.Base,
         private val priority: Priority.Base,
+        private val section: SelectSection.Base,
     ) : Result, UtilResult {
         override fun result() = result
 
-        override fun renewal(example: String, operation: String, radians: String): String {
-            val data = PresentationValues(calculation = example, action = operation)
-            val values = mapper.map(data)
+        override fun renewal(example: String, radians: String): String {
+            val values = mapper.map(example)
 
             val numbers = values.numbers
-            var action = values.action
+            val action = values.action
 
             val isRadians = radians != component.deg
 
@@ -60,7 +47,10 @@ interface Result {
                 return numbers.first().toString()
             }
 
-            if (component.actionWithThoNumber.contains(example.last().toString()) && numbers.size == 1) {
+            if (component.actionWithThoNumber.contains(
+                    example.last().toString()
+                ) && numbers.size == 1
+            ) {
                 return numbers.first().toString()
             }
 
@@ -81,30 +71,20 @@ interface Result {
                 return numbers.first().toString()
             }
 
-            /** if first number starts with - */
+            /** division on zero */
 
-            if (example.first().toString() == ACTION_MINUS) {
-                numbers[0] = (-numbers[0].toDouble()).toString()
-                action.removeFirst()
+            if (example.contains("÷0")) {
+                return Double.POSITIVE_INFINITY.toString()
             }
 
             /** if first number ends with action */
 
-            val preparationValues = preparation(exam = data.calculation, action = action)
-
-            val exam = preparationValues.example
-            action = preparationValues.action
+            val exam = preparation(exam = example)
 
             /** calculation */
 
             val result: Double = calculation(
-                CalculationValues(
-                    action = action,
-                    example = exam,
-                    numbers = numbers,
-                    radians = radians,
-                    isRadians = isRadians
-                )
+                example = exam, isRadians = isRadians
             )
 
             /** return */
@@ -129,14 +109,12 @@ interface Result {
 
         /** if first number ends with action */
 
-        override fun preparation(exam: String, action: MutableList<String>): PreparationValues {
+        override fun preparation(exam: String): String {
             var example = exam
             while (!component.numbers.contains(
                     example.last().toString()
                 ) && example.last().toString() != RIGHT_BRACKET
             ) {
-                action.removeLast()
-
                 /** if last action equal sin, cos, tg ect... */
 
                 example = if (component.actionWithOneNumber.contains(
@@ -151,92 +129,38 @@ interface Result {
                 }
             }
 
-            return PreparationValues(action = action, example = example)
+            example = example.replace("0!", "1")
+
+            return example
         }
 
         /** calculation */
 
-        override fun calculation(values: CalculationValues): Double {
-            var action = values.action
-            var sectionExample = values.example
+        override fun calculation(example: String, isRadians: Boolean): Double {
+            var result = example
+            var resultData = mapper.map(result)
 
-            val isRadians = values.isRadians
-            val radians = values.radians
+            while (resultData.action.any { component.action.contains(it) }) {
+                val sectionExample = section.selectSection(result)
+                val data = mapper.map(sectionExample)
 
-            val numeric = values.numbers.map { value ->
-                value.toDouble()
-            }.toMutableList()
+                val action = data.action
+                val numeric = data.numbers.map { it.toDouble() }.toMutableList()
 
-            while (action.isNotEmpty()) {
-                if (action.any { component.brackets.contains(it) }) {
-                    val start = sectionExample.indexOf(LEFT_BRACKET)
+                /** if first number starts with - */
 
-                    val end = if (action.contains(RIGHT_BRACKET)) {
-                        sectionExample.indexOf(RIGHT_BRACKET)
-                    } else {
-                        sectionExample.length
-                    }
+                if (sectionExample.first().toString() == ACTION_MINUS) {
+                    numeric[0] = -numeric[0]
+                    action.removeFirst()
+                }
 
-                    val newExample =
-                        sectionExample.split("").subList(start + 2, end + 1).joinToString("")
+                if (result == "5^-1.0")
+                    throw IllegalArgumentException(numeric.toString() + action.toString())
 
-                    val newAction = newExample.split(
-                        NUMBER_ZERO,
-                        NUMBER_ONE,
-                        NUMBER_TWO,
-                        NUMBER_THREE,
-                        NUMBER_FOUR,
-                        NUMBER_FIVE,
-                        NUMBER_SIX,
-                        NUMBER_SEVEN,
-                        NUMBER_EIGHT,
-                        NUMBER_NINE,
-                        LEFT_BRACKET,
-                        RIGHT_BRACKET,
-                        POINT,
-                        SPACE
-                    )
 
-                    val newOperation = newAction.joinToString(EMPTY)
+                /** calculation */
 
-                    if (action.indexOf(LEFT_BRACKET) != 0 && component.actionWithOneNumber.contains(
-                            action[action.indexOf(LEFT_BRACKET) - 1]
-                        ) || component.actionWithOneNumber.contains(action[0])
-                    ) {
-                        numeric[action.indexOf(LEFT_BRACKET) - 1] = renewal(
-                            example = newExample, operation = newOperation, radians = radians
-                        ).toDouble()
-
-                    } else {
-                        numeric[action.indexOf(LEFT_BRACKET)] = renewal(
-                            example = newExample, operation = newOperation, radians = radians
-                        ).toDouble()
-                    }
-
-                    if (action.indexOf(RIGHT_BRACKET) == action.size || !action.contains(
-                            RIGHT_BRACKET
-                        )
-                    ) {
-                        action = action.subList(0, action.indexOf(LEFT_BRACKET))
-                        sectionExample =
-                            sectionExample.substring(0, sectionExample.indexOf(LEFT_BRACKET))
-                    } else {
-                        action = (action.subList(0, action.indexOf(LEFT_BRACKET)) + action.subList(
-                            action.indexOf(RIGHT_BRACKET) + 1, action.size
-                        )).toMutableList()
-
-                        sectionExample = sectionExample.substring(
-                            0, sectionExample.indexOf(LEFT_BRACKET)
-                        ) + sectionExample.substring(
-                            sectionExample.indexOf(RIGHT_BRACKET) + 1, sectionExample.length
-                        )
-                    }
-
-                    if (action.isEmpty()) {
-                        break
-                    }
-
-                } else if (action.any { component.personal.contains(it) }) {
+                while (action.any { component.personal.contains(it) }) {
                     var index = 0
 
                     for (item in action) {
@@ -253,7 +177,8 @@ interface Result {
                     if (action.isEmpty()) {
                         break
                     }
-                } else if (action.any { component.actionWithOneNumber.contains(it) }) {
+                }
+                while (action.any { component.actionWithOneNumber.contains(it) }) {
                     var index = 0
 
                     for (item in action) {
@@ -274,7 +199,8 @@ interface Result {
                     if (action.isEmpty()) {
                         break
                     }
-                } else if (action.any { component.second.contains(it) }) {
+                }
+                while (action.any { component.second.contains(it) }) {
                     var index = 0
 
                     for (item in action) {
@@ -295,7 +221,8 @@ interface Result {
                     if (action.isEmpty()) {
                         break
                     }
-                } else if (action.any { component.simple.contains(it) }) {
+                }
+                while (action.any { component.simple.contains(it) }) {
                     var index = 0
 
                     for (item in action) {
@@ -315,10 +242,19 @@ interface Result {
                     numeric.removeAt(index)
                     action.removeAt(index)
                 }
+
+                result = if (result.contains(Strings.LEFT_BRACKET)) {
+                    result.replace("($sectionExample)", numeric[0].toString())
+                } else result.replace(sectionExample, numeric[0].toString())
+
+                resultData = mapper.map(result)
+
+                if (result.first().toString() == ACTION_MINUS && resultData.action.size == 1) break
             }
 
-            return numeric[0]
+            return result.toDouble()
         }
+
     }
 }
 
@@ -326,7 +262,7 @@ interface UtilResult {
 
     fun output(result: Double): String
 
-    fun preparation(exam: String, action: MutableList<String>): PreparationValues
+    fun preparation(exam: String): String
 
-    fun calculation(values: CalculationValues): Double
+    fun calculation(example: String, isRadians: Boolean): Double
 }

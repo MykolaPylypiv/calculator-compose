@@ -38,8 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.calculator_compose.app.Strings
-import com.example.calculator_compose.app.main.language
-import com.example.calculator_compose.app.main.variableTheme
+import com.example.calculator_compose.app.Repository.language
+import com.example.calculator_compose.app.Repository.variableTheme
 import com.example.calculator_compose.domain.model.ColorTheme
 import com.example.calculator_compose.domain.model.DefaultColorHex
 import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors

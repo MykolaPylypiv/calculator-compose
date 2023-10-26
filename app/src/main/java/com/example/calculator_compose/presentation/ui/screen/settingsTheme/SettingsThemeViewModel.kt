@@ -3,7 +3,7 @@ package com.example.calculator_compose.presentation.ui.screen.settingsTheme
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.calculator_compose.app.main.variableTheme
+import com.example.calculator_compose.app.Repository.variableTheme
 import com.example.calculator_compose.data.room.AppDatabase
 import com.example.calculator_compose.domain.model.ColorTheme
 import com.example.calculator_compose.domain.model.VariableTheme

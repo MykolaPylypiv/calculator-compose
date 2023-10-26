@@ -4,12 +4,11 @@ import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.core.Mapper
 import com.example.calculator_compose.domain.calculation.ExampleComponent
 import com.example.calculator_compose.domain.model.DomainValues
-import com.example.calculator_compose.domain.model.PresentationValues
 import javax.inject.Inject
 
 class MapperToDomainValues @Inject constructor(
     private val component: ExampleComponent.Base,
-) : Mapper<PresentationValues, DomainValues> {
+) : Mapper<String, DomainValues> {
 
     private val asin = Strings.ACTION_ARCSIN.dropLast(1)
     private val acos = Strings.ACTION_ARCCOS.dropLast(1)
@@ -30,17 +29,32 @@ class MapperToDomainValues @Inject constructor(
     private val leftBr = Strings.LEFT_BRACKET
     private val rightBr = Strings.RIGHT_BRACKET
 
-    override fun map(data: PresentationValues): DomainValues {
+    override fun map(data: String): DomainValues {
 
         val action: MutableList<String> = mutableListOf()
 
-        val newAction = data.action.replace(oldValue = asin, newValue = "i")
+        val newAction = data.replace(oldValue = asin, newValue = "i")
             .replace(oldValue = acos, newValue = "o").replace(oldValue = atan, newValue = "x")
             .replace(oldValue = sin, newValue = "s").replace(oldValue = cos, newValue = "c")
             .replace(oldValue = tan, newValue = "t").replace(oldValue = lg, newValue = "l")
-            .replace(oldValue = ln, newValue = "n")
+            .replace(oldValue = ln, newValue = "n").split(
+                Strings.NUMBER_ZERO,
+                Strings.NUMBER_ONE,
+                Strings.NUMBER_TWO,
+                Strings.NUMBER_THREE,
+                Strings.NUMBER_FOUR,
+                Strings.NUMBER_FIVE,
+                Strings.NUMBER_SIX,
+                Strings.NUMBER_SEVEN,
+                Strings.NUMBER_EIGHT,
+                Strings.NUMBER_NINE,
+                Strings.POINT,
+                Strings.SPACE,
+                Strings.NUMBER_P,
+                Strings.NUMBER_E
+            ).joinToString("")
 
-        val numbers = data.calculation.replace(component.pi, Strings.CONST_NUMBER_PI).replace(
+        val numbers = data.replace(component.pi, Strings.CONST_NUMBER_PI).replace(
             component.e, Strings.CONST_NUMBER_E
         ).split(
             plus,
@@ -60,7 +74,8 @@ class MapperToDomainValues @Inject constructor(
             cos,
             tan,
             lg,
-            ln
+            ln,
+            Strings.SPACE
         ).toMutableList()
 
         val removeNumber = mutableListOf(Strings.EMPTY)
@@ -89,6 +104,7 @@ class MapperToDomainValues @Inject constructor(
         }
 
         numbers.removeAll(elements = removeNumber)
+        action.removeAll(elements = removeNumber)
 
         return DomainValues(numbers = numbers, action = action)
     }

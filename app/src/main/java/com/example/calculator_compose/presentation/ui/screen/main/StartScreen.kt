@@ -317,6 +317,7 @@ fun StartBody(
                         .weight(1F), TEXT_EQUAL
                 ) {
                     viewModel.equalPress()
+
                     CoroutineScope(Dispatchers.Default).launch {
                         scroll.scrollTo(Int.MAX_VALUE)
                     }

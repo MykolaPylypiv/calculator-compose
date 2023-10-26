@@ -1,6 +1,11 @@
 package com.example.calculator_compose.app.main
 
 import androidx.compose.ui.graphics.Color
+import com.example.calculator_compose.app.Repository.customColors
+import com.example.calculator_compose.app.Repository.isEnglish
+import com.example.calculator_compose.app.Repository.language
+import com.example.calculator_compose.app.Repository.systemBarColors
+import com.example.calculator_compose.app.Repository.variableTheme
 import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.app.english
 import com.example.calculator_compose.app.ukrainian
@@ -57,6 +62,4 @@ class MainViewModel(private val db: AppDatabase) {
             systemBarColors.value = customColors.value.primaryBackground
         }
     }
-
-
 }

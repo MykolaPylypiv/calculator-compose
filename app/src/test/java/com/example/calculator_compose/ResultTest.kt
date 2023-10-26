@@ -6,6 +6,7 @@ import com.example.calculator_compose.domain.calculation.PrimitiveCalculation
 import com.example.calculator_compose.domain.calculation.Priority
 import com.example.calculator_compose.domain.calculation.result.Result.Base
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
+import com.example.calculator_compose.domain.calculation.result.SelectSection
 import org.junit.Test
 import kotlin.math.ln
 import kotlin.math.log10
@@ -24,15 +25,16 @@ class ResultTest {
     private val priority =
         Priority.Base(primitiveCalculation = primitiveCalculation, component = component)
 
-    private val result = Base(mapper = mapper, component = component, priority = priority)
+    private val section = SelectSection.Base()
+
+    private val result = Base(mapper = mapper, component = component, priority = priority, section = section)
 
     @Test
     fun zero() {
         val example = "0"
-        val operation = ""
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("0", result)
     }
@@ -40,10 +42,9 @@ class ResultTest {
     @Test
     fun `one number and one action`() {
         val example = "3+"
-        val operation = ""
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("3", result)
     }
@@ -51,10 +52,9 @@ class ResultTest {
     @Test
     fun `degrees and number`() {
         val example = "(3"
-        val operation = "("
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("3", result)
     }
@@ -62,10 +62,9 @@ class ResultTest {
     @Test
     fun `numbers is empty`() {
         val example = ""
-        val operation = "sin("
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("0", result)
     }
@@ -73,10 +72,9 @@ class ResultTest {
     @Test
     fun `end example equal action`() {
         val example = "sin(30)+3+"
-        val operation = "sin()++"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("3.5", result)
     }
@@ -84,10 +82,9 @@ class ResultTest {
     @Test
     fun `end example equal trigonometric`() {
         val example = "3+3+sin("
-        val operation = "++sin("
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("6", result)
     }
@@ -95,10 +92,9 @@ class ResultTest {
     @Test
     fun `equal 1 action`() {
         val example = "3+3"
-        val operation = "+"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("6", result)
     }
@@ -106,10 +102,9 @@ class ResultTest {
     @Test
     fun `equal 2 action`() {
         val example = "3+3-3"
-        val operation = "+-"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("3", result)
     }
@@ -117,10 +112,9 @@ class ResultTest {
     @Test
     fun `equal 2 action with other priority`() {
         val example = "3+3×3"
-        val operation = "+×"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("12", result)
     }
@@ -128,10 +122,9 @@ class ResultTest {
     @Test
     fun `equal 1 action with brackets`() {
         val example = "(3+3)"
-        val operation = "(+)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("6", result)
     }
@@ -139,10 +132,9 @@ class ResultTest {
     @Test
     fun `equal 2 action with brackets`() {
         val example = "(3+3-2)"
-        val operation = "(+-)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("4", result)
     }
@@ -150,10 +142,9 @@ class ResultTest {
     @Test
     fun `equal 2 action with other priority brackets`() {
         val example = "(3+3×2)"
-        val operation = "(+×)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("9", result)
     }
@@ -161,10 +152,9 @@ class ResultTest {
     @Test
     fun `equal 2 action with brackets and factorial`() {
         val example = "(3+3-2)"
-        val operation = "(+-)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("4", result)
     }
@@ -172,10 +162,9 @@ class ResultTest {
     @Test
     fun `result 1 brackets and 1 action`() {
         val example = "6+(4-3)"
-        val operation = "+(-)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("7", result)
     }
@@ -183,10 +172,9 @@ class ResultTest {
     @Test
     fun `two trigonometric action`() {
         val example = "sin(30)+sin(30)"
-        val operation = "sin()+sin()"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("1", result)
     }
@@ -194,10 +182,9 @@ class ResultTest {
     @Test
     fun `result 1 brackets and 1 trigonometric`() {
         val example = "sin(30)+(4-3)"
-        val operation = "sin()+(-)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("1.5", result)
     }
@@ -205,10 +192,9 @@ class ResultTest {
     @Test
     fun `result 1 brackets and 1 trigonometric `() {
         val example = "(4-3)+sin(30)"
-        val operation = "(-)+sin()"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("1.5", result)
     }
@@ -216,10 +202,9 @@ class ResultTest {
     @Test
     fun `result 2 brackets`() {
         val example = "(3+3)+(4-3)"
-        val operation = "(+)+(-)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("7", result)
     }
@@ -227,10 +212,9 @@ class ResultTest {
     @Test
     fun `equal sin`() {
         val example = "sin(90)"
-        val operation = "sin(+)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(sin(90.0 * Math.PI / 180).toInt().toString(), result)
     }
@@ -238,10 +222,9 @@ class ResultTest {
     @Test
     fun `equal sin with 2 action`() {
         val example = "sin(45+45)"
-        val operation = "sin(+)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("1", result)
     }
@@ -249,10 +232,9 @@ class ResultTest {
     @Test
     fun `equal cos`() {
         val example = "cos(90)"
-        val operation = "cos()"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("0", result)
     }
@@ -260,10 +242,9 @@ class ResultTest {
     @Test
     fun `equal cos with 2 action`() {
         val example = "cos(45+45)"
-        val operation = "cos(+)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("0", result)
     }
@@ -271,10 +252,9 @@ class ResultTest {
     @Test
     fun `equal lg`() {
         val example = "lg(90)"
-        val operation = "lg()"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(log10(90.0).toString(), result)
     }
@@ -282,10 +262,9 @@ class ResultTest {
     @Test
     fun `equal lg with 2 action`() {
         val example = "lg(45+45)"
-        val operation = "lg(+)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(log10(90.0).toString(), result)
     }
@@ -293,10 +272,9 @@ class ResultTest {
     @Test
     fun `equal ln`() {
         val example = "ln(90)"
-        val operation = "ln()"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(ln(90.0).toString(), result)
     }
@@ -304,10 +282,9 @@ class ResultTest {
     @Test
     fun `equal tan`() {
         val example = "tan(90)"
-        val operation = "tan()"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("2.147483647", result)
     }
@@ -315,10 +292,9 @@ class ResultTest {
     @Test
     fun `equal tan with 2 action`() {
         val example = "tan(45+45)"
-        val operation = "tan(+)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("2.147483647", result)
     }
@@ -326,10 +302,9 @@ class ResultTest {
     @Test
     fun `equal zero factorial`() {
         val example = "0!"
-        val operation = "!"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("1", result)
     }
@@ -337,21 +312,29 @@ class ResultTest {
     @Test
     fun `equal zero factorial with one action`() {
         val example = "0!+1"
-        val operation = "!+"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("2", result)
     }
 
     @Test
-    fun `equal square root`() {
-        val example = "√25"
-        val operation = "√"
+    fun `equal factorial with one action`() {
+        val example = "5!+1"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
+
+        assertEquals("121", result)
+    }
+
+    @Test
+    fun `equal square root`() {
+        val example = "√25"
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, isRadians)
 
         assertEquals("5", result)
     }
@@ -359,10 +342,9 @@ class ResultTest {
     @Test
     fun `equal square root with one action`() {
         val example = "√25+1"
-        val operation = "√+"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("6", result)
     }
@@ -370,21 +352,19 @@ class ResultTest {
     @Test
     fun `equal one minus number`() {
         val example = "0-5"
-        val operation = "-"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("-5", result)
     }
 
     @Test
     fun `equal minus number with one action`() {
-        val example = "-5+1"
-        val operation = "-+"
+        val example = "0-5+1"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("-4", result)
     }
@@ -392,10 +372,9 @@ class ResultTest {
     @Test
     fun `equal minus pow with one action`() {
         val example = "5^(0-1)"
-        val operation = "^(-)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("0.2", result)
     }
@@ -403,10 +382,9 @@ class ResultTest {
     @Test
     fun `equal arcsin`() {
         val example = "asin(0.5)"
-        val operation = "asin()"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("30", result)
     }
@@ -414,10 +392,9 @@ class ResultTest {
     @Test
     fun `equal arcsin with 1 action`() {
         val example = "asin(0.3 + 0.2)"
-        val operation = "asin(+)"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("30", result)
     }
@@ -425,10 +402,9 @@ class ResultTest {
     @Test
     fun `equal zero division exception`() {
         val example = "2÷0"
-        val operation = "÷"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(Double.POSITIVE_INFINITY, result.toDouble())
     }
@@ -436,10 +412,9 @@ class ResultTest {
     @Test
     fun `pi + number`() {
         val example = "π+3"
-        val operation = "+"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(6.14159265, result.toDouble())
     }
@@ -447,10 +422,9 @@ class ResultTest {
     @Test
     fun `e + number`() {
         val example = "e+3"
-        val operation = "+"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(5.7182818300000005, result.toDouble())
     }
@@ -458,10 +432,9 @@ class ResultTest {
     @Test
     fun `sin(30)`() {
         val example = "sin(30)"
-        val operation = "sin()"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(0.5, result.toDouble())
     }
@@ -469,10 +442,9 @@ class ResultTest {
     @Test
     fun `sin + number`() {
         val example = "sin(30)+3"
-        val operation = "sin()+"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals(3.5, result.toDouble())
     }
@@ -480,10 +452,9 @@ class ResultTest {
     @Test
     fun `float + float`() {
         val example = "2.3 + 0.2"
-        val operation = "+"
         val isRadians = Strings.DEGREES
 
-        val result = result.renewal(example, operation, isRadians)
+        val result = result.renewal(example, isRadians)
 
         assertEquals("2.5", result)
     }

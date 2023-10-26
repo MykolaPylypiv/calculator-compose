@@ -6,7 +6,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.example.calculator_compose.app.Exceptions
 import com.example.calculator_compose.app.Strings
-import com.example.calculator_compose.app.main.customColors
+import com.example.calculator_compose.app.Repository.customColors
 import java.lang.IllegalArgumentException
 
 @Composable

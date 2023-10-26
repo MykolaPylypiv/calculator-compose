@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.calculator_compose.app.main.isEnglish
-import com.example.calculator_compose.app.main.language
+import com.example.calculator_compose.app.Repository.isEnglish
+import com.example.calculator_compose.app.Repository.language
 import com.example.calculator_compose.presentation.ui.theme.AppTheme.colors
 
 @Composable

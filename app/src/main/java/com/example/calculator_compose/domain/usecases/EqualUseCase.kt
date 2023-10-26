@@ -19,7 +19,7 @@ interface EqualUseCase {
         override fun equal(
             example: String, operation: String, history: String, radians: String
         ): DomainAllValues {
-            val result = result.renewal(example = example, operation = operation, radians = radians).toDouble()
+            val result = result.renewal(example = example, radians = radians).toDouble()
 
             return additional.equalReturn(result = result, example = example)
         }

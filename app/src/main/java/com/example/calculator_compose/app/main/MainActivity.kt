@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
+import com.example.calculator_compose.app.Repository.systemBarColors
+import com.example.calculator_compose.app.Repository.variableTheme
 import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.app.english
 import com.example.calculator_compose.data.room.AppDatabase
@@ -13,14 +15,6 @@ import com.example.calculator_compose.presentation.ui.theme.darkPalette
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
-val customColors = mutableStateOf(darkPalette)
-val systemBarColors = mutableStateOf(darkPalette.primaryBackground)
-
-val language = mutableStateOf(english)
-val isEnglish = mutableStateOf(true)
-
-val variableTheme = mutableStateOf(Strings.DARK)
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
