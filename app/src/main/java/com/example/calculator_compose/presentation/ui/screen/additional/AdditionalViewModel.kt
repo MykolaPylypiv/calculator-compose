@@ -63,7 +63,6 @@ class AdditionalViewModel @Inject constructor(
             interactor.action(text = text, example = example.value.toString(), action = action)
 
         example.value = values.calculation
-        action = values.action
         result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
@@ -71,7 +70,6 @@ class AdditionalViewModel @Inject constructor(
         val values = interactor.sqrt(example = example.value.toString(), action = action)
 
         example.value = values.calculation
-        action = values.action
         result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
@@ -79,7 +77,6 @@ class AdditionalViewModel @Inject constructor(
         val values = interactor.factorial(example = example.value.toString(), action = action)
 
         example.value = values.calculation
-        action = values.action
         result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
@@ -89,7 +86,6 @@ class AdditionalViewModel @Inject constructor(
         )
 
         example.value = values.calculation
-        action = values.action
         result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
@@ -97,7 +93,6 @@ class AdditionalViewModel @Inject constructor(
         val values = interactor.rightBracket(example = example.value.toString(), action = action)
 
         example.value = values.calculation
-        action = values.action
         result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
@@ -105,7 +100,6 @@ class AdditionalViewModel @Inject constructor(
         val values = interactor.leftBracket(example = example.value.toString(), action = action)
 
         example.value = values.calculation
-        action = values.action
         result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 
@@ -120,7 +114,6 @@ class AdditionalViewModel @Inject constructor(
         )
 
         example.value = allValues.calculation
-        action = allValues.action
         newHistory += allValues.history
 
         viewModelScope.launch(dispatcher) {
@@ -133,7 +126,6 @@ class AdditionalViewModel @Inject constructor(
         val values = interactor.back(example = example.value.toString(), action = action)
 
         example.value = values.calculation
-        action = values.action
         result.value = interactor.renewal(example.value.toString(), degrees.value.toString())
     }
 

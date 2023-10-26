@@ -179,6 +179,16 @@ class ResultTest {
     }
 
     @Test
+    fun `one trigonometric action without brackets`() {
+        val example = "sin(30"
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, isRadians)
+
+        assertEquals("0.5", result)
+    }
+
+    @Test
     fun `two trigonometric action`() {
         val example = "sin(30)+sin(30)"
         val isRadians = Strings.DEGREES

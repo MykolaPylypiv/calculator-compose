@@ -19,6 +19,15 @@ class SelectSectionTest {
     }
 
     @Test
+    fun `trigonometric action without brackets`() {
+        val example = "sin(30"
+
+        val result = result.selectSection(example)
+
+        Assert.assertEquals("30", result)
+    }
+
+    @Test
     fun `in trigonometric action`() {
         val example = "sin(30+30)"
 

@@ -124,8 +124,10 @@ interface Calculation {
                     action.removeAt(index)
                 }
 
-                result = if (result.contains(Strings.LEFT_BRACKET)) {
+                result = if (result.contains(Strings.LEFT_BRACKET) && result.contains(Strings.RIGHT_BRACKET)) {
                     result.replace("($sectionExample)", numeric[0].toString())
+                } else if (result.contains(Strings.LEFT_BRACKET)) {
+                    result.replace("($sectionExample", numeric[0].toString())
                 } else result.replace(sectionExample, numeric[0].toString())
 
                 resultData = mapper.map(result)
