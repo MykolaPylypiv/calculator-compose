@@ -15,15 +15,36 @@ interface Calculation {
         private val component: ExampleComponent.Base,
         private val priority: Priority.Base,
         private val section: SelectSection.Base,
-    ): Calculation {
+    ) : Calculation {
 
         override fun calculation(example: String, isRadians: Boolean): Double {
             var result = example
             var resultData = mapper.map(result)
 
             while (resultData.action.any { component.action.contains(it) }) {
-                val sectionExample = section.selectSection(result)
+                var sectionExample = section.selectSection(result)
                 val data = mapper.map(sectionExample)
+
+                /** if example have ^(- */
+
+                if (result.contains("^-")) {
+                    var shift = 0
+
+                    for (action in data.action) {
+                        val index = data.action.indexOf(action)
+
+                        if (data.action[index] == Strings.ACTION_MINUS && data.action[index - 1] == "^") {
+                            data.action[index] = ""
+                            data.numbers[index - shift] =
+                                (-data.numbers[index - shift].toDouble()).toString()
+                            shift += 1
+                        }
+                    }
+                    data.action.removeIf { it == "" }
+
+                    result = result.replace("^-", "^")
+                    sectionExample = section.selectSection(result)
+                }
 
                 val action = data.action
                 val numeric = data.numbers.map { it.toDouble() }.toMutableList()
@@ -34,10 +55,6 @@ interface Calculation {
                     numeric[0] = -numeric[0]
                     action.removeFirst()
                 }
-
-                if (result == "5^-1.0")
-                    throw IllegalArgumentException(numeric.toString() + action.toString())
-
 
                 /** calculation */
 
@@ -124,15 +141,20 @@ interface Calculation {
                     action.removeAt(index)
                 }
 
-                result = if (result.contains(Strings.LEFT_BRACKET) && result.contains(Strings.RIGHT_BRACKET)) {
-                    result.replace("($sectionExample)", numeric[0].toString())
-                } else if (result.contains(Strings.LEFT_BRACKET)) {
-                    result.replace("($sectionExample", numeric[0].toString())
-                } else result.replace(sectionExample, numeric[0].toString())
+                result =
+                    if (result.contains(Strings.LEFT_BRACKET) && result.contains(Strings.RIGHT_BRACKET)) {
+                        result.replace("($sectionExample)", numeric[0].toString())
+                    } else if (result.contains(Strings.LEFT_BRACKET)) {
+                        result.replace("($sectionExample", numeric[0].toString())
+                    } else {
+                        result.replace(sectionExample, numeric[0].toString())
+                    }
 
                 resultData = mapper.map(result)
 
-                if (result.first().toString() == Strings.ACTION_MINUS && resultData.action.size == 1) break
+                if (result.first()
+                        .toString() == Strings.ACTION_MINUS && resultData.action.size == 1
+                ) break
             }
 
             return result.toDouble()

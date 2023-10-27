@@ -38,7 +38,7 @@ interface UtilResult {
             ) {
                 /** if last action equal sin, cos, tg ect... */
 
-                example = if (component.actionWithOneNumber.contains(
+                example = if (example.length > 3 && component.actionWithOneNumber.contains(
                         example.substring(
                             example.lastIndex - 2, example.lastIndex + 1
                         )

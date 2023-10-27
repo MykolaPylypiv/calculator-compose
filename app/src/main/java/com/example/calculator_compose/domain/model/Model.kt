@@ -9,7 +9,7 @@ data class PresentationValues(val calculation: String, val action: String)
 
 data class DomainAllValues(val calculation: String, val action: String, val history: String)
 
-data class DomainValues(val numbers: MutableList<String>, val action: MutableList<String>)
+data class DomainValues(val numbers: MutableList<String>, var action: MutableList<String>)
 
 @Entity(tableName = "language")
 data class Languages(

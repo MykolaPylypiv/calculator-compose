@@ -389,6 +389,26 @@ class ResultTest {
     }
 
     @Test
+    fun `equal minus pow with bracket`() {
+        val example = "5^("
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, isRadians)
+
+        assertEquals("5", result)
+    }
+
+    @Test
+    fun `equal minus pow with one action and without brackets`() {
+        val example = "5^(0-1"
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, isRadians)
+
+        assertEquals("0.2", result)
+    }
+
+    @Test
     fun `equal minus pow with one action`() {
         val example = "5^(0-1)"
         val isRadians = Strings.DEGREES
@@ -396,6 +416,16 @@ class ResultTest {
         val result = result.renewal(example, isRadians)
 
         assertEquals("0.2", result)
+    }
+
+    @Test
+    fun `equal minus pow with action`() {
+        val example = "5^(0-1) + 5^(0-1)"
+        val isRadians = Strings.DEGREES
+
+        val result = result.renewal(example, isRadians)
+
+        assertEquals("0.4", result)
     }
 
     @Test
