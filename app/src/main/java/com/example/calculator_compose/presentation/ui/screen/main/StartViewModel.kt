@@ -4,10 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.calculator_compose.app.Language
 import com.example.calculator_compose.app.Strings
-import com.example.calculator_compose.app.english
-import com.example.calculator_compose.app.ukrainian
 import com.example.calculator_compose.data.room.AppDatabase
 import com.example.calculator_compose.domain.interactor.MainInteractor
 import com.example.calculator_compose.domain.model.Languages

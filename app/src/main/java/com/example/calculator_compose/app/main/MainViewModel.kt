@@ -1,20 +1,23 @@
 package com.example.calculator_compose.app.main
 
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.ViewModel
+import com.example.calculator_compose.app.Language
 import com.example.calculator_compose.app.Repository.customColors
 import com.example.calculator_compose.app.Repository.isEnglish
 import com.example.calculator_compose.app.Repository.language
 import com.example.calculator_compose.app.Repository.systemBarColors
 import com.example.calculator_compose.app.Repository.variableTheme
 import com.example.calculator_compose.app.Strings
-import com.example.calculator_compose.app.english
-import com.example.calculator_compose.app.ukrainian
 import com.example.calculator_compose.data.room.AppDatabase
 import com.example.calculator_compose.presentation.ui.theme.darkPalette
 import com.example.calculator_compose.presentation.ui.theme.defaultTheme
 import com.example.calculator_compose.presentation.ui.theme.lightPalette
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel(private val db: AppDatabase) {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val db: AppDatabase): ViewModel() {
 
     fun giveValues() {
         isEnglish.value = try {
@@ -24,9 +27,9 @@ class MainViewModel(private val db: AppDatabase) {
         }
 
         language.value = try {
-            if (isEnglish.value) english else ukrainian
+            if (isEnglish.value) Language.English else Language.Ukrainian
         } catch (e: NullPointerException) {
-            ukrainian
+            Language.Ukrainian
         }
 
         variableTheme.value = try {

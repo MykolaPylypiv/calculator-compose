@@ -4,11 +4,25 @@ import com.example.calculator_compose.app.Strings
 import com.example.calculator_compose.domain.calculation.ExampleComponent
 import com.example.calculator_compose.domain.calculation.Priority
 import com.example.calculator_compose.domain.calculation.mapper.MapperToDomainValues
+import com.example.calculator_compose.domain.model.CalculationValues
 import javax.inject.Inject
 
 interface Calculation {
 
     fun calculation(example: String, isRadians: Boolean): Double
+
+    fun actionOneNumber(
+        action: MutableList<String>,
+        numeric: MutableList<Double>,
+        isRadians: Boolean,
+        actions: List<String>
+    ): CalculationValues
+
+    fun actionTwoNumber(
+        action: MutableList<String>,
+        numeric: MutableList<Double>,
+        actions: List<String>
+    ): CalculationValues
 
     class Base @Inject constructor(
         private val mapper: MapperToDomainValues,
@@ -47,7 +61,7 @@ interface Calculation {
                 }
 
                 val action = data.action
-                val numeric = data.numbers.map { it.toDouble() }.toMutableList()
+                var numeric = data.numbers.map { it.toDouble() }.toMutableList()
 
                 /** if first number starts with - */
 
@@ -58,88 +72,33 @@ interface Calculation {
 
                 /** calculation */
 
-                while (action.any { component.personal.contains(it) }) {
-                    var index = 0
+                var values = actionOneNumber(
+                    numeric = numeric,
+                    action = action,
+                    actions = component.personal,
+                    isRadians = isRadians
+                )
 
-                    for (item in action) {
-                        if (component.personal.contains(item)) {
-                            index = action.indexOf(item)
-                            val num = numeric[index]
-                            numeric[index] = priority.firstPriority(num, item)
+                values = actionOneNumber(
+                    numeric = values.numeric,
+                    action = values.action,
+                    actions = component.actionWithOneNumber,
+                    isRadians = isRadians
+                )
 
-                            break
-                        }
-                    }
-                    action.removeAt(index)
+                values = actionTwoNumber(
+                    numeric = values.numeric,
+                    action = values.action,
+                    actions = component.second,
+                )
 
-                    if (action.isEmpty()) {
-                        break
-                    }
-                }
-                while (action.any { component.actionWithOneNumber.contains(it) }) {
-                    var index = 0
+                values = actionTwoNumber(
+                    numeric = values.numeric,
+                    action = values.action,
+                    actions = component.simple,
+                )
 
-                    for (item in action) {
-                        if (component.actionWithOneNumber.contains(item)) {
-                            index = action.indexOf(item)
-                            val num = numeric[index]
-
-                            numeric[index] = priority.secondPriority(
-                                num = num, text = item, isRadians = isRadians
-                            )
-
-                            break
-                        }
-                    }
-
-                    action.removeAt(index)
-
-                    if (action.isEmpty()) {
-                        break
-                    }
-                }
-                while (action.any { component.second.contains(it) }) {
-                    var index = 0
-
-                    for (item in action) {
-                        if (component.second.contains(item)) {
-                            index = action.indexOf(item)
-                            val num = numeric[index]
-                            val num1 = numeric[index + 1]
-
-                            numeric[index + 1] =
-                                priority.thirdPriority(action = item, num = num, num1 = num1)
-
-                            break
-                        }
-                    }
-                    numeric.removeAt(index)
-                    action.removeAt(index)
-
-                    if (action.isEmpty()) {
-                        break
-                    }
-                }
-                while (action.any { component.simple.contains(it) }) {
-                    var index = 0
-
-                    for (item in action) {
-                        if (component.simple.contains(item)) {
-                            index = action.indexOf(item)
-
-                            val num = numeric[index]
-                            val num1 = numeric[index + 1]
-
-                            numeric[index + 1] =
-                                priority.lowestPriority(action = item, num = num, num1 = num1)
-
-                            break
-                        }
-                    }
-
-                    numeric.removeAt(index)
-                    action.removeAt(index)
-                }
+                numeric = values.numeric
 
                 result =
                     if (result.contains(Strings.LEFT_BRACKET) && result.contains(Strings.RIGHT_BRACKET)) {
@@ -158,6 +117,78 @@ interface Calculation {
             }
 
             return result.toDouble()
+        }
+
+        override fun actionOneNumber(
+            action: MutableList<String>,
+            numeric: MutableList<Double>,
+            isRadians: Boolean,
+            actions: List<String>
+        ): CalculationValues {
+            while (action.any { actions.contains(it) }) {
+                var index = 0
+
+                for (item in action) {
+                    if (actions.contains(item)) {
+                        index = action.indexOf(item)
+                        val num = numeric[index]
+
+                        when (actions) {
+                            component.personal -> numeric[index] = priority.firstPriority(num, item)
+                            component.actionWithOneNumber -> numeric[index] =
+                                priority.secondPriority(
+                                    num = num, text = item, isRadians = isRadians
+                                )
+                        }
+
+                        break
+                    }
+                }
+                action.removeAt(index)
+
+                if (action.isEmpty()) {
+                    break
+                }
+            }
+
+            return CalculationValues(numeric = numeric, action = action)
+        }
+
+        override fun actionTwoNumber(
+            action: MutableList<String>,
+            numeric: MutableList<Double>,
+            actions: List<String>
+        ): CalculationValues {
+
+            while (action.any { actions.contains(it) }) {
+                var index = 0
+
+                for (item in action) {
+                    if (actions.contains(item)) {
+                        index = action.indexOf(item)
+                        val num = numeric[index]
+                        val num1 = numeric[index + 1]
+
+                        when (actions) {
+                            component.second -> numeric[index + 1] =
+                                priority.thirdPriority(action = item, num = num, num1 = num1)
+                            component.simple -> numeric[index + 1] =
+                                priority.lowestPriority(action = item, num = num, num1 = num1)
+                        }
+
+                        break
+                    }
+                }
+
+                numeric.removeAt(index)
+                action.removeAt(index)
+
+                if (action.isEmpty()) {
+                    break
+                }
+            }
+
+            return CalculationValues(numeric = numeric, action = action)
         }
     }
 }

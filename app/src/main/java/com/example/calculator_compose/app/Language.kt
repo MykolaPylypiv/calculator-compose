@@ -1,100 +1,102 @@
 package com.example.calculator_compose.app
 
-data class Language(
-    val deleteHistoryDialog: String,
-    val changeThemeDialog: String,
 
-    val dismissButton: String,
-    val acceptButton: String,
+sealed class Language(
+) {
+    abstract val deleteHistoryDialog: String
+    abstract val changeThemeDialog: String
 
-    val topBarSettingsTheme: String,
+    abstract val dismissButton: String
+    abstract val acceptButton: String
 
-    val textColor: String,
-    val secondaryTextColor: String,
-    val tertiaryTextColor: String,
-    val buttonColor: String,
-    val secondaryButtonColor: String,
-    val historyColor: String,
-    val backgroundColor: String,
+    abstract val topBarSettingsTheme: String
 
-    val darkButton: String,
-    val lightButton: String,
+    abstract val textColor: String
+    abstract val secondaryTextColor: String
+    abstract val tertiaryTextColor: String
+    abstract val buttonColor: String
+    abstract val secondaryButtonColor: String
+    abstract val historyColor: String
+    abstract val backgroundColor: String
 
-    val moreButton: String,
+    abstract val darkButton: String
+    abstract val lightButton: String
 
-    val whiteButton: String,
-    val grayButton: String,
-    val blackButton: String,
+    abstract val moreButton: String
 
-    val toastChangeLanguage: String,
-    val toastChangeTheme: String,
+    abstract val whiteButton: String
+    abstract val grayButton: String
+    abstract val blackButton: String
 
-    val dialogDeleteHistoryAccept: String,
-    val dialogDeleteHistoryDismiss: String,
-)
+    abstract val toastChangeLanguage: String
+    abstract val toastChangeTheme: String
 
-val english = Language(
-    deleteHistoryDialog = "Are you sure you want to delete the history ?",
-    changeThemeDialog = "Select a theme",
+    abstract val dialogDeleteHistoryAccept: String
+    abstract val dialogDeleteHistoryDismiss: String
 
-    dismissButton = "Cancel",
-    acceptButton = "Accept",
+    object English : Language() {
+        override val deleteHistoryDialog = "Are you sure you want to delete the history ?"
+        override val changeThemeDialog = "Select a theme"
 
-    topBarSettingsTheme = "Settings theme",
+        override val dismissButton = "Cancel"
+        override val acceptButton = "Accept"
 
-    textColor = "Select text color",
-    secondaryTextColor = "Select secondary text color",
-    tertiaryTextColor = "Select tertiary text color",
-    buttonColor = "Select button color",
-    secondaryButtonColor = "Select secondary button color",
-    historyColor = "Select history color",
-    backgroundColor = "Select background color",
+        override val topBarSettingsTheme = "Settings theme"
 
-    darkButton = "Dark",
-    lightButton = "Light",
+        override val textColor = "Select text color"
+        override val secondaryTextColor = "Select secondary text color"
+        override val tertiaryTextColor = "Select tertiary text color"
+        override val buttonColor = "Select button color"
+        override val secondaryButtonColor = "Select secondary button color"
+        override val historyColor = "Select history color"
+        override val backgroundColor = "Select background color"
 
-    moreButton = "More...",
+        override val darkButton = "Dark"
+        override val lightButton = "Light"
 
-    whiteButton = "White",
-    grayButton = "Gray",
-    blackButton = "Black",
+        override val moreButton = "More..."
 
-    toastChangeLanguage = "The language will change after restart",
-    toastChangeTheme = "Theme will change after restart",
+        override val whiteButton = "White"
+        override val grayButton = "Gray"
+        override val blackButton = "Black"
 
-    dialogDeleteHistoryAccept = "Accept",
-    dialogDeleteHistoryDismiss = "Cancel",
-)
+        override val toastChangeLanguage = "The language will change after restart"
+        override val toastChangeTheme = "Theme will change after restart"
 
-val ukrainian = Language(
-    deleteHistoryDialog = "Ви впевнені, що хочете видалити історію обчислень ?",
-    changeThemeDialog = "Оберіть тему",
+        override val dialogDeleteHistoryAccept = "Accept"
+        override val dialogDeleteHistoryDismiss = "Cancel"
+    }
 
-    dismissButton = "Відмінити",
-    acceptButton = "Підтвердити",
+    object Ukrainian : Language() {
+        override val deleteHistoryDialog = "Ви впевнені, що хочете видалити історію обчислень ?"
+        override val changeThemeDialog = "Оберіть тему"
 
-    topBarSettingsTheme = "Налаштування теми",
+        override val dismissButton = "Відмінити"
+        override val acceptButton = "Підтвердити"
 
-    textColor = "Виберіть колір тексту",
-    secondaryTextColor = "Виберіть вторинний колір тексту",
-    tertiaryTextColor = "Виберіть третинний колір тексту",
-    buttonColor = "Виберіть колір кнопки",
-    secondaryButtonColor = "Виберіть вторинний колір кнопки",
-    historyColor = "Виберіть колір історії",
-    backgroundColor = "Виберіть колір фону",
+        override val topBarSettingsTheme = "Налаштування теми"
 
-    darkButton = "Темний",
-    lightButton = "Світлий",
+        override val textColor = "Виберіть колір тексту"
+        override val secondaryTextColor = "Виберіть вторинний колір тексту"
+        override val tertiaryTextColor = "Виберіть третинний колір тексту"
+        override val buttonColor = "Виберіть колір кнопки"
+        override val secondaryButtonColor = "Виберіть вторинний колір кнопки"
+        override val historyColor = "Виберіть колір історії"
+        override val backgroundColor = "Виберіть колір фону"
 
-    moreButton = "Більше...",
+        override val darkButton = "Темний"
+        override val lightButton = "Світлий"
 
-    whiteButton = "Білий",
-    grayButton = "Сірий",
-    blackButton = "Чорний",
+        override val moreButton = "Більше..."
 
-    toastChangeLanguage = "Мова зміниться після перезапуску",
-    toastChangeTheme = "Тема зміниться після перезапуску",
+        override val whiteButton = "Білий"
+        override val grayButton = "Сірий"
+        override val blackButton = "Чорний"
 
-    dialogDeleteHistoryAccept = "Так",
-    dialogDeleteHistoryDismiss = "Ні",
-)
+        override val toastChangeLanguage = "Мова зміниться після перезапуску"
+        override val toastChangeTheme = "Тема зміниться після перезапуску"
+
+        override val dialogDeleteHistoryAccept = "Так"
+        override val dialogDeleteHistoryDismiss = "Ні"
+    }
+}

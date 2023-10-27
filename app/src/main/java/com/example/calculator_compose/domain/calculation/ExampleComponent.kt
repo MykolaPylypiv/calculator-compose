@@ -84,6 +84,6 @@ interface ExampleComponent {
         override val action =
             (simple + second + personal + trigonometric + logarithms + brackets).toMutableList()
 
-        override val actionWithOneNumber = (personal + trigonometric + logarithms).toMutableList()
+        override val actionWithOneNumber = (trigonometric + logarithms).toMutableList()
     }
 }

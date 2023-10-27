@@ -11,6 +11,10 @@ data class DomainAllValues(val calculation: String, val action: String, val hist
 
 data class DomainValues(val numbers: MutableList<String>, var action: MutableList<String>)
 
+data class CalculationValues(
+    val numeric: MutableList<Double>, val action: MutableList<String>
+)
+
 @Entity(tableName = "language")
 data class Languages(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,

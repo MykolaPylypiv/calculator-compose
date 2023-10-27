@@ -9,7 +9,6 @@ interface ComaUseCase {
 
     class Base @Inject constructor() : ComaUseCase {
 
-        private val startExample = Strings.START_EXAMPLE
         private val plus = Strings.ACTION_PLUS
         private val minus = Strings.ACTION_MINUS
         private val multiply = Strings.ACTION_MULTIPLY
@@ -25,7 +24,7 @@ interface ComaUseCase {
 
             if (numbers.last().contains(other = point)) return example
 
-            if (example != startExample && example.last().toString() != point) {
+            if (example.last().toString() != point) {
                 if (action.isNotEmpty() && example.last() != action.last()) return "$example."
                 else if (action.isEmpty()) return "$example."
             }

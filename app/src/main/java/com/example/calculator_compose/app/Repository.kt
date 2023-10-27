@@ -8,7 +8,7 @@ object Repository {
     val customColors = mutableStateOf(darkPalette)
     val systemBarColors = mutableStateOf(darkPalette.primaryBackground)
 
-    val language = mutableStateOf(english)
+    val language = mutableStateOf<Language>(Language.English)
     val isEnglish = mutableStateOf(true)
 
     val variableTheme = mutableStateOf(Strings.DARK)
